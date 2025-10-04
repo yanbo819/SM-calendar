@@ -3,11 +3,10 @@ package com.smartcalendar.servlets;
 import com.smartcalendar.utils.DatabaseUtil;
 import com.smartcalendar.utils.PasswordUtil;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -28,13 +27,11 @@ public class ForgotPasswordServlet extends HttpServlet {
     private static class VerificationCode {
         String code;
         String username;
-        String contact;
         long timestamp;
         
         VerificationCode(String code, String username, String contact) {
             this.code = code;
             this.username = username;
-            this.contact = contact;
             this.timestamp = System.currentTimeMillis();
         }
         

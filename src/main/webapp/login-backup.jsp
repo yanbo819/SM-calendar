@@ -23,7 +23,7 @@
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/auth.css">
     <% if ("ar".equals(lang)) { %>
-    <link rel="stylesheet" href="css/rtl.css">
+    <!-- rtl.css removed: English-only UI -->
     <% } %>
     <style>
         .demo-credentials {

@@ -1,0 +1,190 @@
+/* Right-to-Left (RTL) Support for Arabic */
+
+html[dir="rtl"] {
+    direction: rtl;
+}
+
+/* Navigation RTL */
+html[dir="rtl"] .nav-container {
+    direction: rtl;
+}
+
+html[dir="rtl"] .nav-actions {
+    flex-direction: row-reverse;
+}
+
+html[dir="rtl"] .user-welcome {
+    margin-left: var(--spacing-md);
+    margin-right: 0;
+}
+
+/* Form RTL */
+html[dir="rtl"] .form-control {
+    text-align: right;
+}
+
+html[dir="rtl"] .radio-label {
+    margin-left: var(--spacing-lg);
+    margin-right: 0;
+}
+
+html[dir="rtl"] .radio-label input[type="radio"] {
+    margin-left: var(--spacing-xs);
+    margin-right: 0;
+}
+
+html[dir="rtl"] .form-actions {
+    justify-content: flex-start;
+}
+
+/* Dashboard RTL */
+html[dir="rtl"] .dashboard-header {
+    direction: rtl;
+}
+
+html[dir="rtl"] .quick-actions {
+    direction: rtl;
+}
+
+html[dir="rtl"] .event-preview-item {
+    direction: rtl;
+}
+
+html[dir="rtl"] .event-date {
+    margin-left: var(--spacing-md);
+    margin-right: 0;
+}
+
+html[dir="rtl"] .event-location {
+    direction: rtl;
+}
+
+/* Events List RTL */
+html[dir="rtl"] .header-actions {
+    direction: rtl;
+}
+
+html[dir="rtl"] .filter-row {
+    direction: rtl;
+}
+
+html[dir="rtl"] .event-time {
+    margin-left: var(--spacing-lg);
+    margin-right: 0;
+}
+
+html[dir="rtl"] .event-content {
+    margin-left: var(--spacing-lg);
+    margin-right: 0;
+}
+
+html[dir="rtl"] .event-header {
+    direction: rtl;
+}
+
+html[dir="rtl"] .event-subject,
+html[dir="rtl"] .event-location,
+html[dir="rtl"] .event-reminder,
+html[dir="rtl"] .event-notes {
+    direction: rtl;
+}
+
+/* Language Selector RTL */
+html[dir="rtl"] .language-selector {
+    left: var(--spacing-sm);
+    right: auto;
+}
+
+/* Notification Alert RTL */
+html[dir="rtl"] .notification-alert {
+    left: var(--spacing-lg);
+    right: auto;
+}
+
+html[dir="rtl"] .notification-header {
+    direction: rtl;
+}
+
+html[dir="rtl"] .notification-close {
+    margin-right: var(--spacing-sm);
+    margin-left: 0;
+}
+
+html[dir="rtl"] .notification-actions {
+    direction: rtl;
+}
+
+/* Icons RTL - Reverse some directional icons */
+html[dir="rtl"] .view-all-link:after {
+    content: " ←";
+}
+
+/* Button icons RTL */
+html[dir="rtl"] .btn {
+    direction: rtl;
+}
+
+/* Text alignment for RTL */
+html[dir="rtl"] .text-start {
+    text-align: right;
+}
+
+html[dir="rtl"] .text-end {
+    text-align: left;
+}
+
+/* Responsive RTL adjustments */
+@media (max-width: 768px) {
+    html[dir="rtl"] .nav-container {
+        text-align: center;
+    }
+    
+    html[dir="rtl"] .event-time {
+        margin-left: 0;
+        margin-right: 0;
+        text-align: right;
+    }
+    
+    html[dir="rtl"] .event-content {
+        margin-left: 0;
+        margin-right: 0;
+    }
+    
+    html[dir="rtl"] .notification-alert {
+        left: var(--spacing-md);
+        right: var(--spacing-md);
+    }
+}
+
+/* Fix for Arabic numerals display */
+html[dir="rtl"] input[type="number"],
+html[dir="rtl"] input[type="tel"],
+html[dir="rtl"] input[type="time"],
+html[dir="rtl"] input[type="date"] {
+    direction: ltr;
+    text-align: left;
+}
+
+/* Arabic font improvements */
+html[lang="ar"] {
+    font-family: 'Segoe UI', 'Tahoma', 'Arial Unicode MS', sans-serif;
+}
+
+html[lang="ar"] .auth-header h1,
+html[lang="ar"] .dashboard-header h2,
+html[lang="ar"] .events-header h2 {
+    font-weight: 700;
+    letter-spacing: 0;
+}
+
+/* Chinese font improvements */
+html[lang="zh"] {
+    font-family: 'Microsoft YaHei', 'PingFang SC', 'Segoe UI', sans-serif;
+}
+
+html[lang="zh"] .auth-header h1,
+html[lang="zh"] .dashboard-header h2,
+html[lang="zh"] .events-header h2 {
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}

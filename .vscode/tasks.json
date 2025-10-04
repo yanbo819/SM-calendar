@@ -1,0 +1,77 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Build WAR (skip tests)",
+			"type": "shell",
+			"command": "mvn",
+			"args": [
+				"-q",
+				"-e",
+				"-DskipTests",
+				"clean",
+				"package"
+			],
+			"isBackground": false,
+			"problemMatcher": [
+				"$maven-project"
+			],
+			"group": "build"
+		},
+		{
+			"label": "Build WAR (skip tests) #2",
+			"type": "shell",
+			"command": "mvn",
+			"args": [
+				"-q",
+				"-e",
+				"-DskipTests",
+				"clean",
+				"package"
+			],
+			"isBackground": false,
+			"problemMatcher": [
+				"$maven-project"
+			],
+			"group": "build"
+		},
+		{
+			"label": "Build WAR (skip tests) #3",
+			"type": "shell",
+			"command": "mvn",
+			"args": [
+				"-q",
+				"-e",
+				"-DskipTests",
+				"clean",
+				"package"
+			],
+			"isBackground": false,
+			"problemMatcher": [
+				"$maven-project"
+			],
+			"group": "build"
+		},
+		{
+			"label": "Build webapp UI tweaks",
+			"type": "shell",
+			"command": "mvn -DskipTests clean package",
+			"problemMatcher": [
+				"$eslint - stylish"
+			],
+			"group": "build"
+		},
+		{
+			"label": "Build after auth fixes",
+			"type": "shell",
+			"command": "mvn -DskipTests clean package",
+			"group": "build"
+		},
+		{
+			"label": "Build after DB idempotent init",
+			"type": "shell",
+			"command": "mvn -DskipTests clean package",
+			"group": "build"
+		}
+	]
+}

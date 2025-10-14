@@ -8,7 +8,7 @@
     <!-- Application Information -->
     <display-name>Smart Calendar and Reminder Application</display-name>
     <description>
-        A cross-platform smart calendar and reminder system with multi-language support
+        A cross-platform smart calendar and reminder system with English-only UI
     </description>
 
     <!-- Context Parameters -->
@@ -78,6 +78,33 @@
     <servlet-mapping>
         <servlet-name>CreateEventServlet</servlet-name>
         <url-pattern>/create-event</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>UpdateEventServlet</servlet-name>
+        <servlet-class>com.smartcalendar.servlets.UpdateEventServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UpdateEventServlet</servlet-name>
+        <url-pattern>/update-event</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>DeleteEventServlet</servlet-name>
+        <servlet-class>com.smartcalendar.servlets.DeleteEventServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DeleteEventServlet</servlet-name>
+        <url-pattern>/delete-event</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ScheduleUploadServlet</servlet-name>
+        <servlet-class>com.smartcalendar.servlets.ScheduleUploadServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ScheduleUploadServlet</servlet-name>
+        <url-pattern>/upload-schedule</url-pattern>
     </servlet-mapping>
 
     <!-- API Servlets -->

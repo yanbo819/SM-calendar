@@ -131,7 +131,7 @@ public class RegisterServlet extends HttpServlet {
         }
         
         if (!PasswordUtil.isPasswordValid(password)) {
-            return "Password must be at least 6 characters with uppercase, lowercase, and digit";
+            return "Password must be at least 6 characters and include at least two of: uppercase, lowercase, number, symbol";
         }
         
         if (confirmPassword == null || !password.equals(confirmPassword)) {

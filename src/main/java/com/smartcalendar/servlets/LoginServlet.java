@@ -16,9 +16,8 @@ import com.smartcalendar.models.User;
 import com.smartcalendar.utils.DatabaseUtil;
 import com.smartcalendar.utils.PasswordUtil;
 
-/**
- * Servlet for handling user login
- */
+// Servlet for handling user login
+ 
 public class LoginServlet extends HttpServlet {
     
     @Override

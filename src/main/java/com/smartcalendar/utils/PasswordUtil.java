@@ -91,20 +91,30 @@ public class PasswordUtil {
      * @return true if password meets strength requirements
      */
     public static boolean isPasswordValid(String password) {
-        if (password == null || password.length() < 6) {
-            return false;
-        }
-        
+        // Policy: at least 6 chars and at least 2 of the following categories:
+        // uppercase, lowercase, digit, symbol
+        if (password == null) return false;
+        String trimmed = password.trim();
+        if (trimmed.length() < 6) return false;
+
         boolean hasUpper = false;
         boolean hasLower = false;
         boolean hasDigit = false;
-        
+        boolean hasSymbol = false;
+
         for (char c : password.toCharArray()) {
             if (Character.isUpperCase(c)) hasUpper = true;
-            if (Character.isLowerCase(c)) hasLower = true;
-            if (Character.isDigit(c)) hasDigit = true;
+            else if (Character.isLowerCase(c)) hasLower = true;
+            else if (Character.isDigit(c)) hasDigit = true;
+            else hasSymbol = true;
         }
-        
-        return hasUpper && hasLower && hasDigit;
+
+        int categories = 0;
+        if (hasUpper) categories++;
+        if (hasLower) categories++;
+        if (hasDigit) categories++;
+        if (hasSymbol) categories++;
+
+        return categories >= 2;
     }
 }

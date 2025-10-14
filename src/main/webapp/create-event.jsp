@@ -19,6 +19,9 @@
     // Get form values for repopulation on error
     String title = (String) request.getAttribute("title");
     String categoryId = (String) request.getAttribute("categoryId");
+    if ((categoryId == null || categoryId.isEmpty()) && request.getParameter("category") != null) {
+        categoryId = request.getParameter("category");
+    }
     String subjectName = (String) request.getAttribute("subjectName");
     String existingSubjectId = (String) request.getAttribute("existingSubjectId");
     String description = (String) request.getAttribute("description");
@@ -37,6 +40,27 @@
     <title><%= LanguageUtil.getText(lang, "app.title") %> - Create Event</title>
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/forms.css">
+    <style>
+        /* Lightweight page-local styling to improve layout & clarity */
+        .card {
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+            padding: 24px;
+        }
+        .page-title { margin: 0; font-size: 1.5rem; font-weight: 600; }
+        .page-subtitle { color: #6b7280; margin-top: 4px; }
+        .sections { display: grid; gap: 20px; }
+        .section { display: grid; gap: 12px; }
+        .section h3 { margin: 0; font-size: 1rem; font-weight: 600; color: #374151; }
+        .form-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
+        @media (min-width: 768px) { .form-grid.cols-2 { grid-template-columns: 1fr 1fr; } }
+        .btn-chip { border: 1px solid #e5e7eb; background: #fafafa; padding: 8px 12px; border-radius: 999px; cursor: pointer; font-size: .9rem; }
+        .btn-chip.active { background: #eef2ff; border-color: #6366f1; color: #3730a3; }
+        .hint { color: #6b7280; font-size: .85rem; }
+        .actions { display: flex; gap: 10px; justify-content: flex-end; border-top: 1px dashed #e5e7eb; padding-top: 16px; margin-top: 8px; }
+    </style>
 </head>
 <body>
     <nav class="main-nav">
@@ -56,8 +80,11 @@
     </nav>
 
     <div class="form-container">
-        <div class="form-header">
-            <h2>Create New Event</h2>
+        <div class="form-header" style="display:flex; align-items:center; justify-content:space-between; gap:12px;">
+            <div>
+                <h2 class="page-title">Create New Reminder</h2>
+                <div class="page-subtitle">Choose a type, add subject, time, and a reminder. You can always edit later.</div>
+            </div>
             <a href="dashboard.jsp" class="btn btn-outline">← Back to Dashboard</a>
         </div>
 
@@ -67,176 +94,145 @@
         </div>
         <% } %>
 
-        <form method="post" action="create-event" class="event-form">
-            <div class="form-row">
-                <div class="form-group">
-                    <input type="text" id="title" name="title" required maxlength="255"
-                           value="<%= title != null ? title : "" %>"
-                           placeholder="<%= LanguageUtil.getText(lang, "event.title") %>">
-                </div>
-            </div>
-
-            <div class="form-row">
-                <div class="form-group">
-                    <select id="categoryId" name="categoryId" class="form-control">
-                        <option value=""><%= LanguageUtil.getText(lang, "event.category") %></option>
-                        <%
-                            Connection conn = null;
-                            try {
-                                conn = DatabaseUtil.getConnection();
-                                PreparedStatement stmt = conn.prepareStatement("SELECT category_id, category_name, category_color FROM categories ORDER BY category_name");
-                                ResultSet rs = stmt.executeQuery();
-                                while (rs.next()) {
-                                    String selected = String.valueOf(rs.getInt("category_id")).equals(categoryId) ? "selected" : "";
-                        %>
-                            <option value="<%= rs.getInt("category_id") %>" <%= selected %> data-color="<%= rs.getString("category_color") %>">
-                                <%= rs.getString("category_name") %>
-                            </option>
-                        <%
-                                }
-                            } catch (SQLException e) {
-                                // Error fetching categories: " + e.getMessage()
-                            } finally {
-                                if (conn != null) {
-                                    try { conn.close(); } catch (SQLException e) {}
-                                }
-                            }
-                        %>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <div class="subject-selector">
-                        <label class="radio-label">
-                            <input type="radio" name="subjectType" value="existing" onchange="toggleSubjectInput()" 
-                                   <%= (existingSubjectId != null && !existingSubjectId.isEmpty()) ? "checked" : "" %>>
-                            Use Existing Subject
-                        </label>
-                        <label class="radio-label">
-                            <input type="radio" name="subjectType" value="new" onchange="toggleSubjectInput()" 
-                                   <%= (subjectName != null && !subjectName.isEmpty()) || (existingSubjectId == null || existingSubjectId.isEmpty()) ? "checked" : "" %>>
-                            Create New Subject
-                        </label>
+        <form method="post" action="create-event" class="event-form card">
+            <div class="sections">
+                <!-- Type -->
+                <div class="section">
+                    <h3>Type</h3>
+                    <div class="quick-types" style="display:flex; gap:8px; flex-wrap:wrap">
+                        <button type="button" class="btn btn-chip" data-type="Meeting">Meeting</button>
+                        <button type="button" class="btn btn-chip" data-type="Course">Course</button>
+                        <button type="button" class="btn btn-chip" data-type="Exam">Exam</button>
+                        <button type="button" class="btn btn-chip" data-type="Activity">Activity</button>
+                        <button type="button" class="btn btn-chip" data-type="Others">Others</button>
                     </div>
-                    
-                    <select id="existingSubjectId" name="existingSubjectId" class="form-control" 
-                            style="<%= (existingSubjectId == null || existingSubjectId.isEmpty()) ? "display:none" : "" %>">
-                        <option value=""><%= LanguageUtil.getText(lang, "event.subject") %></option>
-                        <%
-                            Connection conn2 = null;
-                            try {
-                                conn2 = DatabaseUtil.getConnection();
-                                PreparedStatement stmt = conn2.prepareStatement("SELECT subject_id, subject_name FROM subjects WHERE user_id = ? ORDER BY subject_name");
-                                stmt.setInt(1, user.getUserId());
-                                ResultSet rs = stmt.executeQuery();
-                                while (rs.next()) {
-                                    String selected = String.valueOf(rs.getInt("subject_id")).equals(existingSubjectId) ? "selected" : "";
-                        %>
-                            <option value="<%= rs.getInt("subject_id") %>" <%= selected %>>
-                                <%= rs.getString("subject_name") %>
-                            </option>
-                        <%
-                                }
-                            } catch (SQLException e) {
-                                // Error fetching subjects: " + e.getMessage()
-                            } finally {
-                                if (conn2 != null) {
-                                    try { conn2.close(); } catch (SQLException e) {}
-                                }
-                            }
-                        %>
-                    </select>
-                    
-                    <input type="text" id="subjectName" name="subjectName" class="form-control" 
-                           placeholder="<%= LanguageUtil.getText(lang, "event.subject") %>" maxlength="100"
-                           value="<%= subjectName != null ? subjectName : "" %>"
-                           style="<%= (existingSubjectId != null && !existingSubjectId.isEmpty()) ? "display:none" : "" %>">
-                </div>
-            </div>
-
-            <div class="form-row">
-                <div class="form-group">
-                    <input type="date" id="eventDate" name="eventDate" required
-                           value="<%= eventDate != null ? eventDate : "" %>">
+                    <div class="hint">Pick a type to help categorize this reminder. You can change it later.</div>
                 </div>
 
-                <div class="form-group">
-                    <input type="time" id="eventTime" name="eventTime" required
-                           value="<%= eventTime != null ? eventTime : "" %>">
-                </div>
-
-                <div class="form-group">
-                    <select id="duration" name="duration" class="form-control">
-                        <option value=""> <%= LanguageUtil.getText(lang, "event.duration") %> </option>
-                        <option value="30" <%= "30".equals(duration) ? "selected" : "" %>>30 minutes</option>
-                        <option value="60" <%= duration == null || "60".equals(duration) ? "selected" : "" %>>1 hour</option>
-                        <option value="90" <%= "90".equals(duration) ? "selected" : "" %>>1.5 hours</option>
-                        <option value="120" <%= "120".equals(duration) ? "selected" : "" %>>2 hours</option>
-                        <option value="180" <%= "180".equals(duration) ? "selected" : "" %>>3 hours</option>
-                        <option value="240" <%= "240".equals(duration) ? "selected" : "" %>>4 hours</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="form-row">
-                <div class="form-group">
+                <!-- Details: title & subject -->
+                <div class="section">
+                    <h3>Details</h3>
+                    <div class="form-grid cols-2">
+                        <input type="text" id="title" name="title" required maxlength="255"
+                               value="<%= title != null ? title : "" %>"
+                               placeholder="Subject / Title (e.g., Math Lecture)">
+                        <input type="text" id="subjectName" name="subjectName" maxlength="100"
+                               value="<%= subjectName != null ? subjectName : "" %>"
+                               placeholder="Subject (optional)">
+                    </div>
                     <input type="text" id="location" name="location" maxlength="255"
                            value="<%= location != null ? location : "" %>"
-                           placeholder="<%= LanguageUtil.getText(lang, "event.location") %>">
+                           placeholder="Location (optional)">
                 </div>
 
-                <div class="form-group">
-                    <select id="reminderMinutes" name="reminderMinutes" class="form-control">
-                        <option value=""><%= LanguageUtil.getText(lang, "event.reminder") %></option>
-                        <option value="5" <%= "5".equals(reminderMinutes) ? "selected" : "" %>><%= LanguageUtil.getText(lang, "reminder.5min") %></option>
-                        <option value="15" <%= reminderMinutes == null || "15".equals(reminderMinutes) ? "selected" : "" %>><%= LanguageUtil.getText(lang, "reminder.15min") %></option>
-                        <option value="30" <%= "30".equals(reminderMinutes) ? "selected" : "" %>><%= LanguageUtil.getText(lang, "reminder.30min") %></option>
-                        <option value="60" <%= "60".equals(reminderMinutes) ? "selected" : "" %>><%= LanguageUtil.getText(lang, "reminder.1hour") %></option>
-                    </select>
+                <!-- When: date, time, duration -->
+                <div class="section">
+                    <h3>When</h3>
+                    <div class="form-grid cols-2" style="grid-template-columns: repeat(3, 1fr);">
+                        <input type="date" id="eventDate" name="eventDate" required
+                               value="<%= eventDate != null ? eventDate : "" %>">
+                        <input type="time" id="eventTime" name="eventTime" required
+                               value="<%= eventTime != null ? eventTime : "" %>">
+                        <select id="duration" name="duration" class="form-control">
+                            <option value=""> <%= LanguageUtil.getText(lang, "event.duration") %> </option>
+                            <option value="30" <%= "30".equals(duration) ? "selected" : "" %>>30 minutes</option>
+                            <option value="60" <%= duration == null || "60".equals(duration) ? "selected" : "" %>>1 hour</option>
+                            <option value="90" <%= "90".equals(duration) ? "selected" : "" %>>1.5 hours</option>
+                            <option value="120" <%= "120".equals(duration) ? "selected" : "" %>>2 hours</option>
+                        </select>
+                    </div>
                 </div>
-            </div>
 
-            <div class="form-row">
-                <div class="form-group full-width">
-                    <textarea id="description" name="description" rows="3" maxlength="1000"
-                              placeholder="Event description (optional)"><%= description != null ? description : "" %></textarea>
+                <!-- Reminder -->
+                <div class="section">
+                    <h3>Reminder</h3>
+                    <div class="form-grid cols-2">
+                        <select id="reminderMinutes" name="reminderMinutes" class="form-control" required>
+                            <option value="">Reminder</option>
+                            <option value="5" <%= "5".equals(reminderMinutes) ? "selected" : "" %>>5 minutes before</option>
+                            <option value="15" <%= reminderMinutes == null || "15".equals(reminderMinutes) ? "selected" : "" %>>15 minutes before</option>
+                            <option value="30" <%= "30".equals(reminderMinutes) ? "selected" : "" %>>30 minutes before</option>
+                            <option value="60" <%= "60".equals(reminderMinutes) ? "selected" : "" %>>1 hour before</option>
+                            <option value="1440" <%= "1440".equals(reminderMinutes) ? "selected" : "" %>>1 day before</option>
+                        </select>
+
+                        <!-- Hidden category chooser populated for mapping quick types -->
+                        <select id="categoryId" name="categoryId" class="form-control" style="display:none">
+                            <option value=""><%= LanguageUtil.getText(lang, "event.category") %></option>
+                            <%
+                                Connection conn = null;
+                                try {
+                                    conn = DatabaseUtil.getConnection();
+                                    PreparedStatement stmt = conn.prepareStatement("SELECT category_id, category_name, category_color FROM categories ORDER BY category_name");
+                                    ResultSet rs = stmt.executeQuery();
+                                    while (rs.next()) {
+                                        String selected = String.valueOf(rs.getInt("category_id")).equals(categoryId) ? "selected" : "";
+                            %>
+                                <option value="<%= rs.getInt("category_id") %>" <%= selected %> data-name="<%= rs.getString("category_name") %>">
+                                    <%= rs.getString("category_name") %>
+                                </option>
+                            <%
+                                    }
+                                } catch (SQLException e) {
+                                    // Error fetching categories
+                                } finally {
+                                    if (conn != null) { try { conn.close(); } catch (SQLException e) {} }
+                                }
+                            %>
+                        </select>
+                    </div>
+                    <div class="hint">You’ll get a notification before the event at the selected time.</div>
                 </div>
-            </div>
 
-            <div class="form-row">
-                <div class="form-group full-width">
-                    <textarea id="notes" name="notes" rows="3" maxlength="1000"
-                              placeholder="<%= LanguageUtil.getText(lang, "event.notes") %> (optional)"><%= notes != null ? notes : "" %></textarea>
+                <!-- Extra -->
+                <div class="section">
+                    <h3>Notes</h3>
+                    <textarea id="description" name="description" rows="3" maxlength="1000" placeholder="Description (optional)"><%= description != null ? description : "" %></textarea>
+                    <textarea id="notes" name="notes" rows="3" maxlength="1000" placeholder="Notes (optional)"><%= notes != null ? notes : "" %></textarea>
                 </div>
-            </div>
 
-            <div class="form-actions">
-                <button type="submit" class="btn btn-primary">
-                    <%= LanguageUtil.getText(lang, "event.save") %>
-                </button>
-                <a href="dashboard.jsp" class="btn btn-secondary">
-                    <%= LanguageUtil.getText(lang, "event.cancel") %>
-                </a>
+                <div class="actions">
+                    <a href="dashboard.jsp" class="btn btn-secondary">Cancel</a>
+                    <button type="submit" class="btn btn-primary">Create Reminder</button>
+                </div>
             </div>
         </form>
     </div>
 
     <script>
-        function toggleSubjectInput() {
-            const subjectType = document.querySelector('input[name="subjectType"]:checked').value;
-            const existingSelect = document.getElementById('existingSubjectId');
-            const newInput = document.getElementById('subjectName');
-            
-            if (subjectType === 'existing') {
-                existingSelect.style.display = 'block';
-                newInput.style.display = 'none';
-                newInput.value = '';
-            } else {
-                existingSelect.style.display = 'none';
-                newInput.style.display = 'block';
-                existingSelect.value = '';
+        // Quick type chips map to categories by name if present
+        document.addEventListener('DOMContentLoaded', function() {
+            const chips = document.querySelectorAll('.btn-chip');
+            const catSelect = document.getElementById('categoryId');
+            chips.forEach(chip => {
+                chip.addEventListener('click', () => {
+                    const type = chip.getAttribute('data-type');
+                    if (!catSelect) return;
+                    let found = false;
+                    Array.from(catSelect.options).forEach(opt => {
+                        if (opt.dataset && opt.dataset.name && opt.dataset.name.toLowerCase() === type.toLowerCase()) {
+                            opt.selected = true; found = true;
+                        }
+                    });
+                    if (!found) catSelect.selectedIndex = 0; // leave unassigned if not found
+                    // Visually mark selection
+                    chips.forEach(c => c.classList.remove('active'));
+                    chip.classList.add('active');
+                });
+            });
+
+            // Initialize active chip based on preselected category (e.g., via URL param)
+            if (catSelect) {
+                const selected = catSelect.options[catSelect.selectedIndex];
+                if (selected && selected.dataset && selected.dataset.name) {
+                    const match = Array.from(chips).find(c => c.getAttribute('data-type').toLowerCase() === selected.dataset.name.toLowerCase());
+                    if (match) {
+                        chips.forEach(c => c.classList.remove('active'));
+                        match.classList.add('active');
+                    }
+                }
             }
-        }
+        });
 
         // Set minimum date to today
         document.addEventListener('DOMContentLoaded', function() {

@@ -175,7 +175,7 @@ public class ForgotPasswordServlet extends HttpServlet {
         }
         
         if (!PasswordUtil.isPasswordValid(newPassword)) {
-            request.setAttribute("errorMessage", "Password must be at least 6 characters with uppercase, lowercase, and digit");
+            request.setAttribute("errorMessage", "Password must be at least 6 characters and include at least two of: uppercase, lowercase, number, symbol");
             response.sendRedirect("forgot-password.jsp?step=3&username=" + username + "&verificationCode=" + verificationCode);
             return;
         }

@@ -321,11 +321,10 @@
                                 <a href="edit-event.jsp?id=<%= event.getEventId() %>" class="btn btn-small btn-outline">
                                     Edit
                                 </a>
-                                <a href="delete-event.jsp?id=<%= event.getEventId() %>" 
-                                   class="btn btn-small btn-danger" 
-                                   onclick="return confirm('Are you sure you want to delete this event?')">
-                                    Delete
-                                </a>
+                                <form method="post" action="delete-event" style="display:inline" onsubmit="return confirm('Are you sure you want to delete this event?')">
+                                    <input type="hidden" name="id" value="<%= event.getEventId() %>">
+                                    <button type="submit" class="btn btn-small btn-danger">Delete</button>
+                                </form>
                             </div>
                         </div>
                 

@@ -67,6 +67,12 @@
     <link rel="stylesheet" href="css/dashboard.css">
 </head>
 <body>
+    <!-- Animated background behind tiles -->
+    <div class="dashboard-bg">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
     <nav class="main-nav">
         <div class="nav-container">
             <h1 class="nav-title"><%= LanguageUtil.getText(lang, "app.title") %></h1>
@@ -82,150 +88,92 @@
     </nav>
 
     <div class="dashboard-container">
-        <div class="dashboard-header">
-            <h2>Dashboard</h2>
-            <div class="quick-actions">
-                <a href="create-event.jsp" class="btn btn-primary">
-                    <i class="icon-calendar"></i>
-                    <%= LanguageUtil.getText(lang, "dashboard.create_calendar") %>
-                </a>
-                <a href="create-reminder.jsp" class="btn btn-secondary">
-                    <i class="icon-bell"></i>
-                    <%= LanguageUtil.getText(lang, "dashboard.create_reminder") %>
-                </a>
-                <a href="events.jsp" class="btn btn-outline">
-                    <i class="icon-list"></i>
-                    <%= LanguageUtil.getText(lang, "dashboard.view_events") %>
-                </a>
-            </div>
-        </div>
-
-        <div class="dashboard-grid">
-            <div class="dashboard-card">
-                <h3>Upcoming Events</h3>
-                <div class="events-preview">
-                    <% if (upcomingEvents.isEmpty()) { %>
-                        <p class="no-events">No upcoming events</p>
-                    <% } else { %>
-                        <% for (Event event : upcomingEvents) { %>
-                        <div class="event-preview-item">
-                            <div class="event-date">
-                                <span class="date"><%= dateFormat.format(event.getEventDate()) %></span>
-                                <span class="time"><%= timeFormat.format(event.getEventTime()) %></span>
+        <div class="tiles-grid">
+            <!-- Tile 1: My Events with quick stats and next upcoming -->
+            <a class="tile tile-events" href="events.jsp">
+                <div class="tile-content">
+                    <div class="tile-header">
+                        <span class="tile-icon">📅</span>
+                        <h3>My Events</h3>
+                    </div>
+                    <div class="tile-stats">
+                        <%
+                            int todayEvents = 0;
+                            int weekEvents = 0;
+                            int totalEvents = 0;
+                            Connection conn2 = null;
+                            try {
+                                conn2 = DatabaseUtil.getConnection();
+                                PreparedStatement stmt1 = conn2.prepareStatement(
+                                    "SELECT COUNT(*) FROM events WHERE user_id = ? AND event_date = CURRENT_DATE AND is_active = TRUE");
+                                stmt1.setInt(1, user.getUserId());
+                                ResultSet rs1 = stmt1.executeQuery();
+                                if (rs1.next()) todayEvents = rs1.getInt(1);
+                                PreparedStatement stmt2 = conn2.prepareStatement(
+                                    "SELECT COUNT(*) FROM events WHERE user_id = ? AND event_date BETWEEN CURRENT_DATE AND DATEADD('DAY', 7, CURRENT_DATE) AND is_active = TRUE");
+                                stmt2.setInt(1, user.getUserId());
+                                ResultSet rs2 = stmt2.executeQuery();
+                                if (rs2.next()) weekEvents = rs2.getInt(1);
+                                PreparedStatement stmt3 = conn2.prepareStatement(
+                                    "SELECT COUNT(*) FROM events WHERE user_id = ? AND is_active = TRUE");
+                                stmt3.setInt(1, user.getUserId());
+                                ResultSet rs3 = stmt3.executeQuery();
+                                if (rs3.next()) totalEvents = rs3.getInt(1);
+                            } catch (SQLException e) { /* ignore */ } finally { if (conn2 != null) { try { conn2.close(); } catch (SQLException e) {} } }
+                        %>
+                        <div class="stat"><span class="stat-number"><%= todayEvents %></span><span class="stat-label">Today</span></div>
+                        <div class="stat"><span class="stat-number"><%= weekEvents %></span><span class="stat-label">This Week</span></div>
+                        <div class="stat"><span class="stat-number"><%= totalEvents %></span><span class="stat-label">Total</span></div>
+                    </div>
+                    <div class="tile-upcoming">
+                        <% if (upcomingEvents.isEmpty()) { %>
+                            <div class="upcoming-empty">No upcoming events</div>
+                        <% } else { Event next = upcomingEvents.get(0); %>
+                            <div class="upcoming-row">
+                                <div class="upcoming-when"><%= dateFormat.format(next.getEventDate()) %> · <%= timeFormat.format(next.getEventTime()) %></div>
+                                <div class="upcoming-title"><%= next.getTitle() %></div>
                             </div>
-                            <div class="event-details">
-                                <h4 class="event-title"><%= event.getTitle() %></h4>
-                                <% if (event.getCategoryName() != null) { %>
-                                <span class="event-category" style="background-color: <%= event.getCategoryColor() %>">
-                                    <%= event.getCategoryName() %>
-                                </span>
-                                <% } %>
-                                <% if (event.getLocation() != null && !event.getLocation().trim().isEmpty()) { %>
-                                <p class="event-location">
-                                    <i class="icon-location"></i>
-                                    <%= event.getLocation() %>
-                                </p>
-                                <% } %>
-                            </div>
-                        </div>
                         <% } %>
-                    <% } %>
-                </div>
-                <% if (!upcomingEvents.isEmpty()) { %>
-                <a href="events.jsp" class="view-all-link">View All Events →</a>
-                <% } %>
-            </div>
-
-            <div class="dashboard-card">
-                <h3>Quick Stats</h3>
-                <div class="stats-grid">
-                    <%
-                        int todayEvents = 0;
-                        int weekEvents = 0;
-                        int totalEvents = 0;
-                        Connection conn2 = null;
-                        
-                        try {
-                            conn2 = DatabaseUtil.getConnection();
-                            // Today's events
-                            PreparedStatement stmt1 = conn2.prepareStatement(
-                                "SELECT COUNT(*) FROM events WHERE user_id = ? AND event_date = CURRENT_DATE AND is_active = TRUE"
-                            );
-                            stmt1.setInt(1, user.getUserId());
-                            ResultSet rs1 = stmt1.executeQuery();
-                            if (rs1.next()) todayEvents = rs1.getInt(1);
-                            
-                            // This week's events
-                            PreparedStatement stmt2 = conn2.prepareStatement(
-                                "SELECT COUNT(*) FROM events WHERE user_id = ? AND event_date BETWEEN CURRENT_DATE AND DATEADD('DAY', 7, CURRENT_DATE) AND is_active = TRUE"
-                            );
-                            stmt2.setInt(1, user.getUserId());
-                            ResultSet rs2 = stmt2.executeQuery();
-                            if (rs2.next()) weekEvents = rs2.getInt(1);
-                            
-                            // Total events
-                            PreparedStatement stmt3 = conn2.prepareStatement(
-                                "SELECT COUNT(*) FROM events WHERE user_id = ? AND is_active = TRUE"
-                            );
-                            stmt3.setInt(1, user.getUserId());
-                            ResultSet rs3 = stmt3.executeQuery();
-                            if (rs3.next()) totalEvents = rs3.getInt(1);
-                        } catch (SQLException e) {
-                            // Error fetching stats: " + e.getMessage()
-                        } finally {
-                            if (conn2 != null) {
-                                try { conn2.close(); } catch (SQLException e) {}
-                            }
-                        }
-                    %>
-                    <div class="stat-item">
-                        <span class="stat-number"><%= todayEvents %></span>
-                        <span class="stat-label">Today</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-number"><%= weekEvents %></span>
-                        <span class="stat-label">This Week</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-number"><%= totalEvents %></span>
-                        <span class="stat-label">Total Events</span>
                     </div>
                 </div>
-            </div>
+                <span class="tile-cta">Open →</span>
+            </a>
 
-            <div class="dashboard-card">
-                <h3>Search Events</h3>
-                <form action="events.jsp" method="get" class="search-form">
-                    <div class="form-group">
-                        <input type="text" name="search" placeholder="<%= LanguageUtil.getText(lang, "dashboard.search_events") %>" class="form-control">
+            <!-- Tile 2: Create Reminder -->
+            <a class="tile tile-create" href="create-reminder.jsp">
+                <div class="tile-content">
+                    <div class="tile-header">
+                        <span class="tile-icon">➕</span>
+                        <h3>Create Reminder</h3>
                     </div>
-                    <div class="form-group">
-                        <select name="category" class="form-control">
-                            <option value="">All Categories</option>
-                            <%
-                                Connection conn3 = null;
-                                try {
-                                    conn3 = DatabaseUtil.getConnection();
-                                    PreparedStatement stmt = conn3.prepareStatement("SELECT category_id, category_name FROM categories ORDER BY category_name");
-                                    ResultSet rs = stmt.executeQuery();
-                                    while (rs.next()) {
-                            %>
-                                <option value="<%= rs.getInt("category_id") %>"><%= rs.getString("category_name") %></option>
-                            <%
-                                    }
-                                } catch (SQLException e) {
-                                    // Error fetching categories: " + e.getMessage()
-                                } finally {
-                                    if (conn3 != null) {
-                                        try { conn3.close(); } catch (SQLException e) {}
-                                    }
-                                }
-                            %>
-                        </select>
+                    <p class="tile-desc">Add a new meeting, exam, course, or activity with a reminder.</p>
+                </div>
+                <span class="tile-cta">Create →</span>
+            </a>
+
+            <!-- Tile 3: Upload Schedule -->
+            <a class="tile tile-upload" href="schedule-upload.jsp">
+                <div class="tile-content">
+                    <div class="tile-header">
+                        <span class="tile-icon">⬆️</span>
+                        <h3>Upload Schedule</h3>
                     </div>
-                    <button type="submit" class="btn btn-primary btn-small">Search</button>
-                </form>
-            </div>
+                    <p class="tile-desc">Import your course schedule from a CSV file in seconds.</p>
+                </div>
+                <span class="tile-cta">Upload →</span>
+            </a>
+
+            <!-- Tile 4: Colleges Info -->
+            <a class="tile tile-colleges" href="colleges-info.jsp">
+                <div class="tile-content">
+                    <div class="tile-header">
+                        <span class="tile-icon">🏫</span>
+                        <h3>Colleges Info</h3>
+                    </div>
+                    <p class="tile-desc">Browse colleges information and helpful links.</p>
+                </div>
+                <span class="tile-cta">Browse →</span>
+            </a>
         </div>
     </div>
 

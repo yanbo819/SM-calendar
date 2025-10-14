@@ -1,5 +1,16 @@
 package com.smartcalendar.servlets;
 
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Time;
+import java.sql.Types;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
 import com.smartcalendar.models.Event;
 import com.smartcalendar.models.User;
 import com.smartcalendar.utils.DatabaseUtil;
@@ -9,10 +20,6 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import java.io.IOException;
-import java.sql.*;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 
 /**
  * Servlet for creating events
@@ -57,7 +64,7 @@ public class CreateEventServlet extends HttpServlet {
         String durationStr = request.getParameter("duration");
         String location = request.getParameter("location");
         String notes = request.getParameter("notes");
-        String reminderStr = request.getParameter("reminderMinutes");
+    String reminderStr = request.getParameter("reminderMinutes");
         
         // Validate input
         String errorMessage = validateEventInput(title, eventDateStr, eventTimeStr);
@@ -95,8 +102,14 @@ public class CreateEventServlet extends HttpServlet {
                                        Integer.parseInt(durationStr) : 60);
                 event.setLocation(location != null ? location.trim() : null);
                 event.setNotes(notes != null ? notes.trim() : null);
-                event.setReminderMinutesBefore(reminderStr != null && !reminderStr.trim().isEmpty() ? 
-                                             Integer.parseInt(reminderStr) : 15);
+                // Clamp reminder to allowed set {5,15,30,60,1440}
+                int reminder = 15;
+                try { if (reminderStr != null && !reminderStr.trim().isEmpty()) reminder = Integer.parseInt(reminderStr.trim()); } catch (NumberFormatException ignored) {}
+                switch (reminder) {
+                    case 5: case 15: case 30: case 60: case 1440: break;
+                    default: reminder = 15;
+                }
+                event.setReminderMinutesBefore(reminder);
                 
                 // Save event
                 if (saveEvent(event)) {

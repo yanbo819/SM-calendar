@@ -31,6 +31,8 @@
     String location = (String) request.getAttribute("location");
     String notes = (String) request.getAttribute("notes");
     String reminderMinutes = (String) request.getAttribute("reminderMinutes");
+    String reminder2Val = (String) request.getAttribute("reminder2");
+    String reminder3Val = (String) request.getAttribute("reminder3");
 %>
 <!DOCTYPE html>
 <html lang="<%= lang %>" dir="<%= textDir %>">
@@ -104,60 +106,69 @@
                         <button type="button" class="btn btn-chip" data-type="Course">Course</button>
                         <button type="button" class="btn btn-chip" data-type="Exam">Exam</button>
                         <button type="button" class="btn btn-chip" data-type="Activity">Activity</button>
+                        <button type="button" class="btn btn-chip" data-type="Face ID">Face ID</button>
                         <button type="button" class="btn btn-chip" data-type="Others">Others</button>
                     </div>
                     <div class="hint">Pick a type to help categorize this reminder. You can change it later.</div>
                 </div>
 
-                <!-- Details: title & subject -->
+                <!-- Details: Subject, Location, Reminder before (1-3), Notes -->
                 <div class="section">
                     <h3>Details</h3>
                     <div class="form-grid cols-2">
                         <input type="text" id="title" name="title" required maxlength="255"
                                value="<%= title != null ? title : "" %>"
-                               placeholder="Subject / Title (e.g., Math Lecture)">
-                        <input type="text" id="subjectName" name="subjectName" maxlength="100"
-                               value="<%= subjectName != null ? subjectName : "" %>"
-                               placeholder="Subject (optional)">
+                               placeholder="Subject (required)">
+                        <input type="text" id="location" name="location" maxlength="255"
+                               value="<%= location != null ? location : "" %>"
+                               placeholder="Location (optional)">
                     </div>
-                    <input type="text" id="location" name="location" maxlength="255"
-                           value="<%= location != null ? location : "" %>"
-                           placeholder="Location (optional)">
+
+                    <div class="form-grid cols-2">
+                        <select id="reminder1" name="reminder1" class="form-control" required>
+                            <option value="">Reminder before (required)</option>
+                            <option value="5" <%= "5".equals(reminderMinutes) ? "selected" : "" %>>5 minutes</option>
+                            <option value="15" <%= reminderMinutes == null || "15".equals(reminderMinutes) ? "selected" : "" %>>15 minutes</option>
+                            <option value="30" <%= "30".equals(reminderMinutes) ? "selected" : "" %>>30 minutes</option>
+                            <option value="60" <%= "60".equals(reminderMinutes) ? "selected" : "" %>>1 hour</option>
+                            <option value="1440" <%= "1440".equals(reminderMinutes) ? "selected" : "" %>>1 day</option>
+                        </select>
+                        <select id="reminder2" name="reminder2" class="form-control">
+                            <option value="">+ Add another reminder</option>
+                            <option value="5" <%= "5".equals(reminder2Val) ? "selected" : "" %>>5 minutes</option>
+                            <option value="15" <%= "15".equals(reminder2Val) ? "selected" : "" %>>15 minutes</option>
+                            <option value="30" <%= "30".equals(reminder2Val) ? "selected" : "" %>>30 minutes</option>
+                            <option value="60" <%= "60".equals(reminder2Val) ? "selected" : "" %>>1 hour</option>
+                            <option value="1440" <%= "1440".equals(reminder2Val) ? "selected" : "" %>>1 day</option>
+                        </select>
+                    </div>
+                    <div class="form-grid cols-2">
+                        <select id="reminder3" name="reminder3" class="form-control">
+                            <option value="">+ Add third reminder</option>
+                            <option value="5" <%= "5".equals(reminder3Val) ? "selected" : "" %>>5 minutes</option>
+                            <option value="15" <%= "15".equals(reminder3Val) ? "selected" : "" %>>15 minutes</option>
+                            <option value="30" <%= "30".equals(reminder3Val) ? "selected" : "" %>>30 minutes</option>
+                            <option value="60" <%= "60".equals(reminder3Val) ? "selected" : "" %>>1 hour</option>
+                            <option value="1440" <%= "1440".equals(reminder3Val) ? "selected" : "" %>>1 day</option>
+                        </select>
+                        <textarea id="notes" name="notes" rows="3" maxlength="1000" placeholder="Notes (optional)"><%= notes != null ? notes : "" %></textarea>
+                    </div>
                 </div>
 
-                <!-- When: date, time, duration -->
+                <!-- When: date & time only -->
                 <div class="section">
                     <h3>When</h3>
-                    <div class="form-grid cols-2" style="grid-template-columns: repeat(3, 1fr);">
+                    <div class="form-grid cols-2">
                         <input type="date" id="eventDate" name="eventDate" required
                                value="<%= eventDate != null ? eventDate : "" %>">
                         <input type="time" id="eventTime" name="eventTime" required
                                value="<%= eventTime != null ? eventTime : "" %>">
-                        <select id="duration" name="duration" class="form-control">
-                            <option value=""> <%= LanguageUtil.getText(lang, "event.duration") %> </option>
-                            <option value="30" <%= "30".equals(duration) ? "selected" : "" %>>30 minutes</option>
-                            <option value="60" <%= duration == null || "60".equals(duration) ? "selected" : "" %>>1 hour</option>
-                            <option value="90" <%= "90".equals(duration) ? "selected" : "" %>>1.5 hours</option>
-                            <option value="120" <%= "120".equals(duration) ? "selected" : "" %>>2 hours</option>
-                        </select>
                     </div>
                 </div>
 
-                <!-- Reminder -->
-                <div class="section">
-                    <h3>Reminder</h3>
-                    <div class="form-grid cols-2">
-                        <select id="reminderMinutes" name="reminderMinutes" class="form-control" required>
-                            <option value="">Reminder</option>
-                            <option value="5" <%= "5".equals(reminderMinutes) ? "selected" : "" %>>5 minutes before</option>
-                            <option value="15" <%= reminderMinutes == null || "15".equals(reminderMinutes) ? "selected" : "" %>>15 minutes before</option>
-                            <option value="30" <%= "30".equals(reminderMinutes) ? "selected" : "" %>>30 minutes before</option>
-                            <option value="60" <%= "60".equals(reminderMinutes) ? "selected" : "" %>>1 hour before</option>
-                            <option value="1440" <%= "1440".equals(reminderMinutes) ? "selected" : "" %>>1 day before</option>
-                        </select>
-
-                        <!-- Hidden category chooser populated for mapping quick types -->
-                        <select id="categoryId" name="categoryId" class="form-control" style="display:none">
+                <!-- Hidden category chooser populated for mapping quick types -->
+                <div class="section" style="display:none">
+                    <select id="categoryId" name="categoryId" class="form-control">
                             <option value=""><%= LanguageUtil.getText(lang, "event.category") %></option>
                             <%
                                 Connection conn = null;
@@ -180,14 +191,11 @@
                                 }
                             %>
                         </select>
-                    </div>
-                    <div class="hint">You’ll get a notification before the event at the selected time.</div>
                 </div>
 
                 <!-- Extra -->
                 <div class="section">
                     <h3>Notes</h3>
-                    <textarea id="description" name="description" rows="3" maxlength="1000" placeholder="Description (optional)"><%= description != null ? description : "" %></textarea>
                     <textarea id="notes" name="notes" rows="3" maxlength="1000" placeholder="Notes (optional)"><%= notes != null ? notes : "" %></textarea>
                 </div>
 
@@ -247,6 +255,16 @@
                 const minutes = String(Math.ceil(now.getMinutes() / 15) * 15).padStart(2, '0');
                 eventTimeInput.value = hours + ':' + (minutes === '60' ? '00' : minutes);
             }
+        });
+
+        // Ensure first reminder also maps to legacy reminderMinutes for backend compatibility
+        document.querySelector('form.event-form').addEventListener('submit', function() {
+            const r1 = document.getElementById('reminder1');
+            let legacy = document.createElement('input');
+            legacy.type = 'hidden';
+            legacy.name = 'reminderMinutes';
+            legacy.value = r1 && r1.value ? r1.value : '';
+            this.appendChild(legacy);
         });
     </script>
 </body>

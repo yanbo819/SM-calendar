@@ -64,7 +64,10 @@ public class CreateEventServlet extends HttpServlet {
         String durationStr = request.getParameter("duration");
         String location = request.getParameter("location");
         String notes = request.getParameter("notes");
-    String reminderStr = request.getParameter("reminderMinutes");
+        String reminderStr = request.getParameter("reminderMinutes");
+        // additional optional reminders (up to 2 more)
+        String reminder2 = request.getParameter("reminder2");
+        String reminder3 = request.getParameter("reminder3");
         
         // Validate input
         String errorMessage = validateEventInput(title, eventDateStr, eventTimeStr);
@@ -112,7 +115,16 @@ public class CreateEventServlet extends HttpServlet {
                 event.setReminderMinutesBefore(reminder);
                 
                 // Save event
-                if (saveEvent(event)) {
+                int newEventId = saveEventAndReturnId(event);
+                if (newEventId > 0) {
+                    // Save extra reminders if provided and valid (dedupe against primary and each other)
+                    String primary = String.valueOf(reminder);
+                    if (reminder2 != null && !reminder2.equals(primary)) {
+                        insertAdditionalReminder(newEventId, reminder2);
+                    }
+                    if (reminder3 != null && !reminder3.equals(primary) && (reminder2 == null || !reminder3.equals(reminder2))) {
+                        insertAdditionalReminder(newEventId, reminder3);
+                    }
                     response.sendRedirect("dashboard.jsp?success=Event created successfully");
                     return;
                 } else {
@@ -141,7 +153,9 @@ public class CreateEventServlet extends HttpServlet {
         request.setAttribute("duration", durationStr);
         request.setAttribute("location", location);
         request.setAttribute("notes", notes);
-        request.setAttribute("reminderMinutes", reminderStr);
+    request.setAttribute("reminderMinutes", reminderStr);
+    request.setAttribute("reminder2", reminder2);
+    request.setAttribute("reminder3", reminder3);
         
         request.getRequestDispatcher("create-event.jsp").forward(request, response);
     }
@@ -208,28 +222,28 @@ public class CreateEventServlet extends HttpServlet {
     /**
      * Save event to database
      */
-    private boolean saveEvent(Event event) {
+    private int saveEventAndReturnId(Event event) {
         String sql = "INSERT INTO events (user_id, category_id, subject_id, title, description, " +
                     "event_date, event_time, duration_minutes, location, notes, reminder_minutes_before) " +
                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        
+
         try (Connection conn = DatabaseUtil.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            
+             PreparedStatement stmt = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
+
             stmt.setInt(1, event.getUserId());
-            
+
             if (event.getCategoryId() > 0) {
                 stmt.setInt(2, event.getCategoryId());
             } else {
                 stmt.setNull(2, Types.INTEGER);
             }
-            
+
             if (event.getSubjectId() > 0) {
                 stmt.setInt(3, event.getSubjectId());
             } else {
                 stmt.setNull(3, Types.INTEGER);
             }
-            
+
             stmt.setString(4, event.getTitle());
             stmt.setString(5, event.getDescription());
             stmt.setDate(6, event.getEventDate());
@@ -238,12 +252,40 @@ public class CreateEventServlet extends HttpServlet {
             stmt.setString(9, event.getLocation());
             stmt.setString(10, event.getNotes());
             stmt.setInt(11, event.getReminderMinutesBefore());
-            
-            return stmt.executeUpdate() > 0;
-            
+
+            int affected = stmt.executeUpdate();
+            if (affected > 0) {
+                ResultSet keys = stmt.getGeneratedKeys();
+                if (keys.next()) {
+                    return keys.getInt(1);
+                }
+            }
         } catch (SQLException e) {
             System.err.println("Error saving event: " + e.getMessage());
-            return false;
+        }
+        return -1;
+    }
+
+    private void insertAdditionalReminder(int eventId, String reminder) {
+        if (reminder == null || reminder.trim().isEmpty()) return;
+        int minutes;
+        try {
+            minutes = Integer.parseInt(reminder.trim());
+        } catch (NumberFormatException e) {
+            return;
+        }
+        switch (minutes) {
+            case 5: case 15: case 30: case 60: case 1440: break;
+            default: return;
+        }
+        String sql = "INSERT INTO event_reminders (event_id, minutes_before) VALUES (?, ?)";
+        try (Connection conn = DatabaseUtil.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, eventId);
+            stmt.setInt(2, minutes);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("Error saving additional reminder: " + e.getMessage());
         }
     }
 }

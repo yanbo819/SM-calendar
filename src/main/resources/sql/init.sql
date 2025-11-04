@@ -63,6 +63,15 @@ CREATE TABLE IF NOT EXISTS notifications (
     FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
 );
 
+-- Multiple reminders per event (optional, complements events.reminder_minutes_before)
+CREATE TABLE IF NOT EXISTS event_reminders (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    event_id INT NOT NULL,
+    minutes_before INT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (event_id) REFERENCES events(event_id) ON DELETE CASCADE
+);
+
 CREATE TABLE IF NOT EXISTS language_resources (
     id INT AUTO_INCREMENT PRIMARY KEY,
     language_code VARCHAR(10) NOT NULL,

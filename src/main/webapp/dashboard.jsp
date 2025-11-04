@@ -163,16 +163,16 @@
                 <span class="tile-cta">Upload →</span>
             </a>
 
-            <!-- Tile 4: Colleges Info -->
-            <a class="tile tile-colleges" href="colleges-info.jsp">
+            <!-- Tile 4: Important Locations -->
+            <a class="tile tile-colleges" href="important-locations.jsp">
                 <div class="tile-content">
                     <div class="tile-header">
                         <span class="tile-icon">🏫</span>
-                        <h3>Colleges Info</h3>
+                        <h3>Important Locations</h3>
                     </div>
-                    <p class="tile-desc">Browse colleges information and helpful links.</p>
+                    <p class="tile-desc">Find colleges, hospitals, police & immigration, schools, and restaurants.</p>
                 </div>
-                <span class="tile-cta">Browse →</span>
+                <span class="tile-cta">Open →</span>
             </a>
         </div>
     </div>

@@ -117,10 +117,8 @@
         <url-pattern>/api/upcoming-reminders</url-pattern>
     </servlet-mapping>
 
-    <!-- Welcome File List -->
+    <!-- Welcome File List: default to login page -->
     <welcome-file-list>
-        <welcome-file>index.html</welcome-file>
-        <welcome-file>dashboard.jsp</welcome-file>
         <welcome-file>login.jsp</welcome-file>
     </welcome-file-list>
 

@@ -80,9 +80,10 @@
                 <span class="user-welcome">
                     <%= LanguageUtil.getText(lang, "dashboard.welcome") %>, <%= user.getFullName() %>!
                 </span>
-                <a href="logout" class="btn btn-outline">
-                    <%= LanguageUtil.getText(lang, "nav.logout") %>
-                </a>
+                    <a id="faceIdBtn" href="face-id.jsp" class="btn btn-outline" style="display:none">Face ID</a>
+                    <a href="logout" class="btn btn-outline">
+                        <%= LanguageUtil.getText(lang, "nav.logout") %>
+                    </a>
             </div>
         </div>
     </nav>
@@ -174,6 +175,17 @@
                 </div>
                 <span class="tile-cta">Open →</span>
             </a>
+            <!-- Tile 5: Face Recognition (time-gated) -->
+            <button id="faceRecTile" class="tile tile-face" type="button" title="Face Recognition">
+                <div class="tile-content">
+                    <div class="tile-header">
+                        <span class="tile-icon">🧑‍🦰</span>
+                        <h3>Face Recognition</h3>
+                    </div>
+                    <p class="tile-desc">Use Face Recognition (Mon & Wed, 08:00–12:00 and 14:00–17:00).</p>
+                </div>
+                <span class="tile-cta">Scan →</span>
+            </button>
         </div>
     </div>
 
@@ -183,6 +195,116 @@
             if ('Notification' in window && Notification.permission === 'default') {
                 Notification.requestPermission();
             }
+
+            // Face Recognition time gating (Mon & Wed 08:00–12:00 and 14:00–17:00)
+            function withinAllowedWindow(d) {
+                const day = d.getDay(); // 0=Sun,1=Mon,...6=Sat
+                if (!(day === 1 || day === 3)) return false; // only Monday (1) and Wednesday (3)
+                const minutes = d.getHours() * 60 + d.getMinutes();
+                const inFirst = minutes >= 8*60 && minutes < 12*60;   // 08:00 - 11:59
+                const inSecond = minutes >= 14*60 && minutes < 17*60; // 14:00 - 16:59
+                return inFirst || inSecond;
+            }
+
+            // Show/hide nav face button if within window
+            const faceBtn = document.getElementById('faceIdBtn');
+            const now = new Date();
+            if (faceBtn && withinAllowedWindow(now)) {
+                faceBtn.style.display = 'inline-block';
+            }
+
+            // Face recognition tile handler
+            const faceTile = document.getElementById('faceRecTile');
+            function showTimeNotice() {
+                alert('Face Recognition is only available on Monday and Wednesday between 08:00–12:00 and 14:00–17:00.');
+            }
+
+            // Create a simple modal for camera preview and scan
+            const modalHtml = `
+                <div id="faceModal" class="face-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);align-items:center;justify-content:center;z-index:9999;">
+                    <div class="face-modal-panel" style="background:#fff;padding:16px;border-radius:8px;max-width:480px;width:90%;box-shadow:0 6px 20px rgba(0,0,0,0.3);">
+                        <h3 style="margin-top:0">Face Recognition</h3>
+                        <p id="faceStatus">Requesting camera and location...</p>
+                        <video id="faceVideo" autoplay playsinline style="width:100%;border-radius:6px;background:#000"></video>
+                        <canvas id="faceCanvas" style="display:none"></canvas>
+                        <div style="margin-top:8px;display:flex;gap:8px;justify-content:flex-end;">
+                            <button id="faceCancel" class="btn">Cancel</button>
+                            <button id="faceScan" class="btn btn-primary">Scan Face</button>
+                        </div>
+                    </div>
+                </div>`;
+
+            document.body.insertAdjacentHTML('beforeend', modalHtml);
+            const faceModal = document.getElementById('faceModal');
+            const faceVideo = document.getElementById('faceVideo');
+            const faceCanvas = document.getElementById('faceCanvas');
+            const faceStatus = document.getElementById('faceStatus');
+            const faceCancel = document.getElementById('faceCancel');
+            const faceScan = document.getElementById('faceScan');
+            let mediaStream = null;
+
+            function stopStream() {
+                if (mediaStream) {
+                    mediaStream.getTracks().forEach(t => t.stop());
+                    mediaStream = null;
+                }
+                if (faceVideo) faceVideo.srcObject = null;
+            }
+
+            faceCancel.addEventListener('click', function(){
+                stopStream();
+                faceModal.style.display = 'none';
+            });
+
+            faceTile.addEventListener('click', async function(e){
+                const now = new Date();
+                if (!withinAllowedWindow(now)) {
+                    showTimeNotice();
+                    return;
+                }
+
+                // Try to get geolocation first (best-effort)
+                let coords = null;
+                if (navigator.geolocation) {
+                    try {
+                        coords = await new Promise((resolve, reject) => {
+                            navigator.geolocation.getCurrentPosition(pos => resolve(pos.coords), err => resolve(null), { enableHighAccuracy: true, timeout: 10000 });
+                        });
+                    } catch(e) { coords = null; }
+                }
+
+                // Request camera
+                try {
+                    mediaStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' }, audio: false });
+                    faceVideo.srcObject = mediaStream;
+                    faceStatus.textContent = 'Position your face in front of the camera and click Scan Face.';
+                    faceModal.style.display = 'flex';
+                } catch (err) {
+                    alert('Unable to access camera. Please allow camera permission and try again.');
+                    return;
+                }
+
+                faceScan.onclick = async function(){
+                    // capture frame
+                    const w = faceVideo.videoWidth || 320;
+                    const h = faceVideo.videoHeight || 240;
+                    faceCanvas.width = w; faceCanvas.height = h;
+                    const ctx = faceCanvas.getContext('2d');
+                    ctx.drawImage(faceVideo, 0, 0, w, h);
+                    const dataUrl = faceCanvas.toDataURL('image/png');
+
+                    // Stop camera
+                    stopStream();
+                    faceModal.style.display = 'none';
+
+                    // Show success to user. You can POST dataUrl and coords to your verification endpoint if you have one.
+                    let msg = 'Scan complete.';
+                    if (coords) msg += ` Location: ${coords.latitude.toFixed(5)}, ${coords.longitude.toFixed(5)}`;
+                    alert(msg);
+                    // Example: POST to server endpoint (disabled by default). Uncomment and change URL if needed.
+                    // fetch('/smart-calendar/face-recognize', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ image: dataUrl, lat: coords?.latitude, lon: coords?.longitude }) });
+                };
+            });
         });
     </script>
 </body>

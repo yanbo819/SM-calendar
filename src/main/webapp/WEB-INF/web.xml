@@ -117,6 +117,16 @@
         <url-pattern>/api/upcoming-reminders</url-pattern>
     </servlet-mapping>
 
+    <!-- WebAuthn Demo Servlet -->
+    <servlet>
+        <servlet-name>WebAuthnServlet</servlet-name>
+        <servlet-class>com.smartcalendar.servlets.WebAuthnServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>WebAuthnServlet</servlet-name>
+        <url-pattern>/webauthn/*</url-pattern>
+    </servlet-mapping>
+
     <!-- Welcome File List: default to login page -->
     <welcome-file-list>
         <welcome-file>login.jsp</welcome-file>

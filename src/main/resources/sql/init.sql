@@ -72,6 +72,27 @@ CREATE TABLE IF NOT EXISTS event_reminders (
     FOREIGN KEY (event_id) REFERENCES events(event_id) ON DELETE CASCADE
 );
 
+-- Simple WebAuthn demo storage (credential IDs only, demo purposes)
+CREATE TABLE IF NOT EXISTS webauthn_credentials (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    credential_id VARCHAR(255) NOT NULL UNIQUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
+);
+
+-- Face ID attempt audit log (captures location + success for register/verify actions)
+CREATE TABLE IF NOT EXISTS faceid_attempts (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    action VARCHAR(20) NOT NULL, -- 'register' or 'verify'
+    latitude DOUBLE,
+    longitude DOUBLE,
+    success BOOLEAN,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
+);
+
 CREATE TABLE IF NOT EXISTS language_resources (
     id INT AUTO_INCREMENT PRIMARY KEY,
     language_code VARCHAR(10) NOT NULL,

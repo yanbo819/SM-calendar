@@ -7,11 +7,15 @@ CREATE TABLE IF NOT EXISTS users (
     phone_number VARCHAR(20),
     full_name VARCHAR(100) NOT NULL,
     password_hash VARCHAR(255) NOT NULL,
+    role VARCHAR(20) DEFAULT 'user',
     preferred_language VARCHAR(10) DEFAULT 'en',
     is_active BOOLEAN DEFAULT TRUE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+-- Backfill role column if upgrading an existing database
+ALTER TABLE users ADD COLUMN IF NOT EXISTS role VARCHAR(20) DEFAULT 'user';
 
 CREATE TABLE IF NOT EXISTS categories (
     category_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -93,6 +97,28 @@ CREATE TABLE IF NOT EXISTS faceid_attempts (
     FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
 );
 
+-- Configurable Face Recognition time windows (admin editable)
+CREATE TABLE IF NOT EXISTS face_config (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    day_of_week INT NOT NULL, -- 1=Mon .. 7=Sun
+    start_time TIME NOT NULL,
+    end_time TIME NOT NULL,
+    is_active BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Campus & local locations (gates, hospitals, immigration, etc.)
+CREATE TABLE IF NOT EXISTS locations (
+    location_id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(150) NOT NULL,
+    category VARCHAR(40) NOT NULL, -- gate, hospital, immigration, other
+    description TEXT,
+    map_url VARCHAR(500),
+    is_active BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 CREATE TABLE IF NOT EXISTS language_resources (
     id INT AUTO_INCREMENT PRIMARY KEY,
     language_code VARCHAR(10) NOT NULL,
@@ -137,5 +163,34 @@ VALUES
 ('Work', '#dc3545'),
 ('Personal', '#28a745'),
 ('Education', '#007bff');
+
+-- Seed Face Recognition windows (Mon & Wed 08:00–12:00 and 14:00–17:00)
+MERGE INTO face_config (day_of_week, start_time, end_time)
+KEY(day_of_week, start_time, end_time)
+VALUES
+(1, TIME '08:00:00', TIME '12:00:00'),
+(1, TIME '14:00:00', TIME '17:00:00'),
+(3, TIME '08:00:00', TIME '12:00:00'),
+(3, TIME '14:00:00', TIME '17:00:00');
+
+-- Seed locations (gates)
+MERGE INTO locations (name, category, description, map_url)
+KEY(name)
+VALUES
+('Zhejiang Normal University - Southeast Gate', 'gate', '25 meters northwest of the intersection of the auxiliary road of North Second Ring Road West and Shida Street in Wucheng District, Jinhua City, Zhejiang Province', 'https://surl.amap.com/23w6dMgN1y03n'),
+('Zhejiang Normal University - North Gate', 'gate', '74 meters west of the intersection of Beimen Street and Wayun Road, Wucheng District, Jinhua City, Zhejiang Province.', 'https://surl.amap.com/299RHNjj3feF');
+
+-- Seed locations (hospitals)
+MERGE INTO locations (name, category, description, map_url)
+KEY(name)
+VALUES
+('Jinhua Central Hospital', 'hospital', 'No. 71 Mingyue Street, Wucheng District, Jinhua City, Zhejiang Province', 'https://map.wap.qq.com/online/h5-map-share/line.html?type=drive&cond=0&startLat=29.309060&startLng=120.089318&endLat=29.105549&endLng=119.659163&key=%E6%88%91%E7%9A%84%E4%BD%8D%E7%BD%AE%7C%7C%E9%87%91%E5%8D%8E%E5%B8%82%E4%B8%AD%E5%BF%83%E5%8C%BB%E9%99%A2'),
+('Jinhua International Travel Health Care Center', 'hospital', 'East Auxiliary Building, No. 1000 Songlian Road, Jindong District, Jinhua City, Zhejiang Province', 'https://map.wap.qq.com/online/h5-map-share/line.html?type=drive&cond=0&startLat=29.309053&startLng=120.089323&endLat=29.094057&endLng=119.692297&key=%E6%88%91%E7%9A%84%E4%BD%8D%E7%BD%AE%7C%7C%E9%87%91%E5%8D%8E%E5%9B%BD%E9%99%85%E6%97%85%E8%A1%8C%E5%8D%AB%E7%94%9F%E4%BF%9D%E5%81%A5%E4%B8%AD%E5%BF%83');
+
+-- Seed locations (immigration)
+MERGE INTO locations (name, category, description, map_url)
+KEY(name)
+VALUES
+('Jinhua Immigration', 'immigration', 'No. 1055 Bayi North Street, Wucheng District, Jinhua City, Zhejiang Province (50 meters to the left of the main gate of Jinhua Municipal Public Security Bureau)', 'https://map.wap.qq.com/online/h5-map-share/line.html?type=drive&cond=0&startLat=29.309043&startLng=120.089337&endLat=29.117105&endLng=119.653716&key=%E6%88%91%E7%9A%84%E4%BD%8D%E7%BD%AE%7C%7C%E9%87%91%E5%8D%8E%E5%B8%82%E5%85%AC%E5%AE%89%E5%B1%80%E5%87%BA%E5%85%A5%E5%A2%83%E7%AE%A1%E7%90%86%E5%B1%80');
 
 -- (No sample events inserted to avoid mismatched columns/user references)

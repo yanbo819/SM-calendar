@@ -45,7 +45,8 @@ public class WebAuthnServlet extends HttpServlet {
                 byte[] bytes = new byte[32];
                 RANDOM.nextBytes(bytes);
                 String challenge = base64Url(bytes);
-                session.setAttribute("webauthn_challenge", challenge);
+                HttpSession s = req.getSession(true);
+                s.setAttribute("webauthn_challenge", challenge);
                 String rpId = req.getServerName();
                 out.write("{\"challenge\":\"" + challenge + "\",\"rpId\":\"" + rpId + "\"}");
                 break;

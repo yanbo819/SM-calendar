@@ -20,6 +20,7 @@ import com.smartcalendar.utils.PasswordUtil;
 /**
  * Servlet for handling user registration
  */
+@jakarta.servlet.annotation.WebServlet(urlPatterns = {"/register"})
 public class RegisterServlet extends HttpServlet {
     private static final Pattern EMAIL_PATTERN = 
         Pattern.compile("^[A-Za-z0-9+_.-]+@([A-Za-z0-9.-]+\\.[A-Za-z]{2,})$");
@@ -192,8 +193,8 @@ public class RegisterServlet extends HttpServlet {
      */
     private User createUser(String fullName, String username, String email, String mobileNumber, 
                           String password, String preferredLanguage) {
-        String sql = "INSERT INTO users (username, email, phone_number, full_name, password_hash, preferred_language) " +
-                    "VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO users (username, email, phone_number, full_name, password_hash, role, preferred_language) " +
+                    "VALUES (?, ?, ?, ?, ?, 'user', ?)";
         
         try (Connection conn = DatabaseUtil.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
@@ -215,6 +216,8 @@ public class RegisterServlet extends HttpServlet {
                     User user = new User(email, fullName, hashedPassword, preferredLanguage);
                     user.setUserId(generatedKeys.getInt(1));
                     user.setPhoneNumber(mobileNumber);
+                    user.setUsername(username);
+                    user.setRole("user");
                     return user;
                 }
             }

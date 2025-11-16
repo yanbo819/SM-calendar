@@ -55,12 +55,12 @@
         <form method="post" action="upload-schedule" enctype="multipart/form-data" class="event-form card">
             <div class="form-row">
                 <div class="form-group full-width">
-                    <input type="file" name="file" accept=".csv" required />
+                    <input type="file" name="file" accept=".csv,.ics,.pdf" required />
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group full-width">
-                    <p class="hint">CSV columns: title, category, subject, date (YYYY-MM-DD), time (HH:mm), durationMinutes, location, reminderMinutes</p>
+                    <p class="hint">Upload either: CSV (title, category, subject, date YYYY-MM-DD, time HH:mm, durationMinutes, location, reminderMinutes), iCalendar .ics (from the Timetable-to-Calendar tool), or a PDF timetable (we'll auto-extract and import).</p>
                 </div>
             </div>
             <div class="form-actions" style="display:flex;gap:10px;justify-content:flex-end;border-top:1px dashed #e5e7eb;padding-top:16px;margin-top:8px;">

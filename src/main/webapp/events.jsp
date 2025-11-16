@@ -13,27 +13,29 @@
         response.sendRedirect("login.jsp");
         return;
     }
-    
+    boolean isAdmin = user.getEmail() != null && user.getEmail().equals("admin@smartcalendar.com");
+    // UI locale defaults
     String lang = "en";
     String textDir = "ltr";
-    
-    // Get search parameters
+    // Query params
     String searchQuery = request.getParameter("search");
     String categoryFilter = request.getParameter("category");
     String dateFrom = request.getParameter("dateFrom");
     String dateTo = request.getParameter("dateTo");
     String sortBy = request.getParameter("sortBy");
-    if (sortBy == null) sortBy = "date_asc";
-    
-    // Build SQL query with filters
     StringBuilder sql = new StringBuilder();
-    sql.append("SELECT e.event_id, e.title, e.description, e.event_date, e.event_time, ");
+    sql.append("SELECT e.event_id, e.user_id, e.title, e.description, e.event_date, e.event_time, ");
     sql.append("e.duration_minutes, e.location, e.notes, e.reminder_minutes_before, ");
     sql.append("c.category_name, c.category_color, s.subject_name ");
     sql.append("FROM events e ");
     sql.append("LEFT JOIN categories c ON e.category_id = c.category_id ");
     sql.append("LEFT JOIN subjects s ON e.subject_id = s.subject_id ");
-    sql.append("WHERE e.user_id = ? AND e.is_active = TRUE ");
+    // Build WHERE: users see their own + admin; admin sees ONLY admin-created events
+    if (isAdmin) {
+        sql.append("WHERE e.is_active = TRUE AND e.user_id = ? ");
+    } else {
+        sql.append("WHERE e.is_active = TRUE AND (e.user_id = ? OR e.user_id IN (SELECT user_id FROM users WHERE email = 'admin@smartcalendar.com')) ");
+    }
     
     List<Object> parameters = new ArrayList<Object>();
     parameters.add(user.getUserId());
@@ -101,6 +103,7 @@
         while (rs.next()) {
             Event event = new Event();
             event.setEventId(rs.getInt("event_id"));
+            event.setUserId(rs.getInt("user_id"));
             event.setTitle(rs.getString("title"));
             event.setDescription(rs.getString("description"));
             event.setEventDate(rs.getDate("event_date"));
@@ -318,13 +321,17 @@
                             </div>
                             
                             <div class="event-actions">
-                                <a href="edit-event.jsp?id=<%= event.getEventId() %>" class="btn btn-small btn-outline">
-                                    Edit
-                                </a>
-                                <form method="post" action="delete-event" style="display:inline" onsubmit="return confirm('Are you sure you want to delete this event?')">
-                                    <input type="hidden" name="id" value="<%= event.getEventId() %>">
-                                    <button type="submit" class="btn btn-small btn-danger">Delete</button>
-                                </form>
+                                <% if (event.getUserId() == user.getUserId()) { %>
+                                    <a href="edit-event.jsp?id=<%= event.getEventId() %>" class="btn btn-small btn-outline">
+                                        Edit
+                                    </a>
+                                    <form method="post" action="delete-event" style="display:inline" onsubmit="return confirm('Are you sure you want to delete this event?')">
+                                        <input type="hidden" name="id" value="<%= event.getEventId() %>">
+                                        <button type="submit" class="btn btn-small btn-danger">Delete</button>
+                                    </form>
+                                <% } else { %>
+                                    <span class="locked-tag" style="font-size:.75rem;color:#6b7280;display:inline-flex;align-items:center;gap:4px;">🔒 Admin</span>
+                                <% } %>
                             </div>
                         </div>
                 

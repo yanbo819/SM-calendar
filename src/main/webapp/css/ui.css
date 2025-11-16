@@ -1,0 +1,6 @@
+/* UI utility classes for consistent buttons and toolbars */
+.btn-sm{font-size:.75rem;padding:4px 8px;line-height:1.2}
+.btn-danger{color:#b91c1c;border:1px solid #b91c1c;background:transparent}
+.btn-danger:hover{background:#fee2e2}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.badge{display:inline-block;padding:2px 8px;border-radius:999px;font-size:.8rem;background:#eef2ff;color:#3730a3;border:1px solid #c7d2fe}

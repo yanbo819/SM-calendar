@@ -1,6 +1,7 @@
 package com.smartcalendar.servlets;
 
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -10,6 +11,7 @@ import java.io.IOException;
 /**
  * Servlet for handling user logout
  */
+@WebServlet(urlPatterns = {"/logout"})
 public class LogoutServlet extends HttpServlet {
     
     @Override
@@ -37,6 +39,6 @@ public class LogoutServlet extends HttpServlet {
         }
         
         // Redirect to login page
-        response.sendRedirect("login.jsp");
+        response.sendRedirect(request.getContextPath() + "/login.jsp");
     }
 }

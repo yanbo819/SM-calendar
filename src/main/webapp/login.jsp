@@ -57,8 +57,15 @@
             </div>
             <% } %>
 
+            <!-- Portal Toggle -->
+            <div class="form-group" style="display:flex;gap:8px;justify-content:center;margin-bottom:12px;">
+                <button type="button" id="userPortalBtn" class="login-btn" style="inline-size:50%;background:var(--gray-100);color:var(--gray-700);" onclick="setPortal('user')">User Login</button>
+                <button type="button" id="adminPortalBtn" class="login-btn" style="inline-size:50%;background:linear-gradient(135deg, #9ca3af, #6b7280);" onclick="setPortal('admin')">Admin Login</button>
+            </div>
+
             <!-- Login Form -->
             <form method="post" action="login" class="modern-auth-form">
+                <input type="hidden" id="portalField" name="portal" value="<%= request.getAttribute("portal") != null ? (String)request.getAttribute("portal") : (request.getParameter("portal") != null ? request.getParameter("portal") : "user") %>">
                 <div class="form-group">
                     <div class="input-container">
                         <svg class="input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -88,8 +95,8 @@
                     </div>
                 </div>
 
-                <button type="submit" class="login-btn">
-                    <span>Sign In</span>
+                <button type="submit" class="login-btn" id="submitBtn">
+                    <span id="submitText">Sign In</span>
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M9 18l6-6-6-6"></path>
                     </svg>
@@ -99,7 +106,7 @@
             <!-- Auth Links -->
             <div class="auth-links">
                 <div class="link-row">
-                    <a href="register.jsp" class="auth-link register-link">
+                    <a href="register.jsp" class="auth-link register-link" id="registerLink">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
                             <circle cx="9" cy="7" r="4"></circle>
@@ -126,7 +133,37 @@
     </div>
 
     <script>
-        
+        // Portal toggle logic
+        const portalField = document.getElementById('portalField');
+        const userPortalBtn = document.getElementById('userPortalBtn');
+        const adminPortalBtn = document.getElementById('adminPortalBtn');
+        const registerLink = document.getElementById('registerLink');
+        const submitText = document.getElementById('submitText');
+
+        function setPortal(p) {
+            portalField.value = p;
+            if (p === 'admin') {
+                adminPortalBtn.style.background = 'linear-gradient(135deg, #6366f1, #5855eb)';
+                adminPortalBtn.style.color = '#fff';
+                userPortalBtn.style.background = 'var(--gray-100)';
+                userPortalBtn.style.color = 'var(--gray-700)';
+                if (registerLink) registerLink.style.display = 'none';
+                submitText.textContent = 'Sign In (Admin)';
+            } else {
+                userPortalBtn.style.background = 'linear-gradient(135deg, var(--primary-color), var(--primary-hover))';
+                userPortalBtn.style.color = '#fff';
+                adminPortalBtn.style.background = 'var(--gray-100)';
+                adminPortalBtn.style.color = 'var(--gray-700)';
+                if (registerLink) registerLink.style.display = '';
+                submitText.textContent = 'Sign In';
+            }
+        }
+
+        // Initialize portal from server state or default
+        (function(){
+            const initPortal = portalField && portalField.value ? portalField.value : 'user';
+            setPortal(initPortal);
+        })();
         function togglePasswordVisibility() {
             const passwordInput = document.getElementById('password');
             const eyeIcon = document.getElementById('eyeIcon');
@@ -146,7 +183,7 @@
             }
         }
 
-        // Demo credentials auto-fill (for testing)
+        // Demo credentials auto-fill (optional)
         
     </script>
 </body>

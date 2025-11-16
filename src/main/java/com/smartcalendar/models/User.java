@@ -7,10 +7,12 @@ import java.sql.Timestamp;
  */
 public class User {
     private int userId;
+    private String username;
     private String email;
     private String phoneNumber;
     private String fullName;
     private String passwordHash;
+    private String role; // 'user' or 'admin'
     private String preferredLanguage;
     private Timestamp createdAt;
     private Timestamp updatedAt;
@@ -34,6 +36,14 @@ public class User {
 
     public void setUserId(int userId) {
         this.userId = userId;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getEmail() {
@@ -66,6 +76,14 @@ public class User {
 
     public void setPasswordHash(String passwordHash) {
         this.passwordHash = passwordHash;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public String getPreferredLanguage() {
@@ -104,8 +122,10 @@ public class User {
     public String toString() {
         return "User{" +
                 "userId=" + userId +
+                ", username='" + username + '\'' +
                 ", email='" + email + '\'' +
                 ", fullName='" + fullName + '\'' +
+                ", role='" + role + '\'' +
                 ", preferredLanguage='" + preferredLanguage + '\'' +
                 ", isActive=" + isActive +
                 '}';

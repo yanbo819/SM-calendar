@@ -71,7 +71,7 @@ public class UpcomingRemindersServlet extends HttpServlet {
             }
             
         } catch (Exception e) {
-            e.printStackTrace();
+            System.err.println("[UpcomingReminders] Failed to fetch reminders: " + e.getMessage());
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             response.getWriter().write("{\"error\":\"Database error\"}");
         }

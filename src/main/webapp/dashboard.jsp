@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="com.smartcalendar.models.User" %>
 <%@ page import="com.smartcalendar.models.Event" %>
+<%@ page import="com.smartcalendar.models.FaceConfig" %>
+<%@ page import="com.smartcalendar.dao.FaceConfigDao" %>
 <%@ page import="com.smartcalendar.utils.LanguageUtil" %>
 <%@ page import="com.smartcalendar.utils.DatabaseUtil" %>
 <%@ page import="java.sql.*" %>
@@ -17,26 +19,29 @@
     String lang = "en";
     String textDir = "ltr";
     
-    // Get upcoming events for dashboard preview
+    // Determine admin role using roles column
+    boolean isAdmin = user.getRole() != null && user.getRole().equalsIgnoreCase("admin");
+    // Get upcoming events for dashboard preview (include admin-published events)
     List<Event> upcomingEvents = new ArrayList<Event>();
     Connection conn = null;
     try {
         conn = DatabaseUtil.getConnection();
-        String sql = "SELECT e.event_id, e.title, e.event_date, e.event_time, e.location, " +
-                    "c.category_name, c.category_color, s.subject_name " +
-                    "FROM events e " +
-                    "LEFT JOIN categories c ON e.category_id = c.category_id " +
-                    "LEFT JOIN subjects s ON e.subject_id = s.subject_id " +
-                    "WHERE e.user_id = ? AND e.event_date >= CURRENT_DATE AND e.is_active = TRUE " +
-                    "ORDER BY e.event_date ASC, e.event_time ASC LIMIT 5";
+    String sql = "SELECT e.event_id, e.user_id, e.title, e.event_date, e.event_time, e.location, " +
+            "c.category_name, c.category_color, s.subject_name " +
+            "FROM events e " +
+            "LEFT JOIN categories c ON e.category_id = c.category_id " +
+            "LEFT JOIN subjects s ON e.subject_id = s.subject_id " +
+        "WHERE e.event_date >= CURRENT_DATE AND e.is_active = TRUE AND (e.user_id = ? OR e.user_id IN (SELECT user_id FROM users WHERE role='admin')) " +
+            "ORDER BY e.event_date ASC, e.event_time ASC LIMIT 5";
         
         PreparedStatement stmt = conn.prepareStatement(sql);
-        stmt.setInt(1, user.getUserId());
+            stmt.setInt(1, user.getUserId());
         ResultSet rs = stmt.executeQuery();
         
         while (rs.next()) {
             Event event = new Event();
             event.setEventId(rs.getInt("event_id"));
+            event.setUserId(rs.getInt("user_id"));
             event.setTitle(rs.getString("title"));
             event.setEventDate(rs.getDate("event_date"));
             event.setEventTime(rs.getTime("event_time"));
@@ -56,6 +61,20 @@
     
     SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy");
     SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
+
+    // Build Face Recognition windows JSON for client-side gating
+    StringBuilder faceWinJson = new StringBuilder("[");
+    try {
+        java.util.List<FaceConfig> fws = FaceConfigDao.getActiveWindows();
+        for (int i=0;i<fws.size();i++) {
+            FaceConfig w = fws.get(i);
+            faceWinJson.append("{\"day\":").append(w.getDayOfWeek())
+                       .append(",\"start\":\"").append(w.getStartTime())
+                       .append("\",\"end\":\"").append(w.getEndTime()).append("\"}");
+            if (i < fws.size()-1) faceWinJson.append(",");
+        }
+    } catch (Exception ignore) { }
+    faceWinJson.append("]");
 %>
 <!DOCTYPE html>
 <html lang="<%= lang %>" dir="<%= textDir %>">
@@ -80,6 +99,15 @@
                 <span class="user-welcome">
                     <%= LanguageUtil.getText(lang, "dashboard.welcome") %>, <%= user.getFullName() %>!
                 </span>
+                <% if (isAdmin) { %>
+                    <a href="admin-event.jsp" class="btn btn-outline">Admin Publish</a>
+                    <a href="admin-locations" class="btn btn-outline">Manage Locations</a>
+                    <a href="admin-locations?category=gate" class="btn btn-outline">Colleges/Gates</a>
+                    <a href="admin-locations?category=hospital" class="btn btn-outline">Hospitals</a>
+                    <a href="admin-locations?category=immigration" class="btn btn-outline">Police &amp; Immigration</a>
+                    <a href="admin-face-config" class="btn btn-outline">Face ID Windows</a>
+                    <a href="admin-users" class="btn btn-outline">Manage Users</a>
+                <% } %>
                     <a id="faceIdBtn" href="face-id.jsp" class="btn btn-outline" style="display:none">Face ID</a>
                     <a href="logout" class="btn btn-outline">
                         <%= LanguageUtil.getText(lang, "nav.logout") %>
@@ -89,7 +117,53 @@
     </nav>
 
     <div class="dashboard-container">
+        <%-- Show unsent notifications for this user --%>
+        <%
+            List<Integer> notifIds = new ArrayList<Integer>();
+            List<String> notifMsgs = new ArrayList<String>();
+            Connection nConn = null;
+            try {
+                nConn = DatabaseUtil.getConnection();
+                PreparedStatement nSel = nConn.prepareStatement("SELECT notification_id, message FROM notifications WHERE user_id = ? AND is_sent = FALSE ORDER BY notification_time DESC LIMIT 5");
+                nSel.setInt(1, user.getUserId());
+                ResultSet nRs = nSel.executeQuery();
+                while (nRs.next()) { notifIds.add(nRs.getInt(1)); notifMsgs.add(nRs.getString(2)); }
+                if (!notifIds.isEmpty()) {
+        %>
+    <div class="tile tile-notify" style="background:#fff3cd;border:1px solid #ffeeba;color:#856404;margin-block-end:12px;border-radius:8px;padding:12px;">
+            <strong>Notifications</strong>
+            <ul style="margin:6px 0 0 18px;">
+                <% for (String m : notifMsgs) { %>
+                    <li><%= m %></li>
+                <% } %>
+            </ul>
+        </div>
+        <%
+                    // mark as sent
+                    StringBuilder inClause = new StringBuilder();
+                    for (int i=0;i<notifIds.size();i++) { if (i>0) inClause.append(","); inClause.append("?"); }
+                    PreparedStatement nUpd = nConn.prepareStatement("UPDATE notifications SET is_sent = TRUE WHERE notification_id IN (" + inClause + ")");
+                    for (int i=0;i<notifIds.size();i++) nUpd.setInt(i+1, notifIds.get(i));
+                    nUpd.executeUpdate();
+                }
+            } catch (SQLException ignore) { } finally { if (nConn != null) try { nConn.close(); } catch (SQLException e) {} }
+        %>
         <div class="tiles-grid">
+            <% if (isAdmin) { %>
+            <div class="tile tile-admin" style="grid-column:1/-1;border:1px solid #e5e7eb;background:#fff">
+                <div class="tile-content">
+                    <div class="tile-header">
+                        <span class="tile-icon">🛠️</span>
+                        <h3>Admin: Quick Manage</h3>
+                    </div>
+                    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-block-start:8px">
+                        <a class="btn btn-outline" href="admin-locations?category=gate">Colleges / Gates</a>
+                        <a class="btn btn-outline" href="admin-locations?category=hospital">Hospitals</a>
+                        <a class="btn btn-outline" href="admin-locations?category=immigration">Police &amp; Immigration</a>
+                    </div>
+                </div>
+            </div>
+            <% } %>
             <!-- Tile 1: My Events with quick stats and next upcoming -->
             <a class="tile tile-events" href="events.jsp">
                 <div class="tile-content">
@@ -133,6 +207,12 @@
                             <div class="upcoming-row">
                                 <div class="upcoming-when"><%= dateFormat.format(next.getEventDate()) %> · <%= timeFormat.format(next.getEventTime()) %></div>
                                 <div class="upcoming-title"><%= next.getTitle() %></div>
+                                <% if (next.getUserId() != user.getUserId()) { %>
+                                    <form action="follow-admin-event" method="post" style="display:inline; margin-inline-start:6px;">
+                                        <input type="hidden" name="id" value="<%= next.getEventId() %>" />
+                                        <button type="submit" style="font-size:0.70em;" title="Add to My Events">Follow</button>
+                                    </form>
+                                <% } %>
                             </div>
                         <% } %>
                     </div>
@@ -141,7 +221,7 @@
             </a>
 
             <!-- Tile 2: Create Reminder -->
-            <a class="tile tile-create" href="create-reminder.jsp">
+            <a class="tile tile-create" href="create-event.jsp">
                 <div class="tile-content">
                     <div class="tile-header">
                         <span class="tile-icon">➕</span>
@@ -159,7 +239,7 @@
                         <span class="tile-icon">⬆️</span>
                         <h3>Upload Schedule</h3>
                     </div>
-                    <p class="tile-desc">Import your course schedule from a CSV file in seconds.</p>
+                    <p class="tile-desc">Import your course schedule from CSV or iCalendar (.ics) in seconds.</p>
                 </div>
                 <span class="tile-cta">Upload →</span>
             </a>
@@ -182,7 +262,7 @@
                         <span class="tile-icon">🧑‍🦰</span>
                         <h3>Face Recognition</h3>
                     </div>
-                    <p class="tile-desc">Use Face Recognition (Mon & Wed, 08:00–12:00 and 14:00–17:00).</p>
+                        <p class="tile-desc">Use Face Recognition (windows configured by admin).</p>
                 </div>
                 <span class="tile-cta">Scan →</span>
             </button>
@@ -196,14 +276,20 @@
                 Notification.requestPermission();
             }
 
-            // Face Recognition time gating (Mon & Wed 08:00–12:00 and 14:00–17:00)
+            // Dynamic Face Recognition windows (loaded from DB)
+            const FACE_WINDOWS = JSON.parse('<%= faceWinJson.toString() %>');
             function withinAllowedWindow(d) {
-                const day = d.getDay(); // 0=Sun,1=Mon,...6=Sat
-                if (!(day === 1 || day === 3)) return false; // only Monday (1) and Wednesday (3)
-                const minutes = d.getHours() * 60 + d.getMinutes();
-                const inFirst = minutes >= 8*60 && minutes < 12*60;   // 08:00 - 11:59
-                const inSecond = minutes >= 14*60 && minutes < 17*60; // 14:00 - 16:59
-                return inFirst || inSecond;
+                const jsDay = d.getDay(); // 0=Sun
+                const dayNorm = jsDay === 0 ? 7 : jsDay; // 1..7
+                const minutesNow = d.getHours()*60 + d.getMinutes();
+                return FACE_WINDOWS.some(w => {
+                    if (w.day !== dayNorm) return false;
+                    const [sh, sm, ss] = (''+w.start).split(':');
+                    const [eh, em, es] = (''+w.end).split(':');
+                    const startM = parseInt(sh,10)*60 + parseInt(sm,10);
+                    const endM = parseInt(eh,10)*60 + parseInt(em,10);
+                    return minutesNow >= startM && minutesNow < endM;
+                });
             }
 
             // Show/hide nav face button if within window
@@ -216,18 +302,18 @@
             // Face recognition tile handler
             const faceTile = document.getElementById('faceRecTile');
             function showTimeNotice() {
-                alert('Face Recognition is only available on Monday and Wednesday between 08:00–12:00 and 14:00–17:00.');
+                alert('Face Recognition is not available right now (outside configured windows).');
             }
 
             // Create a simple modal for camera preview and scan
             const modalHtml = `
                 <div id="faceModal" class="face-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);align-items:center;justify-content:center;z-index:9999;">
-                    <div class="face-modal-panel" style="background:#fff;padding:16px;border-radius:8px;max-width:480px;width:90%;box-shadow:0 6px 20px rgba(0,0,0,0.3);">
-                        <h3 style="margin-top:0">Face Recognition</h3>
+                    <div class="face-modal-panel" style="background:#fff;padding:16px;border-radius:8px;max-inline-size:480px;inline-size:90%;box-shadow:0 6px 20px rgba(0,0,0,0.3);">
+                        <h3 style="margin-block-start:0">Face Recognition</h3>
                         <p id="faceStatus">Requesting camera and location...</p>
-                        <video id="faceVideo" autoplay playsinline style="width:100%;border-radius:6px;background:#000"></video>
+                        <video id="faceVideo" autoplay playsinline style="inline-size:100%;border-radius:6px;background:#000"></video>
                         <canvas id="faceCanvas" style="display:none"></canvas>
-                        <div style="margin-top:8px;display:flex;gap:8px;justify-content:flex-end;">
+                        <div style="margin-block-start:8px;display:flex;gap:8px;justify-content:flex-end;">
                             <button id="faceCancel" class="btn">Cancel</button>
                             <button id="faceScan" class="btn btn-primary">Scan Face</button>
                         </div>

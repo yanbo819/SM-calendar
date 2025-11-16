@@ -14,9 +14,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Important Locations</title>
     <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/locations.css">
     <style>
         .page-title{margin:0;font-size:1.5rem;font-weight:600}
-        .page-sub{color:#6b7280;margin-top:4px}
+    .page-sub{color:#6b7280;margin-block-start:4px}
         .card{background:#fff;border:1px solid #e5e7eb;border-radius:12px;box-shadow:0 1px 2px rgba(0,0,0,.04);padding:24px}
         .locations-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
         .location-card{display:flex;align-items:center;gap:14px;border:1px solid #e5e7eb;border-radius:12px;padding:16px;background:#fff;text-decoration:none;color:inherit;transition:transform .15s ease, box-shadow .15s ease, border-color .15s ease}
@@ -47,6 +48,12 @@
         </div>
 
         <div class="card">
+            <%
+                int countHosp = 0, countImm = 0, countGate = 0;
+                try { countHosp = com.smartcalendar.dao.LocationDao.listByCategory("hospital").size(); } catch (Exception ignore) {}
+                try { countImm = com.smartcalendar.dao.LocationDao.listByCategory("immigration").size(); } catch (Exception ignore) {}
+                try { countGate = com.smartcalendar.dao.LocationDao.listByCategory("gate").size(); } catch (Exception ignore) {}
+            %>
             <div class="locations-grid">
                 <a class="location-card" href="colleges-info.jsp">
                     <span class="location-icon">🏫</span>
@@ -59,7 +66,7 @@
                 <a class="location-card" href="hospitals-info.jsp">
                     <span class="location-icon">🏥</span>
                     <div class="location-text">
-                        <h3>Hospitals Info</h3>
+                        <h3>Hospitals Info <span class="badge" style="margin-inline-start:6px"><%= countHosp %></span></h3>
                         <p>Nearby hospitals, clinics, and emergency numbers.</p>
                     </div>
                 </a>
@@ -67,7 +74,7 @@
                 <a class="location-card" href="police-immigration.jsp">
                     <span class="location-icon">🛂</span>
                     <div class="location-text">
-                        <h3>Police & Immigration</h3>
+                        <h3>Police & Immigration <span class="badge" style="margin-inline-start:6px"><%= countImm %></span></h3>
                         <p>Police stations, immigration offices, and help lines.</p>
                     </div>
                 </a>
@@ -75,7 +82,7 @@
                 <a class="location-card" href="school-buildings.jsp">
                     <span class="location-icon">🏢</span>
                     <div class="location-text">
-                        <h3>School location, Buildings &amp; gates</h3>
+                        <h3>School location, Buildings &amp; gates <span class="badge" style="margin-inline-start:6px"><%= countGate %></span></h3>
                         <p>Campus buildings, classrooms, and facilities.</p>
                     </div>
                 </a>

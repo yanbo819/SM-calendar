@@ -1,0 +1,17 @@
+/* Shared styles for location/info pages */
+.page-title{margin:0;font-size:1.5rem;font-weight:600}
+.page-sub{color:#6b7280;margin-block-start:4px}
+.card{background:#fff;border:1px solid #e5e7eb;border-radius:12px;box-shadow:0 1px 2px rgba(0,0,0,.04);padding:24px}
+.section-heading{display:flex;align-items:center;gap:10px;margin:0 0 12px 0;font-size:1.1rem}
+.section-heading .badge{background:#eef2ff;color:#3730a3;border:1px solid #c7d2fe;border-radius:999px;padding:2px 8px;font-size:.8rem}
+.acc-list{display:flex;flex-direction:column;gap:10px}
+details.loc-acc{border:1px solid #e5e7eb;border-radius:12px;background:#fff}
+details.loc-acc[open]{box-shadow:0 6px 18px rgba(0,0,0,.08)}
+details.loc-acc > summary{list-style:none;cursor:pointer;padding:14px 16px;display:flex;align-items:center;gap:10px;font-weight:600}
+details.loc-acc > summary::-webkit-details-marker{display:none}
+.summary-icon{font-size:1.1rem}
+.acc-body{padding:0 16px 14px 16px;color:#374151}
+.acc-desc{margin:0 0 10px 0;color:#6b7280}
+.search-row{display:flex;gap:8px;align-items:center;margin-block-end:12px}
+.search-input{inline-size:280px;max-inline-size:100%;padding:8px 10px;border:1px solid #d1d5db;border-radius:8px}
+.empty{padding:12px;border:1px dashed #d1d5db;border-radius:8px;color:#6b7280;background:#f9fafb}

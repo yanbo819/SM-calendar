@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="com.smartcalendar.models.User" %>
+<%@ page import="com.smartcalendar.models.Location" %>
+<%@ page import="com.smartcalendar.dao.LocationDao" %>
 <%
     User user = (User) session.getAttribute("user");
     if (user == null) {
@@ -14,11 +16,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hospitals Information</title>
     <link rel="stylesheet" href="css/main.css">
-    <style>
-        .card{background:#fff;border:1px solid #e5e7eb;border-radius:12px;box-shadow:0 1px 2px rgba(0,0,0,.04);padding:24px}
-        .page-title{margin:0;font-size:1.5rem;font-weight:600}
-        .page-sub{color:#6b7280;margin-top:4px}
-    </style>
+    <link rel="stylesheet" href="css/locations.css">
 </head>
 <body>
     <nav class="main-nav">
@@ -43,9 +41,50 @@
             </div>
         </div>
         <div class="card">
-            <p>Coming soon: searchable list with addresses, phone numbers, and maps links for hospitals and clinics.</p>
-            <p class="page-sub">Tip: Provide a CSV or sheet to import official contact info.</p>
+            <div class="search-row">
+                <input id="searchHosp" class="search-input" type="search" placeholder="Search hospitals..." />
+            </div>
+            <%
+                java.util.List<Location> hospitals = new java.util.ArrayList<>();
+                try { hospitals = LocationDao.listByCategory("hospital"); } catch (Exception ignore) {}
+                int hCount = hospitals.size();
+            %>
+            <h3 class="section-heading">Hospitals <span class="badge"><%= hCount %></span></h3>
+            <% if (hCount == 0) { %>
+                <div class="empty">No hospitals added yet.</div>
+            <% } %>
+            <div id="accHosp" class="acc-list">
+                <% for (Location h : hospitals) { %>
+                <details class="loc-acc">
+                    <summary><span class="summary-icon">🏥</span> <span class="acc-title"><%= h.getName() %></span></summary>
+                    <div class="acc-body">
+                        <p class="acc-desc"><%= h.getDescription() %></p>
+                        <div class="gate-actions">
+                            <% if (h.getMapUrl() != null && !h.getMapUrl().isEmpty()) { %>
+                            <a class="btn btn-primary" href="<%= h.getMapUrl() %>" target="_blank" rel="noopener">Go to location →</a>
+                            <% } %>
+                        </div>
+                    </div>
+                </details>
+                <% } %>
+            </div>
         </div>
     </div>
+    <script>
+        // Simple client-side filter
+        (function(){
+            const input = document.getElementById('searchHosp');
+            const list = document.getElementById('accHosp');
+            if (!input || !list) return;
+            input.addEventListener('input', () => {
+                const q = input.value.toLowerCase();
+                for (const det of list.querySelectorAll('details.loc-acc')){
+                    const title = det.querySelector('.acc-title')?.textContent?.toLowerCase() || '';
+                    const desc = det.querySelector('.acc-desc')?.textContent?.toLowerCase() || '';
+                    det.style.display = (title.includes(q) || desc.includes(q)) ? '' : 'none';
+                }
+            });
+        })();
+    </script>
 </body>
 </html>

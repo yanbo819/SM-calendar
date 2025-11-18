@@ -1,5 +1,13 @@
 package com.smartcalendar.servlets;
 
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Time;
+
 import com.smartcalendar.models.User;
 import com.smartcalendar.utils.DatabaseUtil;
 
@@ -9,9 +17,6 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-
-import java.io.IOException;
-import java.sql.*;
 
 @WebServlet(urlPatterns = {"/follow-admin-event"})
 public class FollowAdminEventServlet extends HttpServlet {

@@ -1,8 +1,12 @@
 package com.smartcalendar.servlets;
 
-import com.smartcalendar.models.User;
-import com.smartcalendar.models.Location;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.List;
+
 import com.smartcalendar.dao.LocationDao;
+import com.smartcalendar.models.Location;
+import com.smartcalendar.models.User;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -10,10 +14,6 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.List;
 
 @WebServlet(urlPatterns = {"/admin-locations"})
 public class AdminLocationServlet extends HttpServlet {

@@ -7,14 +7,14 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.smartcalendar.models.User;
+import com.smartcalendar.utils.DatabaseUtil;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-
-import com.smartcalendar.models.User;
-import com.smartcalendar.utils.DatabaseUtil;
 
 /**
  * Servlet for retrieving upcoming reminders

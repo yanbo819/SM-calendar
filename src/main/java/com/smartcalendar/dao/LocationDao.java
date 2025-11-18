@@ -1,11 +1,14 @@
 package com.smartcalendar.dao;
 
-import com.smartcalendar.models.Location;
-import com.smartcalendar.utils.DatabaseUtil;
-
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.smartcalendar.models.Location;
+import com.smartcalendar.utils.DatabaseUtil;
 
 public class LocationDao {
     public static List<Location> listByCategory(String category) throws SQLException {

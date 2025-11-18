@@ -7,15 +7,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.regex.Pattern;
 
+import com.smartcalendar.models.User;
+import com.smartcalendar.utils.DatabaseUtil;
+import com.smartcalendar.utils.PasswordUtil;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-
-import com.smartcalendar.models.User;
-import com.smartcalendar.utils.DatabaseUtil;
-import com.smartcalendar.utils.PasswordUtil;
 
 /**
  * Servlet for handling user registration

@@ -1,5 +1,14 @@
 package com.smartcalendar.servlets;
 
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Time;
+import java.text.SimpleDateFormat;
+
 import com.smartcalendar.models.User;
 import com.smartcalendar.utils.DatabaseUtil;
 
@@ -9,10 +18,6 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-
-import java.io.IOException;
-import java.sql.*;
-import java.text.SimpleDateFormat;
 
 /**
  * Servlet for publishing admin (global) events. Global events are inserted with the admin's user_id

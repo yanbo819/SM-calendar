@@ -1,8 +1,13 @@
 package com.smartcalendar.servlets;
 
+import java.io.IOException;
+import java.sql.SQLException;
+import java.sql.Time;
+import java.util.List;
+
+import com.smartcalendar.dao.FaceConfigDao;
 import com.smartcalendar.models.FaceConfig;
 import com.smartcalendar.models.User;
-import com.smartcalendar.dao.FaceConfigDao;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -10,11 +15,6 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-
-import java.io.IOException;
-import java.sql.Time;
-import java.sql.SQLException;
-import java.util.List;
 
 @WebServlet(urlPatterns = {"/admin-face-config"})
 public class FaceConfigServlet extends HttpServlet {

@@ -23,6 +23,21 @@ public class AdminUserCrudServlet extends HttpServlet {
         return user != null && "admin".equalsIgnoreCase(user.getRole());
     }
 
+    private boolean isAdminById(Connection conn, int userId) throws SQLException {
+        try (PreparedStatement ps = conn.prepareStatement("SELECT role FROM users WHERE user_id=?")) {
+            ps.setInt(1, userId);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    String role = rs.getString("role");
+                    return role != null && role.equalsIgnoreCase("admin");
+                }
+                return false;
+            }
+        }
+    }
+
+    
+
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession(false);
@@ -66,16 +81,23 @@ public class AdminUserCrudServlet extends HttpServlet {
                     String email = param(req, "email");
                     String phone = param(req, "phone");
                     String role = param(req, "role");
-                    boolean active = "on".equals(req.getParameter("active")) || "true".equalsIgnoreCase(req.getParameter("active"));
+                    boolean requestedActive = "on".equals(req.getParameter("active")) || "true".equalsIgnoreCase(req.getParameter("active"));
                     String password = param(req, "password");
 
-                    // Basic update
-                    try (PreparedStatement ps = conn.prepareStatement("UPDATE users SET full_name=?, email=?, phone_number=?, role=?, is_active=?, updated_at=CURRENT_TIMESTAMP WHERE user_id=?")) {
+                    boolean targetIsAdmin = isAdminById(conn, userId);
+
+                    // Enforce protections for the admin account: cannot deactivate or demote.
+                    boolean finalActive = targetIsAdmin ? true : requestedActive;
+                    String finalRole = targetIsAdmin ? "admin" : ((role != null && role.equalsIgnoreCase("admin")) ? "admin" : "user");
+
+                    // Basic update (excluding password)
+                    try (PreparedStatement ps = conn.prepareStatement(
+                            "UPDATE users SET full_name=?, email=?, phone_number=?, role=?, is_active=?, updated_at=CURRENT_TIMESTAMP WHERE user_id=?")) {
                         ps.setString(1, fullName);
                         ps.setString(2, email);
                         ps.setString(3, phone);
-                        ps.setString(4, (role != null && role.equalsIgnoreCase("admin")) ? "admin" : "user");
-                        ps.setBoolean(5, active);
+                        ps.setString(4, finalRole);
+                        ps.setBoolean(5, finalActive);
                         ps.setInt(6, userId);
                         ps.executeUpdate();
                     }
@@ -87,21 +109,44 @@ public class AdminUserCrudServlet extends HttpServlet {
                             ps.executeUpdate();
                         }
                     }
-                    resp.sendRedirect("admin-user?id=" + userId + "&success=Updated");
-                    return;
+                    String note = (targetIsAdmin && (!requestedActive || (role != null && !role.equalsIgnoreCase("admin"))))
+                            ? "&note=Admin+status+protected"
+                            : "";
+                    resp.sendRedirect("admin-user?id=" + userId + "&success=Updated" + note);
+                    break;
                 }
                 case "delete": {
                     int userId = Integer.parseInt(req.getParameter("userId"));
+                    if (isAdminById(conn, userId)) {
+                        resp.sendRedirect("admin-users?error=Cannot+delete+admin+account");
+                        break;
+                    }
                     try (PreparedStatement ps = conn.prepareStatement("DELETE FROM users WHERE user_id=?")) {
                         ps.setInt(1, userId);
                         ps.executeUpdate();
                     }
                     resp.sendRedirect("admin-users?success=Deleted");
-                    return;
+                    break;
+                }
+                case "change_password": {
+                    int userId = Integer.parseInt(req.getParameter("userId"));
+                    String password = param(req, "password");
+                    if (password == null || password.isBlank()) {
+                        resp.sendRedirect("admin-users?error=Password+required");
+                        break;
+                    }
+                    String pwHash = PasswordUtil.hashPassword(password);
+                    try (PreparedStatement ps = conn.prepareStatement("UPDATE users SET password_hash=?, updated_at=CURRENT_TIMESTAMP WHERE user_id=?")) {
+                        ps.setString(1, pwHash);
+                        ps.setInt(2, userId);
+                        ps.executeUpdate();
+                    }
+                    resp.sendRedirect("admin-users?success=Password+updated");
+                    break;
                 }
                 default:
                     resp.sendRedirect("admin-users?error=Unknown+action");
-                    return;
+                    break;
             }
         } catch (SQLException | NumberFormatException e) {
             resp.sendRedirect("admin-users?error=Operation+failed");

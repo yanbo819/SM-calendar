@@ -99,22 +99,16 @@
                 <span class="user-welcome">
                     <%= LanguageUtil.getText(lang, "dashboard.welcome") %>, <%= user.getFullName() %>!
                 </span>
-                <% if (isAdmin) { %>
-                    <a href="admin-event.jsp" class="btn btn-outline">Admin Publish</a>
-                    <a href="admin-locations" class="btn btn-outline">Manage Locations</a>
-                    <a href="admin-locations?category=gate" class="btn btn-outline">Colleges/Gates</a>
-                    <a href="admin-locations?category=hospital" class="btn btn-outline">Hospitals</a>
-                    <a href="admin-locations?category=immigration" class="btn btn-outline">Police &amp; Immigration</a>
-                    <a href="admin-face-config" class="btn btn-outline">Face ID Windows</a>
-                    <a href="admin-users" class="btn btn-outline">Manage Users</a>
-                <% } %>
                     <a id="faceIdBtn" href="face-id.jsp" class="btn btn-outline" style="display:none">Face ID</a>
-                    <a href="logout" class="btn btn-outline">
-                        <%= LanguageUtil.getText(lang, "nav.logout") %>
-                    </a>
+                    <% if (!isAdmin) { %>
+                    <a href="logout" class="btn btn-outline"><%= LanguageUtil.getText(lang, "nav.logout") %></a>
+                    <% } %>
             </div>
         </div>
     </nav>
+
+    <%-- Unified Admin Toolbar (for admin users) --%>
+    <jsp:include page="/WEB-INF/jsp/includes/admin-toolbar.jspf" />
 
     <div class="dashboard-container">
         <%-- Show unsent notifications for this user --%>

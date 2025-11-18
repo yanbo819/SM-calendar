@@ -12,6 +12,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Admin: Manage Locations</title>
     <link rel="stylesheet" href="css/main.css" />
     <link rel="stylesheet" href="css/ui.css" />
@@ -27,12 +28,10 @@
 <nav class="main-nav">
     <div class="nav-container">
         <h1 class="nav-title"><a href="dashboard.jsp">Smart Calendar</a></h1>
-        <div class="nav-actions">
-            <a href="dashboard.jsp" class="btn btn-outline">← Dashboard</a>
-            <a href="logout" class="btn btn-outline">Logout</a>
-        </div>
+        <div class="nav-actions"><!-- admin toolbar below --></div>
     </div>
 </nav>
+<jsp:include page="/WEB-INF/jsp/includes/admin-toolbar.jspf" />
 <div class="form-container">
     <h2>Manage Locations</h2>
     <p style="margin-block-start:4px;color:#6b7280;font-size:.9rem">Create, edit, or remove campus and city locations.</p>

@@ -28,17 +28,17 @@
       <h1 class="nav-title"><a href="dashboard.jsp">Smart Calendar</a></h1>
       <div class="nav-actions">
         <span class="user-welcome">Admin: <%= user.getFullName() %></span>
-        <a href="logout" class="btn btn-outline">Logout</a>
       </div>
     </div>
   </nav>
+  <jsp:include page="/WEB-INF/jsp/includes/admin-toolbar.jspf" />
   <div class="form-container">
     <div class="form-header" style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
       <div>
         <h2 class="page-title">Publish Admin Event</h2>
         <div class="page-sub" style="color:#6b7280">Create a read-only event visible to all users.</div>
       </div>
-      <a href="dashboard.jsp" class="btn btn-outline">← Dashboard</a>
+  <!-- toolbar provides navigation; removed per-page back button -->
     </div>
     <div class="card">
       <form method="post" action="admin-event" class="admin-event-form">

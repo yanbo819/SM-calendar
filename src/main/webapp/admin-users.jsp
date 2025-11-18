@@ -12,6 +12,7 @@
 <html>
 <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Admin: Users</title>
     <link rel="stylesheet" href="css/main.css" />
     <link rel="stylesheet" href="css/ui.css" />
@@ -39,18 +40,17 @@
         .badge.green{background:#dcfce7;color:#166534}
         .badge.gray{background:#f3f4f6;color:#374151}
         .btn-sm{padding:6px 10px;font-size:.8rem}
+        .hint { color:#6b7280; font-size:.85rem; margin-top:8px; }
     </style>
 </head>
 <body>
 <nav class="main-nav">
     <div class="nav-container">
         <h1 class="nav-title"><a href="dashboard.jsp">Smart Calendar</a></h1>
-        <div class="nav-actions">
-            <a href="dashboard.jsp" class="btn btn-outline">← Dashboard</a>
-            <a href="logout" class="btn btn-outline">Logout</a>
-        </div>
+        <div class="nav-actions"><!-- admin toolbar below --></div>
     </div>
 </nav>
+<jsp:include page="/WEB-INF/jsp/includes/admin-toolbar.jspf" />
 <div class="page">
     <div class="header-row">
         <h2>Manage Users</h2>
@@ -89,16 +89,14 @@
                 <input id="searchBox" class="form-input" placeholder="Search by name, email, or username..." oninput="filterRows()" />
             </div>
         </div>
-        <table id="usersTable">
-        <thead><tr><th>ID</th><th>Username</th><th>Name</th><th>Email</th><th>Phone</th><th>Role</th><th>Status</th><th>Actions</th></tr></thead>
-        <tbody>
+    <div class="table-responsive">
+    <table id="usersTable" class="table">
+    <thead><tr><th>Username</th><th>Name</th><th>Role</th><th>Status</th><th class="text-end">View</th></tr></thead>
+    <tbody>
         <% if (users != null) { for (User u : users) { %>
-            <tr>
-                <td><%= u.getUserId() %></td>
-                <td><%= u.getUsername() %></td>
+            <tr class="row-click" onclick="goDetail(<%= u.getUserId() %>)">
+                <td><strong><%= u.getUsername() %></strong></td>
                 <td><%= u.getFullName() %></td>
-                <td><%= u.getEmail() %></td>
-                <td><%= u.getPhoneNumber() %></td>
                 <td><span class="badge <%= ("admin".equalsIgnoreCase(u.getRole())?"gray":"green") %>"><%= u.getRole() != null ? u.getRole() : "user" %></span></td>
                 <td>
                     <% if (u.isActive()) { %>
@@ -107,28 +105,13 @@
                         <span class="badge gray">Inactive</span>
                     <% } %>
                 </td>
-                <td style="white-space:nowrap">
-                    <a class="btn btn-outline btn-sm" href="admin-user?id=<%= u.getUserId() %>">Edit</a>
-                    <form method="post" action="admin-user-crud" style="display:inline">
-                        <input type="hidden" name="action" value="update" />
-                        <input type="hidden" name="userId" value="<%= u.getUserId() %>" />
-                        <input type="hidden" name="fullName" value="<%= u.getFullName() %>" />
-                        <input type="hidden" name="email" value="<%= u.getEmail() %>" />
-                        <input type="hidden" name="phone" value="<%= u.getPhoneNumber() %>" />
-                        <input type="hidden" name="role" value="<%= u.getRole() %>" />
-                        <input type="hidden" name="active" value="<%= !u.isActive() %>" />
-                        <button type="submit" class="btn btn-outline btn-sm"><%= u.isActive() ? "Deactivate" : "Activate" %></button>
-                    </form>
-                    <form method="post" action="admin-user-crud" style="display:inline" onsubmit="return confirm('Delete this user? This cannot be undone.')">
-                        <input type="hidden" name="action" value="delete" />
-                        <input type="hidden" name="userId" value="<%= u.getUserId() %>" />
-                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                    </form>
-                </td>
+                <td class="text-end" style="white-space:nowrap"><a class="btn btn-outline btn-sm" href="admin-user?id=<%= u.getUserId() %>">View</a></td>
             </tr>
         <% } } %>
         </tbody>
-        </table>
+    </table>
+    </div>
+    <div class="p-2 hint">Tip: Click a user row to view and manage full details.</div>
     </div>
 </div>
 <script>
@@ -142,6 +125,10 @@ function filterRows(){
     const text = r.innerText.toLowerCase();
     r.style.display = text.includes(q) ? '' : 'none';
   });
+}
+function togglePw(id){
+    const el = document.getElementById('pwform-' + id);
+    if (el) el.style.display = (el.style.display === 'none' || el.style.display === '') ? 'block' : 'none';
 }
 </script>
 </body>

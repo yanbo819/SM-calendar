@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.sql.Time;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.smartcalendar.dao.FaceConfigDao;
 import com.smartcalendar.models.FaceConfig;
@@ -18,6 +20,7 @@ import jakarta.servlet.http.HttpSession;
 
 @WebServlet(urlPatterns = {"/admin-face-config"})
 public class FaceConfigServlet extends HttpServlet {
+    private static final Logger LOG = Logger.getLogger(FaceConfigServlet.class.getName());
     private boolean isAdmin(User user) {
         if (user == null) return false;
         return "admin".equalsIgnoreCase(user.getRole());
@@ -33,7 +36,9 @@ public class FaceConfigServlet extends HttpServlet {
             req.setAttribute("windows", windows);
             req.getRequestDispatcher("/admin-face-config.jsp").forward(req, resp);
         } catch (SQLException e) {
-            throw new ServletException("Failed to load face config", e);
+            LOG.log(Level.SEVERE, "Failed to load face config windows", e);
+            resp.sendRedirect("admin-face-config?error=Failed+to+load+face+config");
+            return;
         }
     }
 
@@ -48,9 +53,16 @@ public class FaceConfigServlet extends HttpServlet {
         try {
             switch (action) {
                 case "create": {
-                    int day = Integer.parseInt(req.getParameter("dayOfWeek"));
-                    Time start = Time.valueOf(req.getParameter("start") + ":00");
-                    Time end = Time.valueOf(req.getParameter("end") + ":00");
+                    String dayParam = req.getParameter("dayOfWeek");
+                    String startParam = req.getParameter("start");
+                    String endParam = req.getParameter("end");
+                    if (dayParam == null || startParam == null || endParam == null) {
+                        resp.sendRedirect("admin-face-config?error=Missing+parameters");
+                        return;
+                    }
+                    int day = Integer.parseInt(dayParam);
+                    Time start = Time.valueOf(normalizeTime(startParam));
+                    Time end = Time.valueOf(normalizeTime(endParam));
                     FaceConfig fc = new FaceConfig();
                     fc.setDayOfWeek(day);
                     fc.setStartTime(start);
@@ -60,10 +72,18 @@ public class FaceConfigServlet extends HttpServlet {
                     break;
                 }
                 case "update": {
-                    int id = Integer.parseInt(req.getParameter("id"));
-                    int uDay = Integer.parseInt(req.getParameter("dayOfWeek"));
-                    Time uStart = Time.valueOf(req.getParameter("start") + ":00");
-                    Time uEnd = Time.valueOf(req.getParameter("end") + ":00");
+                    String idParam = req.getParameter("id");
+                    String uDayParam = req.getParameter("dayOfWeek");
+                    String uStartParam = req.getParameter("start");
+                    String uEndParam = req.getParameter("end");
+                    if (idParam == null || uDayParam == null || uStartParam == null || uEndParam == null) {
+                        resp.sendRedirect("admin-face-config?error=Missing+parameters");
+                        return;
+                    }
+                    int id = Integer.parseInt(idParam);
+                    int uDay = Integer.parseInt(uDayParam);
+                    Time uStart = Time.valueOf(normalizeTime(uStartParam));
+                    Time uEnd = Time.valueOf(normalizeTime(uEndParam));
                     String activeParam = req.getParameter("active");
                     boolean active = (activeParam == null) ? true : ("on".equals(activeParam) || "true".equalsIgnoreCase(activeParam));
                     FaceConfig up = new FaceConfig();
@@ -86,9 +106,21 @@ public class FaceConfigServlet extends HttpServlet {
                 }
             }
         } catch (SQLException | IllegalArgumentException ex) {
-            resp.sendRedirect("admin-face-config?error=Operation+failed");
+            LOG.log(Level.WARNING, "Face config operation failed", ex);
+            String msg = "Operation+failed";
+            if (ex instanceof IllegalArgumentException) msg = "Invalid+time+format";
+            resp.sendRedirect("admin-face-config?error=" + msg);
             return;
         }
         resp.sendRedirect("admin-face-config?success=Done");
+    }
+
+    // Accepts "HH:mm" or "H:mm" or "HH:mm:ss" and returns "HH:mm:ss" for Time.valueOf
+    private static String normalizeTime(String t) {
+        if (t == null) throw new IllegalArgumentException("time is null");
+        t = t.trim();
+        if (t.matches("^\\d{1,2}:\\d{2}$")) return (t.length() == 4 ? "0" + t : t) + ":00";
+        if (t.matches("^\\d{1,2}:\\d{2}:\\d{2}$")) return (t.length() == 7 ? "0" + t : t);
+        throw new IllegalArgumentException("Invalid time: " + t);
     }
 }

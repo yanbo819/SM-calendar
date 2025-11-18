@@ -31,7 +31,9 @@
       </div>
     </div>
   </nav>
+  <% if (isAdmin) { %>
   <jsp:include page="/WEB-INF/jsp/includes/admin-toolbar.jspf" />
+  <% } %>
   <div class="form-container">
     <div class="form-header" style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
       <div>

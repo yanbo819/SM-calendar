@@ -16,6 +16,7 @@ import com.smartcalendar.models.User;
 import com.smartcalendar.utils.DatabaseUtil;
 
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -24,6 +25,7 @@ import jakarta.servlet.http.HttpSession;
 /**
  * Servlet for creating events
  */
+@WebServlet(urlPatterns = {"/create-event"})
 public class CreateEventServlet extends HttpServlet {
     
     @Override

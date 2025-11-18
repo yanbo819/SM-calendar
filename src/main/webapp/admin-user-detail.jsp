@@ -32,7 +32,9 @@
         <div class="nav-actions"><!-- admin toolbar below --></div>
     </div>
 </nav>
+<% if (isAdmin) { %>
 <jsp:include page="/WEB-INF/jsp/includes/admin-toolbar.jspf" />
+<% } %>
 <div class="form-container">
     <h2>User: <%= target.getFullName() %> (#<%= target.getUserId() %>)</h2>
     <div style="color:#6b7280;margin-block-start:4px">Username: <strong><%= target.getUsername() %></strong> · Role: <span class="badge <%= ("admin".equalsIgnoreCase(target.getRole())?"gray":"green") %>"><%= target.getRole() %></span> · Status: <span class="badge <%= (target.isActive()?"green":"gray") %>"><%= target.isActive()?"Active":"Inactive" %></span></div>

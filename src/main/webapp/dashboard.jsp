@@ -108,7 +108,9 @@
     </nav>
 
     <%-- Unified Admin Toolbar (for admin users) --%>
+    <% if (isAdmin) { %>
     <jsp:include page="/WEB-INF/jsp/includes/admin-toolbar.jspf" />
+    <% } %>
 
     <div class="dashboard-container">
         <%-- Show unsent notifications for this user --%>

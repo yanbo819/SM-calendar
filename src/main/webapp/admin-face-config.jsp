@@ -30,7 +30,9 @@
         <div class="nav-actions"><!-- admin toolbar below --></div>
     </div>
 </nav>
+<% if (isAdmin) { %>
 <jsp:include page="/WEB-INF/jsp/includes/admin-toolbar.jspf" />
+<% } %>
 <div class="form-container">
     <h2>Face Recognition Windows</h2>
     <p style="margin-block-start:4px;color:#6b7280;font-size:.9rem">Configure allowed days and time ranges for Face Recognition usage.</p>

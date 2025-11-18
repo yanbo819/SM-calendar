@@ -1,16 +1,8 @@
-<%@ page import="com.smartcalendar.models.User" %>
-<%
-    User u = (User) session.getAttribute("user");
-    boolean isAdmin = u != null && u.getRole() != null && u.getRole().equalsIgnoreCase("admin");
-    String uri = request.getRequestURI();
-%>
-<% if (isAdmin) { %>
 <div class="admin-toolbar">
-    <a href="dashboard.jsp" class="btn btn-nav <%= uri != null && uri.endsWith("/dashboard.jsp") ? "active" : "" %>">Dashboard</a>
-    <a href="admin-event.jsp" class="btn btn-nav <%= uri != null && uri.contains("admin-event.jsp") ? "active" : "" %>">Admin Publish</a>
-    <a href="admin-users" class="btn btn-nav <%= uri != null && (uri.contains("/admin-users") || uri.contains("admin-user-detail.jsp")) ? "active" : "" %>">Manage Users</a>
-    <a href="admin-locations" class="btn btn-nav <%= uri != null && uri.contains("/admin-locations") ? "active" : "" %>">Locations</a>
-    <a href="admin-face-config" class="btn btn-nav <%= uri != null && uri.contains("/admin-face-config") ? "active" : "" %>">Face ID Windows</a>
+    <a href="dashboard.jsp" class="btn btn-nav">Dashboard</a>
+    <a href="admin-event.jsp" class="btn btn-nav">Admin Publish</a>
+    <a href="admin-users" class="btn btn-nav">Manage Users</a>
+    <a href="admin-locations" class="btn btn-nav">Locations</a>
+    <a href="admin-face-config" class="btn btn-nav">Face ID Windows</a>
     <a href="logout" class="btn btn-nav">Logout</a>
-  </div>
-<% } %>
+</div>

@@ -50,7 +50,9 @@
         <div class="nav-actions"><!-- admin toolbar below --></div>
     </div>
 </nav>
+<% if (isAdmin) { %>
 <jsp:include page="/WEB-INF/jsp/includes/admin-toolbar.jspf" />
+<% } %>
 <div class="page">
     <div class="header-row">
         <h2>Manage Users</h2>

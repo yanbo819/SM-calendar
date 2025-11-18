@@ -31,7 +31,9 @@
         <div class="nav-actions"><!-- admin toolbar below --></div>
     </div>
 </nav>
+<% if (isAdmin) { %>
 <jsp:include page="/WEB-INF/jsp/includes/admin-toolbar.jspf" />
+<% } %>
 <div class="form-container">
     <h2>Manage Locations</h2>
     <p style="margin-block-start:4px;color:#6b7280;font-size:.9rem">Create, edit, or remove campus and city locations.</p>

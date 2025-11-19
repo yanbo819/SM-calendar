@@ -3,9 +3,8 @@
         <a href="admin-event.jsp" class="btn btn-nav" data-path="admin-event">Admin Publish</a>
         <a href="admin-users" class="btn btn-nav" data-path="admin-users">Manage Users</a>
         <a href="admin-locations" class="btn btn-nav" data-path="admin-locations">Locations</a>
-        <a href="admin-face-config" class="btn btn-nav" data-path="admin-face-config">Face ID Windows</a>
-        <a href="face-id.jsp" class="btn btn-nav" data-path="face-id.jsp">Add My New Face ID</a>
-        <a href="admin-face-enrollments" class="btn btn-nav" data-path="admin-face-enrollments">Face ID Enrollments</a>
+        <!-- Deprecated inline toolbar; links moved to admin-tools.jsp -->
+        <a href="admin-tools.jsp" class="btn btn-nav" data-path="admin-tools.jsp">Admin Tools</a>
         
 </div>
 <script>

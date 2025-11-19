@@ -16,8 +16,10 @@
         return;
     }
     
-    String lang = "en";
-    String textDir = "ltr";
+    String lang = (String) session.getAttribute("lang");
+    if (lang == null && user.getPreferredLanguage() != null) lang = user.getPreferredLanguage();
+    if (lang == null) lang = "en";
+    String textDir = com.smartcalendar.utils.LanguageUtil.getTextDirection(lang);
     
     // Determine admin role using roles column
     boolean isAdmin = user.getRole() != null && user.getRole().equalsIgnoreCase("admin");
@@ -99,34 +101,28 @@
                 <span class="user-welcome">
                     <%= LanguageUtil.getText(lang, "dashboard.welcome") %>, <%= user.getFullName() %>!
                 </span>
+                <form action="set-language" method="post" style="margin:0;display:flex;align-items:center;gap:4px;">
+                    <select name="lang" onchange="this.form.submit()" class="form-control" style="padding:4px 8px;min-inline-size:110px;">
+                        <%
+                            for (String code : com.smartcalendar.utils.LanguageUtil.getSupportedLanguages()) {
+                        %>
+                        <option value="<%= code %>" <%= code.equals(lang)?"selected":"" %>><%= com.smartcalendar.utils.LanguageUtil.getLanguageName(code) %></option>
+                        <% } %>
+                    </select>
+                </form>
                 <button id="navMoreToggle" class="btn btn-outline" title="Menu" aria-haspopup="true" aria-expanded="false" style="padding-inline:12px">⋮</button>
-                <div id="navMoreMenu" style="display:none;position:absolute;inset-block-start:100%;inset-inline-end:0;background:#fff;border:1px solid #ddd;border-radius:8px;padding:8px;min-inline-size:160px;box-shadow:0 4px 12px rgba(0,0,0,.12);z-index:50">
+                <div id="navMoreMenu" style="display:none;position:absolute;inset-block-start:100%;inset-inline-end:0;background:#fff;border:1px solid #ddd;border-radius:8px;padding:8px;min-inline-size:180px;box-shadow:0 4px 12px rgba(0,0,0,.12);z-index:50">
+                    <% if (isAdmin) { %>
+                        <a href="admin-tools.jsp" class="btn btn-outline" style="inline-size:100%;margin-block:4px">Admin Tools</a>
+                        <a href="face-id.jsp" class="btn btn-outline" style="inline-size:100%;margin-block:4px">Add My New Face ID</a>
+                    <% } %>
                     <a href="logout" class="btn btn-outline" style="inline-size:100%;margin-block:4px"><%= LanguageUtil.getText(lang, "nav.logout") %></a>
                 </div>
             </div>
         </div>
     </nav>
 
-    <%-- Unified Admin Toolbar (for admin users) --%>
-        <% if (isAdmin) { %>
-        <button id="adminToolbarToggle" class="btn btn-outline" style="margin:8px 16px">Admin Tools ▾</button>
-        <div id="adminToolbarWrapper" style="display:none">
-                <jsp:include page="/WEB-INF/jsp/includes/admin-toolbar.jspf" />
-        </div>
-        <script>
-            (function(){
-                var btn = document.getElementById('adminToolbarToggle');
-                var wrap = document.getElementById('adminToolbarWrapper');
-                if(btn && wrap){
-                    btn.addEventListener('click', function(){
-                        var open = wrap.style.display !== 'none';
-                        wrap.style.display = open ? 'none' : '';
-                        btn.textContent = open ? 'Admin Tools ▾' : 'Admin Tools ▴';
-                    });
-                }
-            })();
-        </script>
-        <% } %>
+    <%-- Admin toolbar removed: replaced by dedicated Admin Tools page --%>
 
     <div class="dashboard-container">
         <%-- Show unsent notifications for this user --%>
@@ -278,17 +274,6 @@
                 </div>
                 <span class="tile-cta">Scan →</span>
             </button>
-            <!-- Tile 6: Add My New Face ID (enrollment) -->
-            <a class="tile tile-face-enroll" href="face-id.jsp">
-                <div class="tile-content">
-                    <div class="tile-header">
-                        <span class="tile-icon">🧪</span>
-                        <h3>Add My New Face ID</h3>
-                    </div>
-                    <p class="tile-desc">Register a new face ID for recognition access.</p>
-                </div>
-                <span class="tile-cta">Enroll →</span>
-            </a>
         </div>
     </div>
 
@@ -310,6 +295,16 @@
                         moreToggle.setAttribute('aria-expanded','false');
                     }
                 });
+                const adminToggle = document.getElementById('adminMenuToggle');
+                const adminWrapper = document.getElementById('adminToolbarWrapper');
+                if (adminToggle && adminWrapper) {
+                    adminToggle.addEventListener('click', function(e){
+                        e.stopPropagation();
+                        const open = adminWrapper.style.display !== 'none';
+                        adminWrapper.style.display = open ? 'none' : '';
+                        adminToggle.textContent = open ? 'Admin Tools ▾' : 'Admin Tools ▴';
+                    });
+                }
             }
             if ('Notification' in window && Notification.permission === 'default') {
                 Notification.requestPermission();

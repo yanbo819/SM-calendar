@@ -86,25 +86,24 @@
                 btnSave.disabled = false;
             });
 
-            async function getLocation() {
+            async function getGeo(){
                 if (!navigator.geolocation) return null;
                 return new Promise(resolve => {
-                    navigator.geolocation.getCurrentPosition(pos => resolve(pos.coords), () => resolve(null), { enableHighAccuracy:true, timeout:8000 });
+                    navigator.geolocation.getCurrentPosition(pos => resolve({lat:pos.coords.latitude, lon:pos.coords.longitude}), () => resolve(null), { enableHighAccuracy:true, timeout:8000 });
                 });
             }
 
             btnSave.addEventListener('click', async function(){
                 if (!captured) { alert('Capture first.'); return; }
                 try {
-                    statusEl.textContent = 'Obtaining location…';
-                    const coords = await getLocation();
                     statusEl.textContent = 'Saving…';
+                    const geo = await getGeo();
                     const payload = { image: captured };
-                    if (coords) { payload.latitude = String(coords.latitude); payload.longitude = String(coords.longitude); }
+                    if (geo) { payload.lat = geo.lat.toString(); payload.lon = geo.lon.toString(); }
                     const res = await fetch('enroll-face-id', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
                     const data = await res.json();
                     if (data && data.ok) {
-                        statusEl.textContent = 'Saved. You can now use Face ID Windows.';
+                        statusEl.textContent = 'Saved with' + (geo? ' location.' : 'out location.') + ' You can now use Face ID Windows.';
                         alert('Face ID saved successfully.');
                     } else {
                         statusEl.textContent = 'Save failed. Try again.';

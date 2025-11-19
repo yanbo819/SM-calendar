@@ -10,6 +10,7 @@ public class FaceEnrollment {
     private Timestamp updatedAt;
     private Double latitude;
     private Double longitude;
+    private Timestamp attemptTime; // time of latest register attempt
 
     public int getUserId() { return userId; }
     public void setUserId(int userId) { this.userId = userId; }
@@ -25,4 +26,6 @@ public class FaceEnrollment {
     public void setLatitude(Double latitude) { this.latitude = latitude; }
     public Double getLongitude() { return longitude; }
     public void setLongitude(Double longitude) { this.longitude = longitude; }
+    public Timestamp getAttemptTime() { return attemptTime; }
+    public void setAttemptTime(Timestamp attemptTime) { this.attemptTime = attemptTime; }
 }

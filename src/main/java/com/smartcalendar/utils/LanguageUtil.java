@@ -65,8 +65,23 @@ public class LanguageUtil {
             }
         }
         
-        // Return key if not found anywhere
-        return key;
+        // Friendly fallback: humanize the key (replace dots/underscores with spaces and title-case)
+        return humanizeKey(key);
+    }
+
+    private static String humanizeKey(String key) {
+        if (key == null) return "";
+        String replaced = key.replaceAll("[._-]+", " ").trim();
+        if (replaced.isEmpty()) return key;
+        String[] parts = replaced.split("\\s+");
+        StringBuilder sb = new StringBuilder();
+        for (String part : parts) {
+            if (part.isEmpty()) continue;
+            char first = part.charAt(0);
+            String rest = part.length() > 1 ? part.substring(1).toLowerCase() : "";
+            sb.append(Character.toUpperCase(first)).append(rest).append(' ');
+        }
+        return sb.toString().trim();
     }
     
     /**
@@ -75,7 +90,16 @@ public class LanguageUtil {
      * @return true if supported, false otherwise
      */
     public static boolean isSupportedLanguage(String languageCode) {
-        return "en".equals(languageCode);
+        if (languageCode == null) return false;
+        switch (languageCode) {
+            case "en":
+            case "ar":
+            case "zh":
+            case "fr":
+                return true;
+            default:
+                return false;
+        }
     }
     
     /**
@@ -84,7 +108,7 @@ public class LanguageUtil {
      * @return "rtl" for Arabic, "ltr" for others
      */
     public static String getTextDirection(String languageCode) {
-        return "ltr";
+        return "ar".equalsIgnoreCase(languageCode) ? "rtl" : "ltr";
     }
     
     /**
@@ -93,7 +117,14 @@ public class LanguageUtil {
      * @return Language name
      */
     public static String getLanguageName(String languageCode) {
-        return "English";
+        if (languageCode == null) return "";
+        switch (languageCode) {
+            case "en": return "English";
+            case "ar": return "العربية";
+            case "zh": return "中文";
+            case "fr": return "Français";
+            default: return languageCode;
+        }
     }
     
     /**
@@ -101,7 +132,7 @@ public class LanguageUtil {
      * @return Array of supported language codes
      */
     public static String[] getSupportedLanguages() {
-        return new String[]{"en"};
+        return new String[]{"en","ar","zh","fr"};
     }
     
     /**

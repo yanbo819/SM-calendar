@@ -1,10 +1,13 @@
 package com.smartcalendar.dao;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import com.smartcalendar.models.FaceEnrollment;
 
+import com.smartcalendar.models.FaceEnrollment;
 import com.smartcalendar.utils.DatabaseUtil;
 
 public class UserFaceDao {
@@ -16,25 +19,21 @@ public class UserFaceDao {
         }
     }
 
-    public static void upsertFace(int userId, byte[] imageBytes, String phash, Double lat, Double lon) throws SQLException {
+    public static void upsertFace(int userId, byte[] imageBytes, String phash) throws SQLException {
         try (Connection conn = DatabaseUtil.getConnection()) {
             // Try update first
-            try (PreparedStatement upd = conn.prepareStatement("UPDATE user_faces SET image = ?, phash = ?, latitude = ?, longitude = ?, updated_at = CURRENT_TIMESTAMP WHERE user_id = ?")) {
+            try (PreparedStatement upd = conn.prepareStatement("UPDATE user_faces SET image = ?, phash = ?, updated_at = CURRENT_TIMESTAMP WHERE user_id = ?")) {
                 upd.setBytes(1, imageBytes);
                 upd.setString(2, phash);
-                if (lat != null) upd.setDouble(3, lat); else upd.setNull(3, java.sql.Types.DOUBLE);
-                if (lon != null) upd.setDouble(4, lon); else upd.setNull(4, java.sql.Types.DOUBLE);
-                upd.setInt(5, userId);
+                upd.setInt(3, userId);
                 int n = upd.executeUpdate();
                 if (n > 0) return;
             }
             // Insert if not exists
-            try (PreparedStatement ins = conn.prepareStatement("INSERT INTO user_faces (user_id, image, phash, latitude, longitude) VALUES (?,?,?,?,?)")) {
+            try (PreparedStatement ins = conn.prepareStatement("INSERT INTO user_faces (user_id, image, phash) VALUES (?,?,?)")) {
                 ins.setInt(1, userId);
                 ins.setBytes(2, imageBytes);
                 ins.setString(3, phash);
-                if (lat != null) ins.setDouble(4, lat); else ins.setNull(4, java.sql.Types.DOUBLE);
-                if (lon != null) ins.setDouble(5, lon); else ins.setNull(5, java.sql.Types.DOUBLE);
                 ins.executeUpdate();
             }
         }
@@ -57,7 +56,10 @@ public class UserFaceDao {
     }
 
     public static List<FaceEnrollment> listEnrollments() throws SQLException {
-        String sql = "SELECT u.user_id, u.full_name, u.username, f.created_at, f.updated_at, f.latitude, f.longitude FROM user_faces f JOIN users u ON f.user_id = u.user_id ORDER BY f.created_at DESC";
+        String sql = "SELECT u.user_id, u.full_name, u.username, f.created_at, f.updated_at, a.latitude, a.longitude, a.created_at AS attempt_time " +
+                "FROM user_faces f JOIN users u ON f.user_id = u.user_id " +
+                "LEFT JOIN faceid_attempts a ON a.id = (SELECT id FROM faceid_attempts fa WHERE fa.user_id = f.user_id AND fa.action='register' ORDER BY fa.created_at DESC LIMIT 1) " +
+                "ORDER BY COALESCE(attempt_time, f.created_at) DESC";
         List<FaceEnrollment> list = new ArrayList<>();
         try (Connection conn = DatabaseUtil.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql);
@@ -71,6 +73,7 @@ public class UserFaceDao {
                 fe.setUpdatedAt(rs.getTimestamp(5));
                 fe.setLatitude(rs.getObject(6) != null ? rs.getDouble(6) : null);
                 fe.setLongitude(rs.getObject(7) != null ? rs.getDouble(7) : null);
+                fe.setAttemptTime(rs.getTimestamp(8));
                 list.add(fe);
             }
         }

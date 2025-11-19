@@ -20,7 +20,7 @@ import jakarta.servlet.http.HttpSession;
 
 @WebServlet(urlPatterns = {"/follow-admin-event"})
 public class FollowAdminEventServlet extends HttpServlet {
-    private static final String ADMIN_EMAIL = "admin@smartcalendar.com";
+    private static final String ADMIN_EMAIL = "yanbo2024_2025@qq.com";
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

@@ -91,8 +91,6 @@ CREATE TABLE IF NOT EXISTS user_faces (
     user_id INT NOT NULL UNIQUE,
     image BLOB,
     phash VARCHAR(64),
-    latitude DOUBLE,
-    longitude DOUBLE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE

@@ -6,6 +6,7 @@ import java.util.List;
 import com.smartcalendar.dao.UserFaceDao;
 import com.smartcalendar.models.FaceEnrollment;
 import com.smartcalendar.models.User;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;

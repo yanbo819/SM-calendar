@@ -38,7 +38,7 @@
 </nav>
 <div class="card">
     <h2 style="margin-block-start:0;margin-block-end:12px">Face ID Enrollments</h2>
-    <p style="margin-block-start:0;margin-block-end:20px">Users who have enrolled Face ID. Includes enrollment time, last update, and location (if provided).</p>
+    <p style="margin-block-start:0;margin-block-end:20px">Users with Face ID enrollment. Shows latest enrollment location (if provided) and time.</p>
     <% if (loadError != null) { %>
         <div style="background:#fee2e2;color:#7f1d1d;padding:12px;border-radius:8px;margin-block-end:16px"><%= loadError %></div>
     <% } %>
@@ -48,26 +48,24 @@
                 <th>User ID</th>
                 <th>Full Name</th>
                 <th>Username</th>
-                <th>Enrolled At</th>
-                <th>Updated At</th>
-                <th>Location</th>
+                <th>Enrollment Time</th>
+                <th>Location (Lat, Lon)</th>
             </tr>
         </thead>
         <tbody>
         <% if (faces == null || faces.isEmpty()) { %>
-            <tr><td colspan="6" style="text-align:center;padding:24px;color:#6b7280">No face enrollments yet.</td></tr>
+            <tr><td colspan="5" style="text-align:center;padding:24px;color:#6b7280">No face enrollments yet.</td></tr>
         <% } else { for (FaceEnrollment fe : faces) { %>
             <tr>
                 <td><%= fe.getUserId() %></td>
                 <td><%= fe.getFullName() %></td>
                 <td><%= fe.getUsername() %></td>
-                <td><%= fe.getCreatedAt() %></td>
-                <td><%= fe.getUpdatedAt() %></td>
+                <td><%= fe.getAttemptTime() != null ? fe.getAttemptTime() : fe.getCreatedAt() %></td>
                 <td>
                     <% if (fe.getLatitude() != null && fe.getLongitude() != null) { %>
                         <%= String.format("%.5f, %.5f", fe.getLatitude(), fe.getLongitude()) %>
                     <% } else { %>
-                        <span style="color:#9ca3af">(none)</span>
+                        <span style="color:#6b7280">N/A</span>
                     <% } %>
                 </td>
             </tr>

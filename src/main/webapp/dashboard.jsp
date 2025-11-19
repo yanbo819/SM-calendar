@@ -108,9 +108,25 @@
     </nav>
 
     <%-- Unified Admin Toolbar (for admin users) --%>
-    <% if (isAdmin) { %>
-    <jsp:include page="/WEB-INF/jsp/includes/admin-toolbar.jspf" />
-    <% } %>
+        <% if (isAdmin) { %>
+        <button id="adminToolbarToggle" class="btn btn-outline" style="margin:8px 16px">Admin Tools ▾</button>
+        <div id="adminToolbarWrapper" style="display:none">
+                <jsp:include page="/WEB-INF/jsp/includes/admin-toolbar.jspf" />
+        </div>
+        <script>
+            (function(){
+                var btn = document.getElementById('adminToolbarToggle');
+                var wrap = document.getElementById('adminToolbarWrapper');
+                if(btn && wrap){
+                    btn.addEventListener('click', function(){
+                        var open = wrap.style.display !== 'none';
+                        wrap.style.display = open ? 'none' : '';
+                        btn.textContent = open ? 'Admin Tools ▾' : 'Admin Tools ▴';
+                    });
+                }
+            })();
+        </script>
+        <% } %>
 
     <div class="dashboard-container">
         <%-- Show unsent notifications for this user --%>
@@ -146,7 +162,7 @@
         %>
         <div class="tiles-grid">
             <% if (isAdmin) { %>
-            <div class="tile tile-admin" style="grid-column:1/-1;border:1px solid #e5e7eb;background:#fff">
+            <div class="tile tile-admin" style="grid-column:1/-1">
                 <div class="tile-content">
                     <div class="tile-header">
                         <span class="tile-icon">🛠️</span>

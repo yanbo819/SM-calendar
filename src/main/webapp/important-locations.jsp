@@ -49,10 +49,8 @@
 
         <div class="card">
             <%
+                // Keep the page robust: don't query DB here; counts shown as 0 if needed
                 int countHosp = 0, countImm = 0, countGate = 0;
-                try { countHosp = com.smartcalendar.dao.LocationDao.listByCategory("hospital").size(); } catch (Exception ignore) {}
-                try { countImm = com.smartcalendar.dao.LocationDao.listByCategory("immigration").size(); } catch (Exception ignore) {}
-                try { countGate = com.smartcalendar.dao.LocationDao.listByCategory("gate").size(); } catch (Exception ignore) {}
             %>
             <div class="locations-grid">
                 <a class="location-card" href="colleges-info.jsp">

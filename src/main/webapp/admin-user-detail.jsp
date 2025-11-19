@@ -19,9 +19,6 @@
     <link rel="stylesheet" href="css/main.css" />
     <link rel="stylesheet" href="css/ui.css" />
     <style>
-    table{inline-size:100%;border-collapse:collapse;margin-block-start:12px}
-        th,td{border:1px solid #e5e7eb;padding:6px;font-size:.85rem}
-        th{background:#f9fafb}
         .inline-form{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
     </style>
 </head>
@@ -81,30 +78,32 @@
     <% } %>
 
     <h3 style="margin-block-start:16px">Events</h3>
-    <table>
-        <thead><tr><th>ID</th><th>Title</th><th>Date</th><th>Time</th><th>Duration</th><th>Location</th><th>Actions</th></tr></thead>
-        <tbody>
-        <% if (events != null) { for (Event e : events) { %>
-            <tr>
-                <td><%= e.getEventId() %></td>
-                <td><%= e.getTitle() %></td>
-                <td><%= e.getEventDate() %></td>
-                <td><%= e.getEventTime() %></td>
-                <td><%= e.getDurationMinutes() %>m</td>
-                <td><%= e.getLocation() %></td>
-                <td>
-                    <form class="inline-form" method="post" action="admin-update-user-event">
-                        <input type="hidden" name="eventId" value="<%= e.getEventId() %>" />
-                        <input type="hidden" name="userId" value="<%= target.getUserId() %>" />
-                        <label>Date <input type="date" name="eventDate" value="<%= e.getEventDate() %>" required /></label>
-                        <label>Time <input type="time" name="eventTime" value="<%= e.getEventTime() != null ? e.getEventTime().toString().substring(0,5) : "" %>" required /></label>
-                        <button type="submit" class="btn btn-outline">Save</button>
-                    </form>
-                </td>
-            </tr>
-        <% } } %>
-        </tbody>
-    </table>
+    <div class="table-responsive" style="margin-block-start:8px">
+        <table class="table">
+            <thead><tr><th>ID</th><th>Title</th><th>Date</th><th>Time</th><th>Duration</th><th>Location</th><th>Actions</th></tr></thead>
+            <tbody>
+            <% if (events != null) { for (Event e : events) { %>
+                <tr>
+                    <td><%= e.getEventId() %></td>
+                    <td><%= e.getTitle() %></td>
+                    <td><%= e.getEventDate() %></td>
+                    <td><%= e.getEventTime() %></td>
+                    <td><%= e.getDurationMinutes() %>m</td>
+                    <td><%= e.getLocation() %></td>
+                    <td>
+                        <form class="inline-form" method="post" action="admin-update-user-event">
+                            <input type="hidden" name="eventId" value="<%= e.getEventId() %>" />
+                            <input type="hidden" name="userId" value="<%= target.getUserId() %>" />
+                            <label>Date <input type="date" name="eventDate" value="<%= e.getEventDate() %>" required /></label>
+                            <label>Time <input type="time" name="eventTime" value="<%= e.getEventTime() != null ? e.getEventTime().toString().substring(0,5) : "" %>" required /></label>
+                            <button type="submit" class="btn btn-outline btn-sm">Save</button>
+                        </form>
+                    </td>
+                </tr>
+            <% } } %>
+            </tbody>
+        </table>
+    </div>
 </div>
 </body>
 </html>

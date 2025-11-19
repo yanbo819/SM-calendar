@@ -41,7 +41,11 @@
             </div>
         </div>
         <div class="card">
-            <div class="search-row">
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px">
+                <strong>Hospitals</strong>
+                <button id="toggleSearchHosp" type="button" class="btn btn-outline btn-sm">Search</button>
+            </div>
+            <div class="search-row" id="searchRowHosp" style="display:none">
                 <input id="searchHosp" class="search-input" type="search" placeholder="Search hospitals..." />
             </div>
             <%
@@ -56,14 +60,15 @@
             <div id="accHosp" class="acc-list">
                 <% for (Location h : hospitals) { %>
                 <details class="loc-acc">
-                    <summary><span class="summary-icon">🏥</span> <span class="acc-title"><%= h.getName() %></span></summary>
+                    <summary><span class="summary-icon">🏥</span> <span class="acc-title"><%= h.getName() %></span>
+                        <span class="summary-actions">
+                            <% if (h.getMapUrl() != null && !h.getMapUrl().isEmpty()) { %>
+                            <a class="btn btn-primary btn-sm" href="<%= h.getMapUrl() %>" target="_blank" rel="noopener">Go</a>
+                            <% } %>
+                        </span>
+                    </summary>
                     <div class="acc-body">
                         <p class="acc-desc"><%= h.getDescription() %></p>
-                        <div class="gate-actions">
-                            <% if (h.getMapUrl() != null && !h.getMapUrl().isEmpty()) { %>
-                            <a class="btn btn-primary" href="<%= h.getMapUrl() %>" target="_blank" rel="noopener">Go to location →</a>
-                            <% } %>
-                        </div>
                     </div>
                 </details>
                 <% } %>
@@ -75,7 +80,16 @@
         (function(){
             const input = document.getElementById('searchHosp');
             const list = document.getElementById('accHosp');
+            const row = document.getElementById('searchRowHosp');
+            const btn = document.getElementById('toggleSearchHosp');
             if (!input || !list) return;
+            if (btn && row) {
+                btn.addEventListener('click', () => {
+                    const showing = row.style.display !== 'none';
+                    row.style.display = showing ? 'none' : '';
+                    if (!showing) setTimeout(() => input.focus(), 0);
+                });
+            }
             input.addEventListener('input', () => {
                 const q = input.value.toLowerCase();
                 for (const det of list.querySelectorAll('details.loc-acc')){

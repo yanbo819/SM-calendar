@@ -214,9 +214,29 @@ a:hover {
     font-size: var(--font-size-sm);
 }
 
+/* Consistent small button size across site */
+.btn-sm {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    font-size: var(--font-size-sm);
+    line-height: 1.2;
+}
+
 .btn-full {
     width: 100%;
     justify-content: center;
+}
+
+/* Common page container used by most JSPs */
+.form-container {
+    max-inline-size: 1100px;
+    margin: 16px auto;
+    padding: 0 16px;
+}
+
+/* Fluid media for small screens */
+img, video, canvas, svg, iframe {
+    max-inline-size: 100%;
+    block-size: auto;
 }
 
 /* Admin toolbar - consistent top buttons for admin pages */
@@ -297,6 +317,30 @@ a:hover {
 textarea.form-control {
     resize: vertical;
     min-height: 80px;
+}
+
+/* Generic form input (align with .form-control for pages using .form-input) */
+.form-input {
+    display: block;
+    width: 100%;
+    padding: var(--spacing-sm) var(--spacing-md);
+    font-size: var(--font-size-base);
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--text-primary);
+    background-color: var(--bg-primary);
+    background-clip: padding-box;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, background-color 0.15s ease-in-out;
+}
+
+.form-input:focus {
+    color: var(--text-primary);
+    background-color: var(--bg-primary);
+    border-color: var(--primary-color);
+    outline: 0;
+    box-shadow: 0 0 0 3px rgba(83, 109, 254, 0.2);
 }
 
 /* Alerts */
@@ -449,6 +493,9 @@ textarea.form-control {
         padding: var(--spacing-sm);
         font-size: var(--font-size-sm);
     }
+
+    /* Ensure nav actions wrap nicely */
+    .nav-actions { flex-wrap: wrap; gap: 6px; }
 
     /* Tables can scroll on small screens */
     .table th, .table td { padding: 8px; font-size: .9rem; }

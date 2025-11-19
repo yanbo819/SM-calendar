@@ -53,6 +53,9 @@
 .tile-create  { background: linear-gradient(135deg, #16a34a, #22c55e); }
 .tile-upload  { background: linear-gradient(135deg, #0ea5e9, #0284c7); }
 .tile-colleges{ background: linear-gradient(135deg, #f59e0b, #d97706); }
+.tile-face    { background: linear-gradient(135deg, var(--primary-color), var(--primary-color-dark)); }
+/* Admin tile styling to match button palette */
+.tile-admin   { background: linear-gradient(135deg, var(--primary-color), var(--primary-color-dark)); }
 
 /* Stats in tile */
 .tile-stats { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: var(--spacing-sm); }

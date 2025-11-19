@@ -1,6 +1,8 @@
 package com.smartcalendar.servlets;
 
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -27,8 +29,8 @@ public class AdminLocationServlet extends HttpServlet {
         HttpSession session = req.getSession(false);
         User user = session != null ? (User) session.getAttribute("user") : null;
         if (!isAdmin(user)) { resp.sendRedirect("dashboard.jsp?error=Not+authorized"); return; }
+        String category = req.getParameter("category");
         try {
-            String category = req.getParameter("category");
             List<Location> list;
             if (category != null && !category.trim().isEmpty()) {
                 list = LocationDao.listByCategory(category.trim());
@@ -36,11 +38,13 @@ public class AdminLocationServlet extends HttpServlet {
                 list = LocationDao.listAll();
             }
             req.setAttribute("locations", list);
-            req.setAttribute("currentCategory", category);
-            req.getRequestDispatcher("/admin-locations.jsp").forward(req, resp);
         } catch (SQLException e) {
-            throw new ServletException("Failed to load locations", e);
+            // Log and continue with empty list so the page still renders
+            req.setAttribute("loadError", "Unable to load locations");
+            req.setAttribute("locations", java.util.Collections.emptyList());
         }
+        req.setAttribute("currentCategory", category);
+        req.getRequestDispatcher("/admin-locations.jsp").forward(req, resp);
     }
 
     @Override
@@ -84,6 +88,26 @@ public class AdminLocationServlet extends HttpServlet {
             resp.sendRedirect("admin-locations?error=Operation+failed");
             return;
         }
-        resp.sendRedirect("admin-locations?success=Done");
+
+        String returnCategory = req.getParameter("returnCategory");
+        String categoryForRedirect = null;
+        if (returnCategory != null && !returnCategory.trim().isEmpty()) {
+            categoryForRedirect = returnCategory.trim();
+        } else if ("create".equals(action) || "update".equals(action)) {
+            String postedCat = req.getParameter("category");
+            if (postedCat != null && !postedCat.trim().isEmpty()) {
+                categoryForRedirect = postedCat.trim();
+            }
+        }
+
+        StringBuilder redirect = new StringBuilder("admin-locations");
+        boolean hasQuery = false;
+        if (categoryForRedirect != null) {
+            redirect.append("?category=")
+                    .append(URLEncoder.encode(categoryForRedirect, StandardCharsets.UTF_8));
+            hasQuery = true;
+        }
+        redirect.append(hasQuery ? "&" : "?").append("success=Done");
+        resp.sendRedirect(redirect.toString());
     }
 }

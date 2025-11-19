@@ -1,8 +1,20 @@
-<div class="admin-toolbar">
-    <a href="dashboard.jsp" class="btn btn-nav">Dashboard</a>
-    <a href="admin-event.jsp" class="btn btn-nav">Admin Publish</a>
-    <a href="admin-users" class="btn btn-nav">Manage Users</a>
-    <a href="admin-locations" class="btn btn-nav">Locations</a>
-    <a href="admin-face-config" class="btn btn-nav">Face ID Windows</a>
-    <a href="logout" class="btn btn-nav">Logout</a>
+<div class="admin-toolbar" id="adminToolbar">
+        <a href="dashboard.jsp" class="btn btn-nav" data-path="dashboard.jsp">Dashboard</a>
+        <a href="admin-event.jsp" class="btn btn-nav" data-path="admin-event">Admin Publish</a>
+        <a href="admin-users" class="btn btn-nav" data-path="admin-users">Manage Users</a>
+        <a href="admin-locations" class="btn btn-nav" data-path="admin-locations">Locations</a>
+        <a href="admin-face-config" class="btn btn-nav" data-path="admin-face-config">Face ID Windows</a>
+        <a href="logout" class="btn btn-nav" data-path="logout">Logout</a>
 </div>
+<script>
+// Highlight active admin toolbar link client-side
+(function(){
+    var path = location.pathname;
+    var links = document.querySelectorAll('#adminToolbar a[data-path]');
+    links.forEach(function(a){
+        if(path.endsWith('/' + a.getAttribute('data-path')) || path.endsWith('/' + a.getAttribute('data-path') + '.jsp')){
+            a.classList.add('active');
+        }
+    });
+})();
+</script>

@@ -7,6 +7,7 @@
     boolean isAdmin = me.getRole() != null && me.getRole().equalsIgnoreCase("admin");
     if (!isAdmin) { response.sendRedirect("dashboard.jsp?error=Not+authorized"); return; }
     List<User> users = (List<User>) request.getAttribute("users");
+    String loadError = (String) request.getAttribute("loadError");
 %>
 <!doctype html>
 <html>
@@ -54,34 +55,14 @@
 <jsp:include page="/WEB-INF/jsp/includes/admin-toolbar.jspf" />
 <% } %>
 <div class="page">
+    <% if (loadError != null) { %>
+    <div class="alert alert-error" style="max-inline-size:600px"> <%= loadError %> </div>
+    <% } %>
     <div class="header-row">
         <h2>Manage Users</h2>
         <div class="actions">
-            <button type="button" class="btn btn-primary" onclick="toggleCreate(true)">Add New User</button>
+            <a href="admin-user-new.jsp" class="btn btn-primary">Add New User</a>
         </div>
-    </div>
-    <div class="card" id="createCard" style="display:none">
-        <h3 style="margin:0 0 10px 0">Create User</h3>
-        <form method="post" action="admin-user-crud" class="inline-form">
-        <input type="hidden" name="action" value="create" />
-            <div class="grid-2">
-                <label>Username <input name="username" required /></label>
-                <label>Full Name <input name="fullName" required /></label>
-                <label>Email <input type="email" name="email" required /></label>
-                <label>Phone <input name="phone" /></label>
-                <label>Password <input type="password" name="password" required /></label>
-                <label>Role
-                    <select name="role">
-                        <option value="user">User</option>
-                        <option value="admin">Admin</option>
-                    </select>
-                </label>
-            </div>
-            <div style="display:flex;gap:8px;margin-top:10px">
-                <button type="submit" class="btn btn-primary">Create</button>
-                <button type="button" class="btn btn-outline" onclick="toggleCreate(false)">Cancel</button>
-            </div>
-        </form>
     </div>
 
     <div class="card">

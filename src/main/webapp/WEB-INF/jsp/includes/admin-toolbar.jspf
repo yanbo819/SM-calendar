@@ -4,7 +4,9 @@
         <a href="admin-users" class="btn btn-nav" data-path="admin-users">Manage Users</a>
         <a href="admin-locations" class="btn btn-nav" data-path="admin-locations">Locations</a>
         <a href="admin-face-config" class="btn btn-nav" data-path="admin-face-config">Face ID Windows</a>
-        <a href="logout" class="btn btn-nav" data-path="logout">Logout</a>
+        <a href="face-id.jsp" class="btn btn-nav" data-path="face-id.jsp">Add My New Face ID</a>
+        <a href="admin-face-enrollments" class="btn btn-nav" data-path="admin-face-enrollments">Face ID Enrollments</a>
+        
 </div>
 <script>
 // Highlight active admin toolbar link client-side

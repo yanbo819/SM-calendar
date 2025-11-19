@@ -67,11 +67,11 @@
                         <input class="form-control" type="text" name="description" placeholder="Short description" />
                     </div>
                 </div>
-                <div class="form-actions" style="justify-content:space-between; margin-top:10px;">
-                    <label style="display:inline-flex;align-items:center;gap:8px"><input type="checkbox" name="active" checked /> Active</label>
-                    <div style="display:flex; gap:8px;">
-                        <a href="admin-locations<%= currentCategory.isEmpty()? "" : ("?category="+currentCategory) %>" class="btn btn-outline">Cancel</a>
-                        <button type="submit" class="btn btn-primary">Add Location</button>
+                <div class="form-actions" style="display:flex;flex-direction:column;align-items:center;gap:14px;margin-top:18px;">
+                    <label style="display:inline-flex;align-items:center;gap:8px;font-size:.9rem;color:#374151"><input type="checkbox" name="active" checked /> Active</label>
+                    <div style="display:flex; gap:12px; justify-content:center;">
+                        <a href="admin-locations<%= currentCategory.isEmpty()? "" : ("?category="+currentCategory) %>" class="btn btn-outline" style="min-inline-size:140px">Cancel</a>
+                        <button type="submit" class="btn btn-primary" style="min-inline-size:140px">Add Location</button>
                     </div>
                 </div>
             </form>

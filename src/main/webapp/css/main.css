@@ -162,6 +162,7 @@ a:hover {
     border-radius: 999px; /* pill buttons */
     transition: transform .15s ease, background-color .15s ease, box-shadow .15s ease;
     box-shadow: 0 1px 2px rgba(16,24,40,.06);
+    justify-content: center; /* center text & icon horizontally */
 }
 
 .btn:focus { outline: 0; box-shadow: 0 0 0 3px rgba(83, 109, 254, 0.25); }
@@ -260,6 +261,9 @@ img, video, canvas, svg, iframe {
     background: #ffffff;
     color: var(--text-primary);
     border: 1px solid var(--border-color) !important;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center; /* ensure centered text in fixed-width admin nav buttons */
 }
 
 .btn-nav:hover {

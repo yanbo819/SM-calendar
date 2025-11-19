@@ -68,6 +68,16 @@ public class LocationDao {
         }
     }
 
+    public static Location findById(int id) throws SQLException {
+        try (Connection conn = DatabaseUtil.getConnection();
+             PreparedStatement ps = conn.prepareStatement("SELECT location_id, name, category, description, map_url, is_active, created_at, updated_at FROM locations WHERE location_id=?")) {
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) return map(rs);
+        }
+        return null;
+    }
+
     private static Location map(ResultSet rs) throws SQLException {
         Location l = new Location();
         l.setLocationId(rs.getInt("location_id"));

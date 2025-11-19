@@ -12,7 +12,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Face ID</title>
+    <title>Add My New Face ID</title>
     <link rel="stylesheet" href="css/main.css">
     <style>
         .card{background:#fff;border:1px solid #e5e7eb;border-radius:12px;box-shadow:0 1px 2px rgba(0,0,0,.04);padding:24px}
@@ -34,7 +34,6 @@
             <h1 class="nav-title"><a href="dashboard.jsp">Smart Calendar</a></h1>
             <div class="nav-actions">
                 <span class="user-welcome">Welcome, <%= user.getFullName() %>!</span>
-                <a href="logout" class="btn btn-outline">Logout</a>
             </div>
         </div>
     </nav>
@@ -42,168 +41,76 @@
     <div class="form-container">
         <div class="form-header" style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
             <div>
-                <h2 class="page-title">Face ID</h2>
-                <div class="page-sub" id="gatingMessage">Allowed only Monday & Wednesday 08:00–12:00 and 12:00–17:00</div>
+                <h2 class="page-title">Add My New Face ID</h2>
+                <div class="page-sub">Use your camera to capture and save your Face ID.</div>
             </div>
             <a href="dashboard.jsp" class="btn btn-outline">← Back to Dashboard</a>
         </div>
         <div class="card">
-            <p>Try the basic Face ID (WebAuthn) demo below. This uses your device’s platform authenticator (Touch ID / Face ID) if available.</p>
+            <video id="enrollVideo" autoplay playsinline style="inline-size:100%;background:#000;border-radius:8px;aspect-ratio:4/3"></video>
+            <canvas id="enrollCanvas" style="display:none"></canvas>
             <div class="row">
-                <button id="btn-register" class="btn-primary" type="button" disabled>Register this device</button>
-                <button id="btn-verify" class="btn btn-outline" type="button" disabled>Verify with Face ID</button>
+                <button id="captureBtn" class="btn-primary" type="button">Capture</button>
+                <button id="saveBtn" class="btn btn-outline" type="button" disabled>Save Face ID</button>
             </div>
-            <div id="status" class="status muted">Idle</div>
-            <p class="page-sub" style="margin-top:12px">Notes: Works best on localhost over HTTPS-capable environments. On some browsers, a PIN or Touch ID prompt may appear instead of Face ID.</p>
+            <div id="status" class="status muted">Requesting camera…</div>
         </div>
 
         <script>
-            const $status = document.getElementById('status');
-            const setStatus = (msg, cls) => {
-                $status.className = 'status ' + (cls || '');
-                $status.textContent = msg;
-            };
+            const statusEl = document.getElementById('status');
+            const video = document.getElementById('enrollVideo');
+            const canvas = document.getElementById('enrollCanvas');
+            const btnCapture = document.getElementById('captureBtn');
+            const btnSave = document.getElementById('saveBtn');
+            let stream = null;
+            let captured = null;
 
-            function b64ToArrayBuffer(b64url) {
-                const pad = '='.repeat((4 - b64url.length % 4) % 4);
-                const base64 = (b64url.replace(/-/g, '+').replace(/_/g, '/') + pad);
-                const binary = atob(base64);
-                const bytes = new Uint8Array(binary.length);
-                for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
-                return bytes.buffer;
-            }
+            (async function initCam(){
+                try {
+                    stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' }, audio: false });
+                    video.srcObject = stream;
+                    statusEl.textContent = 'Center your face, then click Capture.';
+                } catch(e) {
+                    statusEl.textContent = 'Unable to access camera. Allow permission and reload.';
+                }
+            })();
 
-            function arrayBufferToB64url(buf) {
-                const bytes = new Uint8Array(buf);
-                let binary = '';
-                for (let i = 0; i < bytes.byteLength; i++) binary += String.fromCharCode(bytes[i]);
-                const base64 = btoa(binary);
-                return base64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/,'');
-            }
+            btnCapture.addEventListener('click', function(){
+                const w = video.videoWidth || 640;
+                const h = video.videoHeight || 480;
+                canvas.width = w; canvas.height = h;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(video, 0, 0, w, h);
+                captured = canvas.toDataURL('image/png');
+                statusEl.textContent = 'Captured. Click Save Face ID to store.';
+                btnSave.disabled = false;
+            });
 
-            async function getChallenge(payload) {
-                const res = await fetch('webauthn/challenge');
-                if (!res.ok) throw new Error('Failed to get challenge');
-                return res.json();
-            }
-
-            async function getAllowList() {
-                const res = await fetch('webauthn/allow');
-                if (!res.ok) throw new Error('Failed to get allow list');
-                return res.json();
-            }
-
-            function withinAllowedWindow(d) {
-                const day = d.getDay();
-                if (!(day === 1 || day === 3)) return false;
-                const minutes = d.getHours()*60 + d.getMinutes();
-                const inFirst = minutes >= 8*60 && minutes < 12*60;
-                const inSecond = minutes >= 12*60 && minutes < 17*60;
-                return inFirst || inSecond;
-            }
-
-            let currentPosition = null;
-            function requestLocationIfNeeded() {
-                if (!navigator.geolocation) return Promise.resolve(null);
+            async function getLocation() {
+                if (!navigator.geolocation) return null;
                 return new Promise(resolve => {
-                    navigator.geolocation.getCurrentPosition(pos => {
-                        currentPosition = pos.coords;
-                        resolve(currentPosition);
-                    }, () => resolve(null), { enableHighAccuracy:true, timeout:8000 });
+                    navigator.geolocation.getCurrentPosition(pos => resolve(pos.coords), () => resolve(null), { enableHighAccuracy:true, timeout:8000 });
                 });
             }
 
-            async function prepareEnvironment() {
-                const now = new Date();
-                const allowed = withinAllowedWindow(now);
-                const regBtn = document.getElementById('btn-register');
-                const verBtn = document.getElementById('btn-verify');
-                const msg = document.getElementById('gatingMessage');
-                if (allowed) {
-                    regBtn.disabled = false;
-                    verBtn.disabled = false;
-                    msg.textContent = 'Face ID is available now.';
-                } else {
-                    msg.textContent = 'Face ID unavailable (Mon & Wed 08:00–12:00 and 12:00–17:00 only).';
-                }
-                await requestLocationIfNeeded();
-            }
-            prepareEnvironment();
-
-            document.getElementById('btn-register').addEventListener('click', async () => {
+            btnSave.addEventListener('click', async function(){
+                if (!captured) { alert('Capture first.'); return; }
                 try {
-                    setStatus('Preparing registration…');
-                    const { challenge, rpId } = await getChallenge();
-
-                    const publicKey = {
-                        challenge: b64ToArrayBuffer(challenge),
-                        rp: { name: 'Smart Calendar', id: rpId },
-                        user: {
-                            id: new Uint8Array([1,2,3,4]), // demo only; server-side user id mapping not required for this minimal flow
-                            name: 'user',
-                            displayName: 'User'
-                        },
-                        pubKeyCredParams: [{ type: 'public-key', alg: -7 }],
-                        authenticatorSelection: { authenticatorAttachment: 'platform', userVerification: 'preferred' },
-                        timeout: 60000,
-                        attestation: 'none'
-                    };
-
-                    setStatus('Prompting device to register…');
-                    const cred = await navigator.credentials.create({ publicKey });
-                    const rawIdB64 = arrayBufferToB64url(cred.rawId);
-
-                    const body = { credentialId: rawIdB64 };
-                    if (currentPosition) { body.latitude = currentPosition.latitude; body.longitude = currentPosition.longitude; }
-                    const res = await fetch('webauthn/register', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(body)
-                    });
+                    statusEl.textContent = 'Obtaining location…';
+                    const coords = await getLocation();
+                    statusEl.textContent = 'Saving…';
+                    const payload = { image: captured };
+                    if (coords) { payload.latitude = String(coords.latitude); payload.longitude = String(coords.longitude); }
+                    const res = await fetch('enroll-face-id', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
                     const data = await res.json();
-                    if (data.ok) setStatus('Device registered. You can now Verify with Face ID.', 'success');
-                    else setStatus('Registration failed. Try again.', 'error');
-                } catch (e) {
-                    console.error(e);
-                    setStatus('Registration error: ' + e.message, 'error');
-                }
-            });
-
-            document.getElementById('btn-verify').addEventListener('click', async () => {
-                try {
-                    setStatus('Preparing verification…');
-                    const [{ challenge, rpId }, allow] = await Promise.all([getChallenge(), getAllowList()]);
-
-                    const publicKey = {
-                        challenge: b64ToArrayBuffer(challenge),
-                        rpId,
-                        allowCredentials: allow.map(id => ({ type: 'public-key', id: b64ToArrayBuffer(id), transports: ['internal'] })),
-                        userVerification: 'preferred',
-                        timeout: 60000
-                    };
-
-                    if (!publicKey.allowCredentials.length) {
-                        setStatus('No registered device found. Please register first.', 'error');
-                        return;
+                    if (data && data.ok) {
+                        statusEl.textContent = 'Saved. You can now use Face ID Windows.';
+                        alert('Face ID saved successfully.');
+                    } else {
+                        statusEl.textContent = 'Save failed. Try again.';
                     }
-
-                    setStatus('Prompting device to verify…');
-                    const assertion = await navigator.credentials.get({ publicKey });
-                    const rawIdB64 = arrayBufferToB64url(assertion.rawId);
-
-                    const body = { credentialId: rawIdB64 };
-                    if (currentPosition) { body.latitude = currentPosition.latitude; body.longitude = currentPosition.longitude; }
-                    const res = await fetch('webauthn/assert', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(body)
-                    });
-                    const data = await res.json();
-                    if (data.ok) setStatus('Face ID verified for this session.', 'success');
-                    else setStatus('Verification failed. Try again or re-register.', 'error');
-                } catch (e) {
-                    console.error(e);
-                    setStatus('Verification error: ' + e.message, 'error');
+                } catch(e) {
+                    statusEl.textContent = 'Error saving Face ID.';
                 }
             });
         </script>

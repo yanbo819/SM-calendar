@@ -49,9 +49,10 @@ public class AdminUsersServlet extends HttpServlet {
                 users.add(u);
             }
         } catch (SQLException e) {
-            throw new ServletException("Failed to load users", e);
+            System.err.println("[AdminUsersServlet] Failed to load users: " + e.getMessage());
+            req.setAttribute("loadError", "Could not load users list.");
         }
-    req.setAttribute("users", users);
-    req.getRequestDispatcher("/admin-users.jsp").forward(req, resp);
+        req.setAttribute("users", users);
+        req.getRequestDispatcher("/admin-users.jsp").forward(req, resp);
     }
 }

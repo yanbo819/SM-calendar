@@ -88,9 +88,7 @@
                 <span class="user-welcome">
                     <%= LanguageUtil.getText(lang, "dashboard.welcome") %>, <%= user.getFullName() %>!
                 </span>
-                <a href="logout" class="btn btn-outline">
-                    <%= LanguageUtil.getText(lang, "nav.logout") %>
-                </a>
+                
             </div>
         </div>
     </nav>

@@ -33,30 +33,23 @@
 <% if (isAdmin) { %>
 <jsp:include page="/WEB-INF/jsp/includes/admin-toolbar.jspf" />
 <% } %>
-<div class="form-container">
-    <h2>Face Recognition Windows</h2>
-    <p style="margin-block-start:4px;color:#6b7280;font-size:.9rem">Configure allowed days and time ranges for Face Recognition usage.</p>
-
-    <form method="post" action="admin-face-config" style="margin-block-start:12px;display:flex;flex-wrap:wrap;gap:8px;align-items:flex-end">
-        <input type="hidden" name="action" value="create" />
+<style>
+    .page-wrap { max-inline-size: 900px; margin: 16px auto; padding: 0 16px; }
+    .card { background:#fff; border:1px solid #e5e7eb; border-radius:12px; box-shadow:0 1px 2px rgba(0,0,0,.04); padding:16px; }
+    .page-title { margin:0; font-size:1.25rem; font-weight:600; }
+    .page-sub { color:#6b7280; margin-block-start:4px; }
+    .action-btn-sm { min-inline-size: 90px; }
+</style>
+<div class="page-wrap">
+    <div class="form-header" style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
         <div>
-            <label>Day<br>
-                <select name="dayOfWeek" required>
-                    <option value="1">Monday</option>
-                    <option value="2">Tuesday</option>
-                    <option value="3">Wednesday</option>
-                    <option value="4">Thursday</option>
-                    <option value="5">Friday</option>
-                    <option value="6">Saturday</option>
-                    <option value="7">Sunday</option>
-                </select>
-            </label>
+            <h2 class="page-title">Face Recognition Windows</h2>
+            <div class="page-sub">Configure allowed days and time ranges for Face Recognition usage.</div>
         </div>
-        <div><label>Start (HH:MM)<br><input type="text" name="start" placeholder="08:00" required pattern="[0-2][0-9]:[0-5][0-9]"></label></div>
-        <div><label>End (HH:MM)<br><input type="text" name="end" placeholder="12:00" required pattern="[0-2][0-9]:[0-5][0-9]"></label></div>
-        <div><button type="submit" class="btn btn-primary">Add Window</button></div>
-    </form>
+        <a class="btn btn-primary" href="admin-face-window-new.jsp">+ Add Window</a>
+    </div>
 
+    <div class="card" style="margin-top:12px">
     <table>
         <thead>
             <tr><th>ID</th><th>Day</th><th>Start</th><th>End</th><th>Actions</th></tr>
@@ -75,7 +68,7 @@
                     <form method="post" action="admin-face-config" style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
                         <input type="hidden" name="action" value="update" />
                         <input type="hidden" name="id" value="<%= fc.getId() %>" />
-                        <select name="dayOfWeek" required>
+                        <select name="dayOfWeek" class="form-control" required style="inline-size:10rem">
                             <option value="1" <%= fc.getDayOfWeek()==1?"selected":"" %>>Monday</option>
                             <option value="2" <%= fc.getDayOfWeek()==2?"selected":"" %>>Tuesday</option>
                             <option value="3" <%= fc.getDayOfWeek()==3?"selected":"" %>>Wednesday</option>
@@ -86,24 +79,25 @@
                         </select>
                 </td>
                 <td>
-                        <input type="text" name="start" value="<%= startStr %>" required pattern="[0-2][0-9]:[0-5][0-9]" style="inline-size:6.5rem">
+                        <input type="text" name="start" value="<%= startStr %>" required pattern="[0-2][0-9]:[0-5][0-9]" class="form-control" style="inline-size:9rem">
                 </td>
                 <td>
-                        <input type="text" name="end" value="<%= endStr %>" required pattern="[0-2][0-9]:[0-5][0-9]" style="inline-size:6.5rem">
+                        <input type="text" name="end" value="<%= endStr %>" required pattern="[0-2][0-9]:[0-5][0-9]" class="form-control" style="inline-size:9rem">
                 </td>
                 <td>
-                        <button type="submit" class="btn btn-primary btn-sm">Update</button>
+                        <button type="submit" class="btn btn-primary btn-sm action-btn-sm">Update</button>
                     </form>
                     <form method="post" action="admin-face-config" onsubmit="return confirm('Delete this window?');" style="display:inline-block;margin-inline-start:6px">
                         <input type="hidden" name="action" value="delete" />
                         <input type="hidden" name="id" value="<%= fc.getId() %>" />
-                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                        <button type="submit" class="btn btn-danger btn-sm action-btn-sm">Delete</button>
                     </form>
                 </td>
             </tr>
         <% } } %>
         </tbody>
     </table>
+    </div>
 </div>
 </body>
 </html>

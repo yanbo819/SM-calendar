@@ -9,7 +9,6 @@ import java.util.List;
 
 import com.smartcalendar.models.FaceConfig;
 import com.smartcalendar.utils.DatabaseUtil;
-
 public class FaceConfigDao {
     public static List<FaceConfig> getActiveWindows() throws SQLException {
         List<FaceConfig> list = new ArrayList<>();

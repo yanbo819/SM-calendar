@@ -51,7 +51,7 @@
             <h1 class="nav-title"><a href="dashboard.jsp">Smart Calendar</a></h1>
             <div class="nav-actions">
                 <span class="user-welcome">Welcome, <%= user.getFullName() %>!</span>
-                <a href="logout" class="btn btn-outline">Logout</a>
+                
             </div>
         </div>
     </nav>

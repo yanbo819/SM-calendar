@@ -119,6 +119,11 @@ public class CreateEventServlet extends HttpServlet {
                 // Save event
                 int newEventId = saveEventAndReturnId(event);
                 if (newEventId > 0) {
+                    // If admin created this reminder/event, broadcast notification to all users
+                    boolean isAdminCreator = user.getRole() != null && user.getRole().equalsIgnoreCase("admin");
+                    if (isAdminCreator) {
+                        broadcastAdminReminder(newEventId, event.getTitle(), event.getEventDate(), event.getEventTime());
+                    }
                     // Save extra reminders if provided and valid (dedupe against primary and each other)
                     String primary = String.valueOf(reminder);
                     if (reminder2 != null && !reminder2.equals(primary)) {
@@ -133,13 +138,11 @@ public class CreateEventServlet extends HttpServlet {
                     errorMessage = "Failed to create event. Please try again.";
                 }
                 
-            } catch (ParseException e) {
-                errorMessage = "Invalid date or time format";
-            } catch (NumberFormatException e) {
-                errorMessage = "Invalid number format";
-            } catch (Exception e) {
-                errorMessage = "An error occurred while creating the event";
-                System.err.println("Error creating event: " + e.getMessage());
+            } catch (ParseException | NumberFormatException e) {
+                errorMessage = "Invalid date/time or number format";
+            } catch (SQLException e) {
+                errorMessage = "Database error while creating event";
+                System.err.println("SQL error creating event: " + e.getMessage());
             }
         }
         
@@ -288,6 +291,31 @@ public class CreateEventServlet extends HttpServlet {
             stmt.executeUpdate();
         } catch (SQLException e) {
             System.err.println("Error saving additional reminder: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Broadcast a notification for an admin-created reminder/event to all users.
+     */
+    private void broadcastAdminReminder(int eventId, String title, Date date, Time time) {
+        String selectUsers = "SELECT user_id FROM users WHERE is_active = TRUE";
+        String insertNotif = "INSERT INTO notifications (event_id, user_id, message, notification_time, is_sent) VALUES (?,?,?,?,FALSE)";
+        try (Connection conn = DatabaseUtil.getConnection();
+             PreparedStatement psUsers = conn.prepareStatement(selectUsers);
+             ResultSet rs = psUsers.executeQuery()) {
+            while (rs.next()) {
+                int uid = rs.getInt(1);
+                String msg = "New admin reminder: " + title + " (" + date + " " + (time != null ? time.toString().substring(0,5) : "") + ")";
+                try (PreparedStatement psIns = conn.prepareStatement(insertNotif)) {
+                    psIns.setInt(1, eventId);
+                    psIns.setInt(2, uid);
+                    psIns.setString(3, msg);
+                    psIns.setTimestamp(4, new java.sql.Timestamp(System.currentTimeMillis()));
+                    psIns.executeUpdate();
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error broadcasting admin reminder notifications: " + e.getMessage());
         }
     }
 }

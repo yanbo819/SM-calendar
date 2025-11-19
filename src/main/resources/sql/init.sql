@@ -85,6 +85,19 @@ CREATE TABLE IF NOT EXISTS webauthn_credentials (
     FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
 );
 
+-- Stored user face image + simple perceptual hash for demo recognition
+CREATE TABLE IF NOT EXISTS user_faces (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL UNIQUE,
+    image BLOB,
+    phash VARCHAR(64),
+    latitude DOUBLE,
+    longitude DOUBLE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
+);
+
 -- Face ID attempt audit log (captures location + success for register/verify actions)
 CREATE TABLE IF NOT EXISTS faceid_attempts (
     id INT AUTO_INCREMENT PRIMARY KEY,

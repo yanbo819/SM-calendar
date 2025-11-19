@@ -95,14 +95,14 @@
     <nav class="main-nav">
         <div class="nav-container">
             <h1 class="nav-title"><%= LanguageUtil.getText(lang, "app.title") %></h1>
-            <div class="nav-actions">
+            <div class="nav-actions" style="display:flex;align-items:center;gap:8px;position:relative;">
                 <span class="user-welcome">
                     <%= LanguageUtil.getText(lang, "dashboard.welcome") %>, <%= user.getFullName() %>!
                 </span>
-                    <a id="faceIdBtn" href="face-id.jsp" class="btn btn-outline" style="display:none">Face ID</a>
-                    <% if (!isAdmin) { %>
-                    <a href="logout" class="btn btn-outline"><%= LanguageUtil.getText(lang, "nav.logout") %></a>
-                    <% } %>
+                <button id="navMoreToggle" class="btn btn-outline" title="Menu" aria-haspopup="true" aria-expanded="false" style="padding-inline:12px">⋮</button>
+                <div id="navMoreMenu" style="display:none;position:absolute;inset-block-start:100%;inset-inline-end:0;background:#fff;border:1px solid #ddd;border-radius:8px;padding:8px;min-inline-size:160px;box-shadow:0 4px 12px rgba(0,0,0,.12);z-index:50">
+                    <a href="logout" class="btn btn-outline" style="inline-size:100%;margin-block:4px"><%= LanguageUtil.getText(lang, "nav.logout") %></a>
+                </div>
             </div>
         </div>
     </nav>
@@ -267,23 +267,50 @@
                 </div>
                 <span class="tile-cta">Open →</span>
             </a>
-            <!-- Tile 5: Face Recognition (time-gated) -->
-            <button id="faceRecTile" class="tile tile-face" type="button" title="Face Recognition">
+            <!-- Tile 5: Face ID Windows (management / scanning gated by time) -->
+            <button id="faceRecTile" class="tile tile-face" type="button" title="Face ID Windows">
                 <div class="tile-content">
                     <div class="tile-header">
                         <span class="tile-icon">🧑‍🦰</span>
-                        <h3>Face Recognition</h3>
+                        <h3>Face ID Windows</h3>
                     </div>
-                        <p class="tile-desc">Use Face Recognition (windows configured by admin).</p>
+                        <p class="tile-desc">Use Face ID during allowed windows configured by admin.</p>
                 </div>
                 <span class="tile-cta">Scan →</span>
             </button>
+            <!-- Tile 6: Add My New Face ID (enrollment) -->
+            <a class="tile tile-face-enroll" href="face-id.jsp">
+                <div class="tile-content">
+                    <div class="tile-header">
+                        <span class="tile-icon">🧪</span>
+                        <h3>Add My New Face ID</h3>
+                    </div>
+                    <p class="tile-desc">Register a new face ID for recognition access.</p>
+                </div>
+                <span class="tile-cta">Enroll →</span>
+            </a>
         </div>
     </div>
 
     <script>
         // Request notification permission when page loads
         document.addEventListener('DOMContentLoaded', function() {
+            // Three-dot menu toggle
+            const moreToggle = document.getElementById('navMoreToggle');
+            const moreMenu = document.getElementById('navMoreMenu');
+            if (moreToggle && moreMenu) {
+                moreToggle.addEventListener('click', function(){
+                    const open = moreMenu.style.display !== 'none';
+                    moreMenu.style.display = open ? 'none' : 'block';
+                    moreToggle.setAttribute('aria-expanded', open ? 'false' : 'true');
+                });
+                document.addEventListener('click', function(e){
+                    if (!moreMenu.contains(e.target) && e.target !== moreToggle) {
+                        moreMenu.style.display = 'none';
+                        moreToggle.setAttribute('aria-expanded','false');
+                    }
+                });
+            }
             if ('Notification' in window && Notification.permission === 'default') {
                 Notification.requestPermission();
             }
@@ -304,12 +331,7 @@
                 });
             }
 
-            // Show/hide nav face button if within window
-            const faceBtn = document.getElementById('faceIdBtn');
-            const now = new Date();
-            if (faceBtn && withinAllowedWindow(now)) {
-                faceBtn.style.display = 'inline-block';
-            }
+            // Face add button is always visible; windows gating handled on click
 
             // Face recognition tile handler
             const faceTile = document.getElementById('faceRecTile');
@@ -361,6 +383,16 @@
                     return;
                 }
 
+                // Require enrollment before scanning
+                const hasFace = (function(){
+                    try { return <%= (new Boolean(true ? (com.smartcalendar.dao.UserFaceDao.hasFace(user.getUserId())) : false)).toString() %>; } catch(e){ return false; }
+                })();
+                if (!hasFace) {
+                    const go = confirm('You need to add your Face ID first. Go to enrollment now?');
+                    if (go) { window.location.href = 'face-id.jsp'; }
+                    return;
+                }
+
                 // Try to get geolocation first (best-effort)
                 let coords = null;
                 if (navigator.geolocation) {
@@ -395,12 +427,21 @@
                     stopStream();
                     faceModal.style.display = 'none';
 
-                    // Show success to user. You can POST dataUrl and coords to your verification endpoint if you have one.
-                    let msg = 'Scan complete.';
-                    if (coords) msg += ` Location: ${coords.latitude.toFixed(5)}, ${coords.longitude.toFixed(5)}`;
-                    alert(msg);
-                    // Example: POST to server endpoint (disabled by default). Uncomment and change URL if needed.
-                    // fetch('/smart-calendar/face-recognize', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ image: dataUrl, lat: coords?.latitude, lon: coords?.longitude }) });
+                    // Send to backend for simple recognition
+                    try {
+                        const res = await fetch('face-recognize', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ image: dataUrl }) });
+                        const data = await res.json();
+                        if (data && data.ok) {
+                            alert('Face recognized successfully.');
+                        } else if (data && data.reason === 'no_enrollment') {
+                            alert('No Face ID enrolled. Please add your Face ID first.');
+                            window.location.href = 'face-id.jsp';
+                        } else {
+                            alert('Face not recognized.');
+                        }
+                    } catch(err) {
+                        alert('Error contacting recognition service.');
+                    }
                 };
             });
         });

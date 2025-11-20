@@ -48,40 +48,45 @@
     </div>
 </nav>
 <div class="page-wrapper">
-    <div class="breadcrumb">Home / Admin Tools</div>
-    <h2 style="margin:0 0 4px"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.tools") %></h2>
-    <p style="margin:0 0 20px;color:#555"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.tools" ) %></p>
     <div class="admin-grid">
         <div class="tool-card">
             <h3>🧑‍🦰 <%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.face.windows") %></h3>
             <p><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.face.windows") %></p>
-            <a href="admin-face-config" class="btn btn-outline"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.face.windows") %></a>
+            <a href="admin-face-config?noheader=1" target="_blank" rel="noopener" class="btn btn-primary"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.face.windows") %></a>
         </div>
         <div class="tool-card">
             <h3>📸 <%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.face.enrollments") %></h3>
             <p><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.face.enrollments") %></p>
-            <a href="admin-face-enrollments" class="btn btn-outline"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.face.enrollments") %></a>
+            <a href="admin-face-enrollments?noheader=1" target="_blank" rel="noopener" class="btn btn-primary"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.face.enrollments") %></a>
         </div>
         <div class="tool-card">
             <h3>👥 <%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.users") %></h3>
             <p><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.users") %></p>
-            <a href="admin-users" class="btn btn-outline"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.users") %></a>
+            <a href="admin-users?noheader=1" target="_blank" rel="noopener" class="btn btn-primary"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.users") %></a>
         </div>
         <div class="tool-card">
             <h3>📍 <%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.locations") %></h3>
             <p><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.locations") %></p>
-            <a href="admin-locations?category=gate" class="btn btn-outline"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.locations") %></a>
+            <a href="admin-locations?category=gate&noheader=1" target="_blank" rel="noopener" class="btn btn-primary"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.locations") %></a>
         </div>
         <div class="tool-card">
             <h3>🔔 <%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.reminders") %></h3>
             <p><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.reminders") %></p>
-            <a href="create-event.jsp" class="btn btn-outline"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "dashboard.create_reminder") %></a>
+            <a href="create-event.jsp?noheader=1" target="_blank" rel="noopener" class="btn btn-primary"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "dashboard.create_reminder") %></a>
         </div>
         <div class="tool-card">
             <h3>➕ <%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.face.add") %></h3>
             <p><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.face.add") %></p>
-            <a href="face-id.jsp" class="btn btn-outline"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.face.add") %></a>
+            <a href="face-id.jsp?noheader=1" target="_blank" rel="noopener" class="btn btn-primary"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.face.add") %></a>
         </div>
+        <div class="tool-card">
+            <h3>🤝 CST Shining Team</h3>
+            <p>Manage departments and volunteers (names, phone, nationality, gender, photo).</p>
+            <a href="admin-cst-team?noheader=1" target="_blank" rel="noopener" class="btn btn-primary">Open Manager</a>
+        </div>
+    </div>
+    <div style="margin-top:20px;display:flex;justify-content:center">
+        <a href="dashboard.jsp" class="btn btn-outline" style="min-inline-size:160px">Go Back</a>
     </div>
 </div>
 </body>

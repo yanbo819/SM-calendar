@@ -11,6 +11,7 @@ import java.sql.Types;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
+import com.smartcalendar.dao.NotificationDao;
 import com.smartcalendar.models.Event;
 import com.smartcalendar.models.User;
 import com.smartcalendar.utils.DatabaseUtil;
@@ -124,6 +125,11 @@ public class CreateEventServlet extends HttpServlet {
                     if (isAdminCreator) {
                         broadcastAdminReminder(newEventId, event.getTitle(), event.getEventDate(), event.getEventTime());
                     }
+                    // Always create a personal notification for the creator with creation time
+                    try {
+                        String createMsg = "Created event: " + event.getTitle() + " (" + event.getEventDate() + (event.getEventTime()!=null?" " + event.getEventTime().toString().substring(0,5):"") + ")";
+                        NotificationDao.create(newEventId, user.getUserId(), createMsg, new java.sql.Timestamp(System.currentTimeMillis()));
+                    } catch (SQLException ignored) {}
                     // Save extra reminders if provided and valid (dedupe against primary and each other)
                     String primary = String.valueOf(reminder);
                     if (reminder2 != null && !reminder2.equals(primary)) {

@@ -27,13 +27,13 @@
     </style>
 </head>
 <body>
-<nav class="main-nav">
+<%
+    boolean noHeader = "1".equals(request.getParameter("noheader"));
+%>
+<nav class="main-nav" <%= noHeader?"style=\"display:none\"":"" %>>
     <div class="nav-container">
         <h1 class="nav-title"><a href="dashboard.jsp">Smart Calendar</a></h1>
-        <div class="nav-actions">
-            <a href="dashboard.jsp" class="btn btn-outline">Dashboard</a>
-            <a href="logout" class="btn btn-outline">Logout</a>
-        </div>
+        <div class="nav-actions"></div>
     </div>
 </nav>
 <div class="card">
@@ -72,6 +72,9 @@
         <% }} %>
         </tbody>
     </table>
+    <div style="margin-top:20px;display:flex;justify-content:center">
+        <a href="admin-tools.jsp" class="btn btn-outline" style="min-inline-size:160px">Go Back</a>
+    </div>
 </div>
 </body>
 </html>

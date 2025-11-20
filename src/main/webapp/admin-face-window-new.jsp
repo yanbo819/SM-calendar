@@ -33,21 +33,14 @@
     </script>
     </head>
 <body>
-    <nav class="main-nav">
-        <div class="nav-container">
-            <h1 class="nav-title"><a href="dashboard.jsp">Smart Calendar</a></h1>
-            <div class="nav-actions">
-                <span class="user-welcome">Admin</span>
-            </div>
-        </div>
-    </nav>
+    <!-- Removed top navigation for cleaner standalone admin window creation -->
     <div class="page-wrap">
         <div class="form-header" style="display:flex; align-items:center; justify-content:space-between; gap:12px;">
             <div>
                 <h2 class="page-title">Add Face Recognition Window</h2>
                 <div class="page-sub">Choose the day and time range when Face Recognition is available.</div>
             </div>
-            <a href="admin-face-config" class="btn btn-outline">← Go Back</a>
+            <!-- Removed top-right Go Back per request; bottom actions retain navigation -->
         </div>
 
         <form class="card" method="post" action="admin-face-config">
@@ -77,9 +70,9 @@
                 </div>
             </div>
 
-            <div class="actions">
-                <button type="button" class="btn" onclick="goBack()">Go Back</button>
-                <button type="submit" class="btn btn-primary">Save</button>
+            <div class="actions" style="justify-content:center">
+                <button type="button" class="btn btn-outline" onclick="goBack()" style="min-inline-size:160px">Go Back</button>
+                <button type="submit" class="btn btn-primary" style="min-inline-size:160px">Save</button>
             </div>
         </form>
     </div>

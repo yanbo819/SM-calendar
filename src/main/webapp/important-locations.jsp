@@ -43,7 +43,6 @@
                 <h2 class="page-title">Important Locations</h2>
                 <div class="page-sub">Quick access to essential places and information around you.</div>
             </div>
-            <a href="dashboard.jsp" class="btn btn-outline">← Back to Dashboard</a>
         </div>
 
         <div class="card">
@@ -92,6 +91,9 @@
                     </div>
                 </a>
             </div>
+        </div>
+        <div style="display:grid;place-items:center;margin-top:24px">
+            <a href="dashboard.jsp" class="btn btn-outline" style="min-inline-size:160px">Go Back</a>
         </div>
     </div>
 </body>

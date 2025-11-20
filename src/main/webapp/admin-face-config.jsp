@@ -24,13 +24,16 @@
     </style>
 </head>
 <body>
-<nav class="main-nav">
+<%
+    boolean noHeader = "1".equals(request.getParameter("noheader"));
+%>
+<nav class="main-nav" <%= noHeader?"style=\"display:none\"":"" %>>
     <div class="nav-container">
         <h1 class="nav-title"><a href="dashboard.jsp">Smart Calendar</a></h1>
         <div class="nav-actions"><!-- admin toolbar below --></div>
     </div>
 </nav>
-<% if (isAdmin) { %>
+<% if (isAdmin && !noHeader) { %>
 <jsp:include page="/WEB-INF/jsp/includes/admin-toolbar.jspf" />
 <% } %>
 <style>
@@ -98,6 +101,9 @@
         </tbody>
     </table>
     </div>
+</div>
+<div style="margin-block-start:16px;display:flex;justify-content:center">
+    <a href="admin-tools.jsp" class="btn btn-outline" style="min-inline-size:160px">Go Back</a>
 </div>
 </body>
 </html>

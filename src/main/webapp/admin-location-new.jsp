@@ -24,19 +24,10 @@
     </style>
 </head>
 <body>
-<nav class="main-nav">
-    <div class="nav-container">
-        <h1 class="nav-title"><a href="dashboard.jsp">Smart Calendar</a></h1>
-        <div class="nav-actions"><!-- admin toolbar below --></div>
-    </div>
-</nav>
-<% if (isAdmin) { %>
-<jsp:include page="/WEB-INF/jsp/includes/admin-toolbar.jspf" />
-<% } %>
+<!-- Navigation and admin toolbar removed for streamlined new location form -->
 <div class="form-container page">
-    <div class="header-row">
-        <h2>Add New Location</h2>
-        <a href="admin-locations<%= currentCategory.isEmpty()? "" : ("?category="+currentCategory) %>" class="btn btn-outline">← Back to Manage Locations</a>
+    <div class="header-row" style="justify-content:center;flex-direction:column;text-align:center">
+        <h2 style="margin:0">Add New Location</h2>
     </div>
 
     <div class="card">
@@ -70,7 +61,7 @@
                 <div class="form-actions" style="display:flex;flex-direction:column;align-items:center;gap:14px;margin-top:18px;">
                     <label style="display:inline-flex;align-items:center;gap:8px;font-size:.9rem;color:#374151"><input type="checkbox" name="active" checked /> Active</label>
                     <div style="display:flex; gap:12px; justify-content:center;">
-                        <a href="admin-locations<%= currentCategory.isEmpty()? "" : ("?category="+currentCategory) %>" class="btn btn-outline" style="min-inline-size:140px">Cancel</a>
+                        <a href="admin-tools.jsp" class="btn btn-outline" style="min-inline-size:140px">Go Back</a>
                         <button type="submit" class="btn btn-primary" style="min-inline-size:140px">Add Location</button>
                     </div>
                 </div>

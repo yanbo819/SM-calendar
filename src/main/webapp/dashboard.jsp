@@ -86,6 +86,13 @@
     <title><%= LanguageUtil.getText(lang, "app.title") %> - Dashboard</title>
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/dashboard.css">
+    <style>
+        /* Consistent dashboard button styling */
+        .nav-actions .btn, .tiles-grid .btn { background:#2563eb; color:#fff; border:1px solid #2563eb; }
+        .nav-actions .btn.btn-outline, .tiles-grid .btn.btn-outline { background:#2563eb; }
+        .nav-actions .btn:hover, .tiles-grid .btn:hover { background:#1d4ed8; border-color:#1d4ed8; }
+        .nav-actions .btn.btn-outline:hover, .tiles-grid .btn.btn-outline:hover { background:#1d4ed8; }
+    </style>
 </head>
 <body>
     <!-- Animated background behind tiles -->
@@ -101,6 +108,38 @@
                 <span class="user-welcome">
                     <%= LanguageUtil.getText(lang, "dashboard.welcome") %>, <%= user.getFullName() %>!
                 </span>
+                <%
+                    int notifCount = 0;
+                    try {
+                        Connection nc = DatabaseUtil.getConnection();
+                        PreparedStatement pc = nc.prepareStatement("SELECT COUNT(*) FROM notifications WHERE user_id=? AND is_sent=FALSE");
+                        pc.setInt(1, user.getUserId());
+                        ResultSet crs = pc.executeQuery();
+                        if (crs.next()) notifCount = crs.getInt(1);
+                        nc.close();
+                    } catch (SQLException ignore) {}
+                %>
+                <div id="notifWrapper" style="position:relative;">
+                    <button id="notifBell" class="btn btn-outline" title="Notifications" style="position:relative;padding:4px 10px;line-height:1;display:flex;align-items:center;gap:4px;" onclick="(function(){var d=document.getElementById('notifDropdown');d.style.display=d.style.display==='none'||d.style.display===''?'block':'none';})();">
+                        <span style="font-size:1.1rem">🔔</span>
+                        <% if (notifCount > 0) { %>
+                        <span class="badge" style="position:absolute;top:-4px;right:-4px;background:#dc3545;color:#fff;border-radius:12px;padding:2px 6px;font-size:.65rem;"><%= notifCount %></span>
+                        <% } %>
+                    </button>
+                    <div id="notifDropdown" style="display:none;position:absolute;top:110%;right:0;background:#fff;border:1px solid #ddd;border-radius:8px;min-width:220px;box-shadow:0 4px 14px rgba(0,0,0,.15);padding:8px;z-index:60;">
+                        <div style="font-weight:600;margin-bottom:4px;display:flex;justify-content:space-between;align-items:center;">
+                            <span>Notifications</span>
+                            <button type="button" class="btn btn-outline btn-sm" style="padding:2px 6px;font-size:.65rem" onclick="document.getElementById('notifDropdown').style.display='none'">✕</button>
+                        </div>
+                        <div style="font-size:.75rem;color:#374151;padding:2px 0">
+                            <% if (notifCount == 0) { %>
+                                No notifications
+                            <% } else { %>
+                                You have notifications (hidden)
+                            <% } %>
+                        </div>
+                    </div>
+                </div>
                 <form action="set-language" method="post" style="margin:0;display:flex;align-items:center;gap:4px;">
                     <select name="lang" onchange="this.form.submit()" class="form-control" style="padding:4px 8px;min-inline-size:110px;">
                         <%
@@ -125,37 +164,6 @@
     <%-- Admin toolbar removed: replaced by dedicated Admin Tools page --%>
 
     <div class="dashboard-container">
-        <%-- Show unsent notifications for this user --%>
-        <%
-            List<Integer> notifIds = new ArrayList<Integer>();
-            List<String> notifMsgs = new ArrayList<String>();
-            Connection nConn = null;
-            try {
-                nConn = DatabaseUtil.getConnection();
-                PreparedStatement nSel = nConn.prepareStatement("SELECT notification_id, message FROM notifications WHERE user_id = ? AND is_sent = FALSE ORDER BY notification_time DESC LIMIT 5");
-                nSel.setInt(1, user.getUserId());
-                ResultSet nRs = nSel.executeQuery();
-                while (nRs.next()) { notifIds.add(nRs.getInt(1)); notifMsgs.add(nRs.getString(2)); }
-                if (!notifIds.isEmpty()) {
-        %>
-    <div class="tile tile-notify" style="background:#fff3cd;border:1px solid #ffeeba;color:#856404;margin-block-end:12px;border-radius:8px;padding:12px;">
-            <strong>Notifications</strong>
-            <ul style="margin:6px 0 0 18px;">
-                <% for (String m : notifMsgs) { %>
-                    <li><%= m %></li>
-                <% } %>
-            </ul>
-        </div>
-        <%
-                    // mark as sent
-                    StringBuilder inClause = new StringBuilder();
-                    for (int i=0;i<notifIds.size();i++) { if (i>0) inClause.append(","); inClause.append("?"); }
-                    PreparedStatement nUpd = nConn.prepareStatement("UPDATE notifications SET is_sent = TRUE WHERE notification_id IN (" + inClause + ")");
-                    for (int i=0;i<notifIds.size();i++) nUpd.setInt(i+1, notifIds.get(i));
-                    nUpd.executeUpdate();
-                }
-            } catch (SQLException ignore) { } finally { if (nConn != null) try { nConn.close(); } catch (SQLException e) {} }
-        %>
         <div class="tiles-grid">
             <% if (isAdmin) { %>
             <div class="tile tile-admin" style="grid-column:1/-1">
@@ -168,6 +176,7 @@
                         <a class="btn btn-outline" href="admin-locations?category=gate">Colleges / Gates</a>
                         <a class="btn btn-outline" href="admin-locations?category=hospital">Hospitals</a>
                         <a class="btn btn-outline" href="admin-locations?category=immigration">Police &amp; Immigration</a>
+                        <a class="btn btn-outline" href="admin-cst-team">CST Shining Team</a>
                     </div>
                 </div>
             </div>
@@ -274,6 +283,18 @@
                 </div>
                 <span class="tile-cta">Scan →</span>
             </button>
+
+            <!-- Tile 6: CST Shining Team (user view) -->
+            <a class="tile tile-face" href="cst-team">
+                <div class="tile-content">
+                    <div class="tile-header">
+                        <span class="tile-icon">🤝</span>
+                        <h3>CST Shining Team</h3>
+                    </div>
+                    <p class="tile-desc">Student volunteers to help with accommodation and academic support.</p>
+                </div>
+                <span class="tile-cta">Open →</span>
+            </a>
         </div>
     </div>
 

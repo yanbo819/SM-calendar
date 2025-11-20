@@ -29,29 +29,20 @@
     </style>
 </head>
 <body>
-    <nav class="main-nav">
-        <div class="nav-container">
-            <h1 class="nav-title"><a href="dashboard.jsp">Smart Calendar</a></h1>
-            <div class="nav-actions">
-                <span class="user-welcome">Welcome, <%= user.getFullName() %>!</span>
-            </div>
-        </div>
-    </nav>
+    <!-- Navigation removed for streamlined admin face enrollment view -->
 
     <div class="form-container">
-        <div class="form-header" style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
-            <div>
-                <h2 class="page-title">Add My New Face ID</h2>
-                <div class="page-sub">Use your camera to capture and save your Face ID.</div>
-            </div>
-            <a href="dashboard.jsp" class="btn btn-outline">← Back to Dashboard</a>
+        <div class="form-header" style="display:flex;align-items:center;justify-content:center;gap:12px;flex-direction:column;">
+            <h2 class="page-title" style="margin:0">Add My New Face ID</h2>
+            <div class="page-sub">Use your camera to capture and save your Face ID.</div>
         </div>
         <div class="card">
             <video id="enrollVideo" autoplay playsinline style="inline-size:100%;background:#000;border-radius:8px;aspect-ratio:4/3"></video>
             <canvas id="enrollCanvas" style="display:none"></canvas>
-            <div class="row">
+            <div class="row" style="justify-content:center">
                 <button id="captureBtn" class="btn-primary" type="button">Capture</button>
                 <button id="saveBtn" class="btn btn-outline" type="button" disabled>Save Face ID</button>
+                <a href="admin-tools.jsp" class="btn btn-outline" style="min-inline-size:140px">Go Back</a>
             </div>
             <div id="status" class="status muted">Requesting camera…</div>
         </div>

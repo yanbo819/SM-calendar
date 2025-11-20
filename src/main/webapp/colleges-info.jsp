@@ -62,10 +62,6 @@
                 <h2 class="page-title">Colleges Information</h2>
                 <div class="page-sub">This page will list colleges and helpful links. Send content to populate it.</div>
             </div>
-            <div style="display:flex;gap:8px;flex-wrap:wrap;">
-                <a href="important-locations.jsp" class="btn btn-outline">← Important Locations</a>
-                <a href="dashboard.jsp" class="btn btn-outline">Dashboard</a>
-            </div>
         </div>
         <div class="card">
             <div class="toolbar">
@@ -142,6 +138,9 @@
                     applyFilter();
                 })();
             </script>
+        </div>
+        <div style="display:grid;place-items:center;margin-top:24px">
+            <a href="important-locations.jsp" class="btn btn-outline" style="min-inline-size:160px">Go Back</a>
         </div>
     </div>
 </body>

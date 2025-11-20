@@ -79,7 +79,10 @@
     </style>
 </head>
 <body>
-    <nav class="main-nav">
+    <%
+        boolean noHeader = "1".equals(request.getParameter("noheader"));
+    %>
+    <nav class="main-nav" <%= noHeader?"style=\"display:none\"":"" %>>
         <div class="nav-container">
             <h1 class="nav-title">
                 <a href="dashboard.jsp"><%= LanguageUtil.getText(lang, "app.title") %></a>
@@ -99,7 +102,7 @@
                 <h2 class="page-title">Create New Reminder</h2>
                 <div class="page-subtitle">Choose a type, add subject, time, and a reminder. You can always edit later.</div>
             </div>
-            <a href="dashboard.jsp" class="btn btn-outline">← Back to Dashboard</a>
+            <!-- Removed top back to dashboard for cleaner layout when opened from Admin Tools -->
         </div>
 
         <% if (errorMessage != null) { %>
@@ -198,9 +201,9 @@
                     <textarea id="notes" name="notes" rows="3" maxlength="1000" placeholder="Notes (optional)"><%= notes != null ? notes : "" %></textarea>
                 </div>
 
-                <div class="actions">
-                    <a href="dashboard.jsp" class="btn btn-secondary">Cancel</a>
-                    <button type="submit" class="btn btn-primary">Create Reminder</button>
+                <div class="actions" style="justify-content:center">
+                    <a href="admin-tools.jsp" class="btn btn-outline" style="min-inline-size:160px">Go Back</a>
+                    <button type="submit" class="btn btn-primary" style="min-inline-size:160px">Save</button>
                 </div>
             </div>
         </form>

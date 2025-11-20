@@ -45,24 +45,17 @@
     </style>
 </head>
 <body>
-<nav class="main-nav">
-    <div class="nav-container">
-        <h1 class="nav-title"><a href="dashboard.jsp">Smart Calendar</a></h1>
-        <div class="nav-actions"><!-- admin toolbar below --></div>
-    </div>
-</nav>
-<% if (isAdmin) { %>
-<jsp:include page="/WEB-INF/jsp/includes/admin-toolbar.jspf" />
-<% } %>
+<%
+    boolean noHeader = "1".equals(request.getParameter("noheader"));
+%>
+<!-- Top navigation and admin toolbar removed for minimal Manage Users page -->
 <div class="page">
     <% if (loadError != null) { %>
     <div class="alert alert-error" style="max-inline-size:600px"> <%= loadError %> </div>
     <% } %>
-    <div class="header-row">
-        <h2>Manage Users</h2>
-        <div class="actions">
-            <a href="admin-user-new.jsp" class="btn btn-primary">Add New User</a>
-        </div>
+    <div class="header-row" style="justify-content:center;flex-direction:column;text-align:center">
+        <h2 style="margin:0">Manage Users</h2>
+        <div style="margin-top:12px"><a href="admin-user-new.jsp" class="btn btn-primary">Add New User</a></div>
     </div>
 
     <div class="card">
@@ -95,6 +88,9 @@
     </table>
     </div>
     <div class="p-2 hint">Tip: Click a user row to view and manage full details.</div>
+        <div style="margin-block-start:20px;display:flex;justify-content:center">
+            <a href="admin-tools.jsp" class="btn btn-outline" style="min-inline-size:160px">Go Back</a>
+        </div>
     </div>
 </div>
 <script>

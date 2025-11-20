@@ -130,6 +130,38 @@ CREATE TABLE IF NOT EXISTS locations (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- CST Shining Team departments
+CREATE TABLE IF NOT EXISTS cst_departments (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(150) NOT NULL UNIQUE,
+    leader_name VARCHAR(150),
+    leader_phone VARCHAR(40),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- CST Shining Team volunteers
+CREATE TABLE IF NOT EXISTS cst_volunteers (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    department_id INT NOT NULL,
+    phone VARCHAR(40),
+    student_id VARCHAR(40),
+    passport_name VARCHAR(150),
+    chinese_name VARCHAR(150),
+    gender VARCHAR(20),
+    nationality VARCHAR(100),
+    photo_url VARCHAR(500),
+    is_active BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (department_id) REFERENCES cst_departments(id) ON DELETE CASCADE
+);
+
+-- Seed initial departments if not present
+MERGE INTO cst_departments (name, leader_name, leader_phone)
+KEY(name)
+VALUES 
+('Accommodation Department','John Leader','+86 13800000001'),
+('Academic Department','Alice Scholar','+86 13800000002');
+
 CREATE TABLE IF NOT EXISTS language_resources (
     id INT AUTO_INCREMENT PRIMARY KEY,
     language_code VARCHAR(10) NOT NULL,

@@ -36,14 +36,13 @@
                 <h2 class="page-title">Restaurants & Other Locations</h2>
                 <div class="page-sub">Food, cafes, and other helpful places near you.</div>
             </div>
-            <div style="display:flex;gap:8px;flex-wrap:wrap;">
-                <a href="important-locations.jsp" class="btn btn-outline">← Important Locations</a>
-                <a href="dashboard.jsp" class="btn btn-outline">Dashboard</a>
-            </div>
         </div>
         <div class="card">
             <p>Coming soon: curated list of restaurants and useful places with opening hours and price ranges.</p>
             <p class="page-sub">Tip: We can embed a map or import a list you provide.</p>
+        </div>
+        <div style="display:grid;place-items:center;margin-top:24px">
+            <a href="important-locations.jsp" class="btn btn-outline" style="min-inline-size:160px">Go Back</a>
         </div>
     </div>
 </body>

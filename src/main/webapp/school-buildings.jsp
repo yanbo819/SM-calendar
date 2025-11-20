@@ -34,10 +34,6 @@
                 <h2 class="page-title">School location, Buildings &amp; gates</h2>
                 <div class="page-sub">Locations of buildings, classrooms, offices, facilities, and campus gates.</div>
             </div>
-            <div style="display:flex;gap:8px;flex-wrap:wrap;">
-                <a href="important-locations.jsp" class="btn btn-outline">← Important Locations</a>
-                <a href="dashboard.jsp" class="btn btn-outline">Dashboard</a>
-            </div>
         </div>
         <div class="card">
             <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px">
@@ -72,6 +68,9 @@
                 </details>
                 <% } %>
             </div>
+        </div>
+        <div style="display:grid;place-items:center;margin-top:24px">
+            <a href="important-locations.jsp" class="btn btn-outline" style="min-inline-size:160px">Go Back</a>
         </div>
     </div>
     <script>

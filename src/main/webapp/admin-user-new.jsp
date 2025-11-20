@@ -26,20 +26,11 @@
     </style>
 </head>
 <body>
-<nav class="main-nav">
-    <div class="nav-container">
-        <h1 class="nav-title"><a href="dashboard.jsp">Smart Calendar</a></h1>
-        <div class="nav-actions"></div>
-    </div>
-</nav>
-<jsp:include page="/WEB-INF/jsp/includes/admin-toolbar.jspf" />
+<!-- Top navigation and admin toolbar removed for minimal Create User page -->
 <div class="page-wrap">
-    <div class="form-header" style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
-        <div>
-            <h2 class="page-title">Create User</h2>
-            <div class="page-sub">Fill out details below. All required fields are marked.</div>
-        </div>
-        
+    <div class="form-header" style="display:flex;align-items:center;justify-content:center;gap:12px;flex-direction:column;text-align:center;">
+        <h2 class="page-title" style="margin:0">Create User</h2>
+        <div class="page-sub">Fill out details below. All required fields are marked.</div>
     </div>
     <form class="card" method="post" action="admin-user-crud">
         <input type="hidden" name="action" value="create" />

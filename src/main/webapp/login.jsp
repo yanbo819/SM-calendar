@@ -1,9 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="com.smartcalendar.utils.LanguageUtil" %>
 <%
-    String lang = "en";
+    String lang = request.getParameter("lang") != null ? request.getParameter("lang") : (session.getAttribute("userLanguage") != null ? (String)session.getAttribute("userLanguage") : "en");
+    if (!LanguageUtil.isSupportedLanguage(lang)) lang = "en";
     session.setAttribute("userLanguage", lang);
-    String textDir = "ltr";
+    String textDir = LanguageUtil.getTextDirection(lang);
     String errorMessage = (String) request.getAttribute("errorMessage");
 %>
 <!DOCTYPE html>
@@ -29,6 +30,16 @@
     </div>
 
     <!-- Main Login Container -->
+    <!-- Language Switcher -->
+    <div style="text-align:right;margin:18px 24px 0 0;">
+        <form method="get" style="display:inline;">
+            <select name="lang" onchange="this.form.submit()" style="padding:4px 10px;font-size:1em;">
+                <% for (String code : LanguageUtil.getSupportedLanguages()) { %>
+                    <option value="<%= code %>" <%= code.equals(lang) ? "selected" : "" %>><%= LanguageUtil.getLanguageName(code) %></option>
+                <% } %>
+            </select>
+        </form>
+    </div>
     <div class="modern-auth-container">
         <div class="auth-card">
             <!-- Brand Section -->
@@ -42,7 +53,7 @@
                     </svg>
                 </div>
                 <h1 class="brand-title"><%= LanguageUtil.getText(lang, "app.title") %></h1>
-                <p class="brand-subtitle">Welcome back! Please sign in to your account.</p>
+                <p class="brand-subtitle"><%= LanguageUtil.getText(lang, "login.subtitle") %></p>
             </div>
 
             <!-- Error Message -->
@@ -59,8 +70,8 @@
 
             <!-- Portal Toggle -->
             <div class="form-group" style="display:flex;gap:8px;justify-content:center;margin-bottom:12px;">
-                <button type="button" id="userPortalBtn" class="login-btn" style="inline-size:50%;background:var(--gray-100);color:var(--gray-700);" onclick="setPortal('user')">User Login</button>
-                <button type="button" id="adminPortalBtn" class="login-btn" style="inline-size:50%;background:linear-gradient(135deg, #9ca3af, #6b7280);" onclick="setPortal('admin')">Admin Login</button>
+                <button type="button" id="userPortalBtn" class="login-btn" style="inline-size:50%;background:var(--gray-100);color:var(--gray-700);" onclick="setPortal('user')"><%= LanguageUtil.getText(lang, "login.user") %></button>
+                <button type="button" id="adminPortalBtn" class="login-btn" style="inline-size:50%;background:linear-gradient(135deg, #9ca3af, #6b7280);" onclick="setPortal('admin')"><%= LanguageUtil.getText(lang, "login.admin") %></button>
             </div>
 
             <!-- Login Form -->
@@ -72,8 +83,8 @@
                             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                             <circle cx="12" cy="7" r="4"></circle>
                         </svg>
-                        <input type="text" id="username" name="username" class="form-input" 
-                               placeholder="Username" required autocomplete="username">
+                           <input type="text" id="username" name="username" class="form-input" 
+                               placeholder="<%= LanguageUtil.getText(lang, "login.username") %>" required autocomplete="username">
                     </div>
                 </div>
 
@@ -84,8 +95,8 @@
                             <circle cx="12" cy="16" r="1"></circle>
                             <path d="m7 11V7a5 5 0 0 1 10 0v4"></path>
                         </svg>
-                        <input type="password" id="password" name="password" class="form-input" 
-                               placeholder="Password" required autocomplete="current-password">
+                           <input type="password" id="password" name="password" class="form-input" 
+                               placeholder="<%= LanguageUtil.getText(lang, "login.password") %>" required autocomplete="current-password">
                         <button type="button" class="password-toggle" onclick="togglePasswordVisibility()">
                             <svg id="eyeIcon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
@@ -96,7 +107,7 @@
                 </div>
 
                 <button type="submit" class="login-btn" id="submitBtn">
-                    <span id="submitText">Sign In</span>
+                    <span id="submitText"><%= LanguageUtil.getText(lang, "login.signin") %></span>
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M9 18l6-6-6-6"></path>
                     </svg>
@@ -106,26 +117,26 @@
             <!-- Auth Links -->
             <div class="auth-links">
                 <div class="link-row">
-                    <a href="register.jsp" class="auth-link register-link" id="registerLink">
+                    <a href="register.jsp?lang=<%= lang %>" class="auth-link register-link" id="registerLink">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
                             <circle cx="9" cy="7" r="4"></circle>
                             <path d="m19 8 2 2-2 2"></path>
                             <path d="m21 10-7.5 0"></path>
                         </svg>
-                        Don't have an account? <strong>Create Account</strong>
+                        <%= LanguageUtil.getText(lang, "login.noaccount") %> <strong><%= LanguageUtil.getText(lang, "login.createaccount") %></strong>
                     </a>
                 </div>
                 
                 <div class="link-row">
-                    <a href="forgot-password.jsp" class="auth-link forgot-link">
+                    <a href="forgot-password.jsp?lang=<%= lang %>" class="auth-link forgot-link">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M9 12l2 2 4-4"></path>
                             <path d="M21 12c-1 0-3-1-3-3s2-3 3-3 3 1 3 3-2 3-3 3"></path>
                             <path d="M3 12c1 0 3-1 3-3s-2-3-3-3-3 1-3 3 2 3 3 3"></path>
                             <path d="M12 3v6m0 6v6"></path>
                         </svg>
-                        Forgot your password? <strong>Reset Password</strong>
+                        <%= LanguageUtil.getText(lang, "login.forgot") %> <strong><%= LanguageUtil.getText(lang, "login.reset") %></strong>
                     </a>
                 </div>
             </div>

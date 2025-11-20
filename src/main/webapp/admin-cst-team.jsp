@@ -64,7 +64,7 @@
                                 </div>
                         </td>
                         <td style="vertical-align:middle;">
-                            <a class="btn btn-primary" href="admin-cst-volunteers?dept=<%= d.getId() %>&noheader=1" target="_blank" rel="noopener" style="padding:7px 18px;">Manage Volunteers</a>
+                            <a class="btn btn-primary" href="admin-volunteers.jsp?dept=<%= d.getId() %>" style="padding:7px 18px;">Volunteers</a>
                         </td>
                     </tr>
                 <% } %>

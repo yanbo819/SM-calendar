@@ -60,6 +60,9 @@ public class AdminCstVolunteersServlet extends HttpServlet {
                     v.setPhotoUrl(saved);
                     CstVolunteerDao.update(v);
                 }
+                // After add, redirect to the new volunteers page
+                resp.sendRedirect("admin-volunteers.jsp?dept=" + deptId);
+                return;
             } else if ("update".equals(action)) {
                 int id = Integer.parseInt(req.getParameter("id"));
                 CstVolunteer existing = CstVolunteerDao.findById(id);
@@ -73,12 +76,16 @@ public class AdminCstVolunteersServlet extends HttpServlet {
                     v.setPhotoUrl(existing.getPhotoUrl());
                 }
                 CstVolunteerDao.update(v);
+                resp.sendRedirect("admin-volunteers.jsp?dept=" + deptId);
+                return;
             } else if ("delete".equals(action)) {
                 int id = Integer.parseInt(req.getParameter("id"));
                 CstVolunteerDao.delete(id);
+                resp.sendRedirect("admin-volunteers.jsp?dept=" + deptId);
+                return;
             }
         } catch (Exception ignored) {}
-        resp.sendRedirect("admin-cst-volunteers?dept=" + deptId + "&noheader=1");
+        resp.sendRedirect("admin-volunteers.jsp?dept=" + deptId);
     }
 
     private CstVolunteer buildVolunteer(HttpServletRequest req) {
@@ -102,9 +109,10 @@ public class AdminCstVolunteersServlet extends HttpServlet {
             String ext = "";
             int dot = fileName.lastIndexOf('.');
             if (dot > 0) ext = fileName.substring(dot);
-            String relDir = "/uploads/cst";
-            String absDir = getServletContext().getRealPath(relDir);
-            if (absDir == null) return null; // container may not allow; skip
+            // Always save to webapp static dir so it's accessible
+            String relDir = "uploads/cst";
+            String absDir = getServletContext().getRealPath("/" + relDir);
+            if (absDir == null) absDir = new File("src/main/webapp/" + relDir).getAbsolutePath();
             File dir = new File(absDir);
             if (!dir.exists()) dir.mkdirs();
             String newName = "vol_" + id + ext;
@@ -112,13 +120,7 @@ public class AdminCstVolunteersServlet extends HttpServlet {
             try (var in = part.getInputStream()) {
                 Files.copy(in, dest.toPath(), StandardCopyOption.REPLACE_EXISTING);
             }
-            String relPath = (relDir + "/" + newName).replaceFirst("^/", "");
-            // store relPath in DB
-            CstVolunteer v = new CstVolunteer();
-            v.setId(id);
-            v.setDepartmentId(Integer.parseInt(req.getParameter("department_id")));
-            v.setPhotoUrl(relPath);
-            // slim update: reuse update method with only photo set could overwrite; safer to return relPath
+            String relPath = relDir + "/" + newName;
             return relPath;
         } catch (Exception e) {
             return null;

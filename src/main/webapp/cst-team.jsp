@@ -38,27 +38,9 @@
 </nav>
 <div class="dashboard-container">
     <div class="team-grid">
-        <% for (CstDepartment d : deps) { List<CstVolunteer> vs = members.getOrDefault(d.getId(), java.util.Collections.emptyList()); %>
-            <div class="dept-card">
-                <h3 style="margin:0 0 8px 0"><%= d.getName() %></h3>
-                <% if (vs.isEmpty()) { %>
-                    <div style="color:#6b7280">No volunteers yet.</div>
-                <% } else { %>
-                <div class="member-list">
-                    <% for (CstVolunteer v : vs) { %>
-                    <div class="member">
-                        <img src="<%= v.getPhotoUrl()!=null && !v.getPhotoUrl().isEmpty() ? v.getPhotoUrl() : "https://via.placeholder.com/56" %>" alt="photo" />
-                        <div class="meta">
-                            <div><b><%= v.getPassportName()!=null?v.getPassportName():"Unknown" %></b> <span style="color:#6b7280">(<%= v.getChineseName()!=null?v.getChineseName():"" %>)</span></div>
-                            <div class="kv"><b>Student ID</b><span><%= v.getStudentId()!=null?v.getStudentId():"" %></span></div>
-                            <div class="kv"><b>Phone</b><span><%= v.getPhone()!=null?v.getPhone():"" %></span></div>
-                            <div class="kv"><b>Gender</b><span><%= v.getGender()!=null?v.getGender():"" %></span></div>
-                            <div class="kv"><b>Nationality</b><span><%= v.getNationality()!=null?v.getNationality():"" %></span></div>
-                        </div>
-                    </div>
-                    <% } %>
-                </div>
-                <% } %>
+        <% for (CstDepartment d : deps) { %>
+            <div class="dept-card" style="text-align:center;">
+                <a href="cst-team-members.jsp?dept=<%= d.getId() %>" class="btn btn-primary" style="font-size:1.1em;padding:18px 32px;display:inline-block;margin:12px 0;width:100%;max-width:340px;"> <%= d.getName() %> </a>
             </div>
         <% } %>
     </div>

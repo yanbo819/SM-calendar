@@ -6,8 +6,14 @@
     boolean isAdmin = me.getRole() != null && me.getRole().equalsIgnoreCase("admin");
     if (!isAdmin) { response.sendRedirect("dashboard.jsp?error=Not+authorized"); return; }
 %>
+<%
+    String lang = (String) session.getAttribute("lang");
+    if (lang == null && me.getPreferredLanguage() != null) lang = me.getPreferredLanguage();
+    if (lang == null) lang = "en";
+    String textDir = com.smartcalendar.utils.LanguageUtil.getTextDirection(lang);
+%>
 <!doctype html>
-<html lang="en">
+<html lang="<%= lang %>" dir="<%= textDir %>">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />

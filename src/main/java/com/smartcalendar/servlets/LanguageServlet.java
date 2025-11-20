@@ -41,4 +41,28 @@ public class LanguageServlet extends HttpServlet {
         if (referer == null || referer.isEmpty()) referer = "dashboard.jsp";
         resp.sendRedirect(referer);
     }
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        // Allow GET for convenience (e.g., language links)
+        String lang = req.getParameter("lang");
+        if (!LanguageUtil.isSupportedLanguage(lang)) {
+            lang = "en"; // fallback
+        }
+        HttpSession session = req.getSession(true);
+        session.setAttribute("lang", lang);
+        User user = (User) session.getAttribute("user");
+        if (user != null) {
+            try (Connection conn = DatabaseUtil.getConnection();
+                 PreparedStatement ps = conn.prepareStatement("UPDATE users SET preferred_language=? WHERE user_id=?")) {
+                ps.setString(1, lang);
+                ps.setInt(2, user.getUserId());
+                ps.executeUpdate();
+            } catch (Exception ignore) {}
+        }
+        LanguageUtil.refreshResources();
+        String referer = req.getHeader("Referer");
+        if (referer == null || referer.isEmpty()) referer = "dashboard.jsp";
+        resp.sendRedirect(referer);
+    }
 }

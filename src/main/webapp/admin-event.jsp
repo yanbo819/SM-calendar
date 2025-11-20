@@ -6,8 +6,14 @@
     boolean isAdmin = user.getEmail() != null && user.getEmail().equals("admin@smartcalendar.com");
     if (!isAdmin) { response.sendRedirect("dashboard.jsp"); return; }
 %>
+<%
+  String lang = (String) session.getAttribute("lang");
+  if (lang == null && user.getPreferredLanguage() != null) lang = user.getPreferredLanguage();
+  if (lang == null) lang = "en";
+  String textDir = com.smartcalendar.utils.LanguageUtil.getTextDirection(lang);
+%>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="<%= lang %>" dir="<%= textDir %>">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />

@@ -11,8 +11,14 @@
     List<FaceEnrollment> faces = (List<FaceEnrollment>) request.getAttribute("faces");
     String loadError = (String) request.getAttribute("loadError");
 %>
+<%
+    String lang = (String) session.getAttribute("lang");
+    if (lang == null && user.getPreferredLanguage() != null) lang = user.getPreferredLanguage();
+    if (lang == null) lang = "en";
+    String textDir = com.smartcalendar.utils.LanguageUtil.getTextDirection(lang);
+%>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="<%= lang %>" dir="<%= textDir %>">
 <head>
     <meta charset="UTF-8" />
     <title>Admin: Face ID Enrollments</title>

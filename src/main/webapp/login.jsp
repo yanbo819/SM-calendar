@@ -30,16 +30,7 @@
     </div>
 
     <!-- Main Login Container -->
-    <!-- Language Switcher -->
-    <div style="text-align:right;margin:18px 24px 0 0;">
-        <form method="get" style="display:inline;">
-            <select name="lang" onchange="this.form.submit()" style="padding:4px 10px;font-size:1em;">
-                <% for (String code : LanguageUtil.getSupportedLanguages()) { %>
-                    <option value="<%= code %>" <%= code.equals(lang) ? "selected" : "" %>><%= LanguageUtil.getLanguageName(code) %></option>
-                <% } %>
-            </select>
-        </form>
-    </div>
+    <!-- Language Switcher removed as requested -->
     <div class="modern-auth-container">
         <div class="auth-card">
             <!-- Brand Section -->

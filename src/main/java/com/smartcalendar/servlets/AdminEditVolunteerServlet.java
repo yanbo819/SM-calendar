@@ -1,8 +1,14 @@
 package com.smartcalendar.servlets;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
+
 import com.smartcalendar.dao.CstVolunteerDao;
 import com.smartcalendar.models.CstVolunteer;
 import com.smartcalendar.models.User;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
@@ -10,10 +16,6 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
 
 @WebServlet(name = "AdminEditVolunteerServlet", urlPatterns = {"/admin-edit-volunteer"})
 @MultipartConfig
@@ -45,7 +47,12 @@ public class AdminEditVolunteerServlet extends HttpServlet {
                 String uploadsDir = req.getServletContext().getRealPath("/uploads/cst");
                 File uploads = new File(uploadsDir);
                 if (!uploads.exists()) uploads.mkdirs();
-                String ext = photoPart.getSubmittedFileName().substring(photoPart.getSubmittedFileName().lastIndexOf('.'));
+                String submitted = photoPart.getSubmittedFileName();
+                String ext = "";
+                int dotIdx = submitted.lastIndexOf('.');
+                if (dotIdx > 0 && dotIdx < submitted.length() - 1) {
+                    ext = submitted.substring(dotIdx);
+                }
                 String fileName = "volunteer_" + id + ext;
                 File file = new File(uploads, fileName);
                 Files.copy(photoPart.getInputStream(), file.toPath(), StandardCopyOption.REPLACE_EXISTING);

@@ -84,6 +84,11 @@
             <p>Manage departments and volunteers (names, phone, nationality, gender, photo).</p>
             <a href="admin-cst-team?noheader=1" target="_blank" rel="noopener" class="btn btn-primary">Open Manager</a>
         </div>
+        <div class="tool-card">
+            <h3>🏫 Colleges Info</h3>
+            <p>Manage colleges, teachers, address, phone, and teacher photos.</p>
+            <a href="admin-colleges" class="btn btn-primary">Colleges Info</a>
+        </div>
     </div>
     <div style="margin-top:20px;display:flex;justify-content:center">
         <a href="dashboard.jsp" class="btn btn-outline" style="min-inline-size:160px">Go Back</a>

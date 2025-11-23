@@ -4,6 +4,7 @@
 /Users/yanbo/Desktop/Smart calendar/src/main/java/com/smartcalendar/servlets/AdminDeleteVolunteerServlet.java
 /Users/yanbo/Desktop/Smart calendar/src/main/java/com/smartcalendar/utils/PasswordUtil.java
 /Users/yanbo/Desktop/Smart calendar/src/main/java/com/smartcalendar/servlets/AdminUserCrudServlet.java
+/Users/yanbo/Desktop/Smart calendar/src/main/java/com/smartcalendar/dao/CollegeDao.java
 /Users/yanbo/Desktop/Smart calendar/src/main/java/com/smartcalendar/servlets/AdminFaceEnrollmentsServlet.java
 /Users/yanbo/Desktop/Smart calendar/src/main/java/com/smartcalendar/servlets/UpcomingRemindersServlet.java
 /Users/yanbo/Desktop/Smart calendar/src/main/java/com/smartcalendar/servlets/AdminEditVolunteerServlet.java
@@ -28,7 +29,9 @@
 /Users/yanbo/Desktop/Smart calendar/src/main/java/com/smartcalendar/servlets/AdminCollegesServlet.java
 /Users/yanbo/Desktop/Smart calendar/src/main/java/com/smartcalendar/servlets/LogoutServlet.java
 /Users/yanbo/Desktop/Smart calendar/src/main/java/com/smartcalendar/models/FaceConfig.java
+/Users/yanbo/Desktop/Smart calendar/src/main/java/com/smartcalendar/models/College.java
 /Users/yanbo/Desktop/Smart calendar/src/main/java/com/smartcalendar/servlets/OcrScheduleUploadServlet.java
+/Users/yanbo/Desktop/Smart calendar/src/main/java/com/smartcalendar/dao/DatabaseUtil.java
 /Users/yanbo/Desktop/Smart calendar/src/main/java/com/smartcalendar/models/Notification.java
 /Users/yanbo/Desktop/Smart calendar/src/main/java/com/smartcalendar/servlets/ForgotPasswordServlet.java
 /Users/yanbo/Desktop/Smart calendar/src/main/java/com/smartcalendar/servlets/AdminCstTeamServlet.java

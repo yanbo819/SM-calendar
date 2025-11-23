@@ -1,0 +1,7 @@
+/* UI utility classes for consistent buttons and toolbars */
+.btn-sm{font-size:.75rem;padding:4px 8px;line-height:1.2}
+/* Align danger button with main.css filled variant */
+.btn-danger{color:var(--text-light);border:1px solid var(--danger-color);background:var(--danger-color)}
+.btn-danger:hover{background:#dc2626;color:var(--text-light)}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.badge{display:inline-block;padding:2px 8px;border-radius:999px;font-size:.8rem;background:#eef2ff;color:#3730a3;border:1px solid #c7d2fe}

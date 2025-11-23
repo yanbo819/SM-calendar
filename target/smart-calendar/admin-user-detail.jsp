@@ -72,8 +72,8 @@
                 <input class="form-control" type="password" name="password" placeholder="Leave blank to keep" />
             </label>
             <div style="grid-column:1/-1;display:flex;gap:12px;flex-wrap:wrap;margin-top:4px">
-                <button type="submit" class="btn btn-primary" style="min-inline-size:140px">Save Changes</button>
-                <a href="admin-users" class="btn btn-outline" style="min-inline-size:140px">Go Back</a>
+                <button type="submit" class="btn btn-primary" style="min-inline-size:140px"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.user.saveChanges") %></button>
+                <a href="admin-users" class="btn btn-outline" style="min-inline-size:140px"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "common.back") %></a>
             </div>
         </form>
         <% if (!"admin".equalsIgnoreCase(target.getRole())) { %>
@@ -88,10 +88,10 @@
                 <input type="hidden" name="active" value="<%= !target.isActive() %>" />
                 <button type="submit" class="btn btn-outline" style="min-inline-size:140px"><%= target.isActive() ? "Deactivate" : "Activate" %></button>
             </form>
-            <form method="post" action="admin-user-crud" style="display:inline" onsubmit="return confirm('Delete this user? This cannot be undone.')">
+            <form method="post" action="admin-user-crud" style="display:inline" onsubmit="return confirm('<%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.user.deleteConfirm") %>');">
                 <input type="hidden" name="action" value="delete" />
                 <input type="hidden" name="userId" value="<%= target.getUserId() %>" />
-                <button type="submit" class="btn btn-danger" style="min-inline-size:140px">Delete</button>
+                <button type="submit" class="btn btn-danger" style="min-inline-size:140px"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "common.delete") %></button>
             </form>
         </div>
         <% } %>

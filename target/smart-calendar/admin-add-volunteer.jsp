@@ -12,11 +12,17 @@
     if (dept == null) { response.sendRedirect("admin-cst-team"); return; }
 %>
 <!DOCTYPE html>
-<html lang="en">
+<%
+    String lang = (String) session.getAttribute("lang");
+    if (lang == null && user.getPreferredLanguage() != null) lang = user.getPreferredLanguage();
+    if (lang == null) lang = "en";
+    String textDir = com.smartcalendar.utils.LanguageUtil.getTextDirection(lang);
+%>
+<html lang="<%= lang %>" dir="<%= textDir %>">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add New Volunteer - <%= dept.getName() %></title>
+    <title><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.volunteer.addNew") %> - <%= dept.getName() %></title>
     <link rel="stylesheet" href="css/main.css">
     <style>
         .container{max-width:500px;margin:40px auto;padding:0 16px;}
@@ -44,7 +50,7 @@
 <div class="container">
     <form class="form-section" method="post" action="admin-cst-volunteers" enctype="multipart/form-data">
         <input type="hidden" name="action" value="add" />
-        <h2 class="form-title">Add New Volunteer<br><span style="font-size:.8em;font-weight:400;color:#666;">Department: <%= dept.getName() %></span></h2>
+        <h2 class="form-title"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.volunteer.addNew") %><br><span style="font-size:.8em;font-weight:400;color:#666;"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.volunteer.departmentLabel") %> <%= dept.getName() %></span></h2>
         <div class="form-grid">
             <input type="hidden" name="department_id" value="<%= dept.getId() %>" />
             <label>Volunteer Picture
@@ -78,8 +84,8 @@
             </label>
         </div>
         <div class="form-actions">
-            <button type="submit" class="btn btn-primary">Save</button>
-            <a href="admin-volunteers.jsp?dept=<%= dept.getId() %>" class="btn btn-outline">Cancel</a>
+            <button type="submit" class="btn btn-primary"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "common.save") %></button>
+            <a href="admin-volunteers.jsp?dept=<%= dept.getId() %>" class="btn btn-outline"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "common.back") %></a>
         </div>
     </form>
 </div>

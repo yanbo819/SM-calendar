@@ -39,6 +39,9 @@
         .top-bar{display:flex;flex-wrap:wrap;align-items:center;gap:12px}
         .global-add{background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:16px;display:grid;gap:12px}
         .notice{font-size:.8rem;color:#64748b}
+        .toast{position:fixed;top:20px;right:20px;padding:14px 18px;border-radius:10px;background:#10b981;color:#fff;font-size:.9rem;box-shadow:0 4px 12px rgba(0,0,0,.15);opacity:0;transition:opacity .3s;z-index:9999}
+        .toast.show{opacity:1}
+        .toast.error{background:#ef4444}
     </style>
 </head>
 <body>
@@ -49,7 +52,7 @@
             <a href="admin-tools.jsp" class="btn btn-outline"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.teachers.manage.backTools") %></a>
         </div>
         <% if (loadError != null) { %>
-            <div style="color:#b91c1c;background:#fee2e2;padding:12px;border-radius:8px">Failed to load teachers: <%= loadError %></div>
+            <div style="color:#b91c1c;background:#fee2e2;padding:12px;border-radius:8px"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.teachers.loadError") %> <%= loadError %></div>
         <% } %>
         <div class="global-add">
             <h2 style="margin:0;font-size:1.15rem"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.teachers.manage.addNew") %></h2>
@@ -100,5 +103,54 @@
             <% } %>
         </div>
     </div>
+    <div id="toast" class="toast"></div>
+    <script>
+    // Localized fallback messages (in case server omits message)
+    const MSG_ADD = '<%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.teachers.msg.addSuccess") %>';
+    const MSG_UPDATE = '<%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.teachers.msg.updateSuccess") %>';
+    const MSG_DELETE = '<%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.teachers.msg.deleteSuccess") %>';
+    const MSG_EMPTY = '<%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.teachers.msg.emptyFields") %>';
+    const MSG_INVALID = '<%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.teachers.msg.invalidId") %>';
+    const MSG_SERVER = '<%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.teachers.msg.serverError") %>';
+    (function(){
+        const toast = document.getElementById('toast');
+        function showToast(msg, isError) {
+            toast.textContent = msg;
+            toast.className = 'toast show' + (isError ? ' error' : '');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        // AJAX form submission
+        document.addEventListener('submit', function(e) {
+            const form = e.target;
+            if (!form.matches('form[action="admin-college-teachers"]')) return;
+            e.preventDefault();
+            const formData = new FormData(form);
+            fetch('admin-college-teachers', {
+                method: 'POST',
+                headers: { 'X-Requested-With': 'XMLHttpRequest' },
+                body: formData
+            })
+            .then(r => r.ok ? r.json() : Promise.reject('Server error'))
+            .then(data => {
+                if (data.ok) {
+                    const action = formData.get('action');
+                    if (action === 'delete-teacher') {
+                        form.closest('.teacher-row').remove();
+                        showToast(data.message || MSG_DELETE, false);
+                    } else if (action === 'add-teacher') {
+                        // reload to show new grouping
+                        location.reload();
+                    } else if (action === 'update-teacher') {
+                        showToast(data.message || MSG_UPDATE, false);
+                    }
+                } else {
+                    showToast(data.message || MSG_SERVER, true);
+                }
+            })
+            .catch(() => showToast(MSG_SERVER, true));
+        });
+    })();
+    </script>
 </body>
 </html>

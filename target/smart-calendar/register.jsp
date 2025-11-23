@@ -217,7 +217,7 @@
                             <polyline points="16,17 21,12 16,7"></polyline>
                             <line x1="21" y1="12" x2="9" y2="12"></line>
                         </svg>
-                        Already have an account? <strong>Sign In</strong>
+                        <%= com.smartcalendar.utils.LanguageUtil.getText(lang, "register.alreadyHaveAccount") %> <strong><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "register.signIn") %></strong>
                     </a>
                 </div>
             </div>

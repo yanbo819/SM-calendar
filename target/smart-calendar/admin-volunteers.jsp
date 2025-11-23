@@ -60,10 +60,10 @@
 <div class="container">
     <div class="header-row">
         <h2 style="margin:0">Volunteers — <%= dept.getName() %></h2>
-        <a class="btn btn-primary" href="admin-add-volunteer.jsp?dept=<%= dept.getId() %>">Add New Volunteer</a>
+        <a class="btn btn-primary" href="admin-add-volunteer.jsp?dept=<%= dept.getId() %>"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.volunteer.addNew") %></a>
     </div>
     <div class="vol-list">
-        <h3 style="margin:0 0 12px 0;text-align:center;font-size:1.15em;color:#2563eb;">Current Members</h3>
+        <h3 style="margin:0 0 12px 0;text-align:center;font-size:1.15em;color:#2563eb;"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "common.members") %></h3>
         <div class="vol-card-grid">
             <% for (CstVolunteer v : volunteers) { %>
                 <div class="vol-card">
@@ -84,7 +84,7 @@
                     </div>
                     <div class="contact-row">
                         <% if (v.getPhone() != null && !v.getPhone().isEmpty()) { %>
-                            <a class="btn btn-outline btn-sm" href="tel:<%= v.getPhone() %>">Call</a>
+                            <a class="btn btn-outline btn-sm" href="tel:<%= v.getPhone() %>"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "cst.call") %></a>
                         <% } %>
                         <% try { if (v.getEmail() != null && !v.getEmail().isEmpty()) { %>
                             <a class="btn btn-primary btn-sm" href="mailto:<%= v.getEmail() %>">Email</a>

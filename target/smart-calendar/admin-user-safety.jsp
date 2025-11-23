@@ -50,7 +50,7 @@
     </div>
   </div>
   <div style="margin-top:24px;display:flex;gap:12px;flex-wrap:wrap">
-    <a href="admin-user?id=<%= target!=null?target.getUserId():idStr %>" class="btn btn-primary" style="min-inline-size:140px">Back to Profile</a>
+    <a href="admin-user?id=<%= target!=null?target.getUserId():idStr %>" class="btn btn-primary" style="min-inline-size:140px"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.user.backProfile") %></a>
     <a href="admin-users" class="btn btn-outline" style="min-inline-size:140px">Users List</a>
   </div>
 </div>

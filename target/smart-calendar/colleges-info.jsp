@@ -2,24 +2,15 @@
 <%@ page import="com.smartcalendar.models.User" %>
 <%
     User user = (User) session.getAttribute("user");
-    if (user == null) {
-        response.sendRedirect("login.jsp");
-        return;
-    }
-    boolean isAdmin = user.getRole() != null && user.getRole().equalsIgnoreCase("admin");
-%>
-    User user = (User) session.getAttribute("user");
-    if (user == null) {
-        response.sendRedirect("login.jsp");
-        return;
-    }
+    boolean isAdmin = user != null && user.getRole() != null && user.getRole().equalsIgnoreCase("admin");
 %>
 <!DOCTYPE html>
-<html lang="en">
+<%@ include file="/WEB-INF/jspf/lang-init.jspf" %>
+<html lang="<%= lang %>" dir="<%= textDir %>">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Colleges Information</title>
+    <title><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "colleges.info.title") %></title>
     <link rel="stylesheet" href="css/main.css">
     <style>
         .card{background:#fff;border:1px solid #e5e7eb;border-radius:12px;box-shadow:0 1px 2px rgba(0,0,0,.04);padding:24px}
@@ -58,7 +49,11 @@
         <div class="nav-container">
             <h1 class="nav-title"><a href="dashboard">Smart Calendar</a></h1>
             <div class="nav-actions">
-                <span class="user-welcome">Welcome, <%= user.getFullName() %>!</span>
+                     <% if (user != null) { %>
+                         <span class="user-welcome">Welcome, <%= user.getFullName() %>!</span>
+                     <% } else { %>
+                         <span class="user-welcome">Welcome!</span>
+                     <% } %>
             </div>
         </div>
     </nav>
@@ -66,14 +61,14 @@
     <div class="form-container">
         <div class="form-header" style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
             <div>
-                <h2 class="page-title">Colleges Information</h2>
-                <div class="page-sub">This page will list colleges and helpful links. Send content to populate it.</div>
+                <h2 class="page-title"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "colleges.info.title") %></h2>
+                <div class="page-sub"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "colleges.info.subtitle") %></div>
             </div>
         </div>
         <div class="card">
             <div class="toolbar">
                 <div class="search">
-                    <input id="searchBox" type="search" placeholder="Search by college or teacher name..." />
+                    <input id="searchBox" type="search" placeholder="<%= com.smartcalendar.utils.LanguageUtil.getText(lang, "colleges.search.placeholder") %>" />
                 </div>
                      <% if (isAdmin) { %>
                          <a href="admin-college-teachers" class="btn btn-primary" style="white-space:nowrap;font-size:.75rem;padding:10px 14px;">Manage Teachers</a>
@@ -87,7 +82,7 @@
                         <span class="chev" aria-hidden="true">↗</span>
                     </a>
                     <div class="teacher-inline" style="padding:8px 16px 14px 16px;border-top:1px solid #e5e7eb;background:#fff">
-                        <strong style="font-size:.7rem;letter-spacing:.5px;color:#475569;display:block;margin:0 0 6px 0;text-transform:uppercase">Teachers</strong>
+                        <strong style="font-size:.7rem;letter-spacing:.5px;color:#475569;display:block;margin:0 0 6px 0;text-transform:uppercase"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "common.teachers") %></strong>
                         <div class="teacher-tags" style="display:flex;flex-wrap:wrap;gap:6px"></div>
                     </div>
                 </div>
@@ -98,7 +93,7 @@
                         <span class="chev" aria-hidden="true">↗</span>
                     </a>
                     <div class="teacher-inline" style="padding:8px 16px 14px 16px;border-top:1px solid #e5e7eb;background:#fff">
-                        <strong style="font-size:.7rem;letter-spacing:.5px;color:#475569;display:block;margin:0 0 6px 0;text-transform:uppercase">Teachers</strong>
+                        <strong style="font-size:.7rem;letter-spacing:.5px;color:#475569;display:block;margin:0 0 6px 0;text-transform:uppercase"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "common.teachers") %></strong>
                         <div class="teacher-tags" style="display:flex;flex-wrap:wrap;gap:6px"></div>
                     </div>
                 </div>
@@ -109,7 +104,7 @@
                         <span class="chev" aria-hidden="true">↗</span>
                     </a>
                     <div class="teacher-inline" style="padding:8px 16px 14px 16px;border-top:1px solid #e5e7eb;background:#fff">
-                        <strong style="font-size:.7rem;letter-spacing:.5px;color:#475569;display:block;margin:0 0 6px 0;text-transform:uppercase">Teachers</strong>
+                        <strong style="font-size:.7rem;letter-spacing:.5px;color:#475569;display:block;margin:0 0 6px 0;text-transform:uppercase"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "common.teachers") %></strong>
                         <div class="teacher-tags" style="display:flex;flex-wrap:wrap;gap:6px"></div>
                     </div>
                 </div>
@@ -120,7 +115,7 @@
                         <span class="chev" aria-hidden="true">↗</span>
                     </a>
                     <div class="teacher-inline" style="padding:8px 16px 14px 16px;border-top:1px solid #e5e7eb;background:#fff">
-                        <strong style="font-size:.7rem;letter-spacing:.5px;color:#475569;display:block;margin:0 0 6px 0;text-transform:uppercase">Teachers</strong>
+                        <strong style="font-size:.7rem;letter-spacing:.5px;color:#475569;display:block;margin:0 0 6px 0;text-transform:uppercase"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "common.teachers") %></strong>
                         <div class="teacher-tags" style="display:flex;flex-wrap:wrap;gap:6px"></div>
                     </div>
                 </div>
@@ -138,7 +133,7 @@
                               if(!tagWrap) return;
                               const raw = it.getAttribute('data-teachers') || '';
                               const teachers = raw.split('|').map(t=>t.trim()).filter(Boolean);
-                              if(teachers.length === 0){ tagWrap.innerHTML = '<span style="font-size:.6rem;color:#94a3b8">No teachers listed</span>'; return; }
+                              if(teachers.length === 0){ tagWrap.innerHTML = '<span style="font-size:.6rem;color:#94a3b8"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "colleges.noTeachersListed") %></span>'; return; }
                               teachers.forEach(t => {
                                   const span = document.createElement('span');
                                   span.textContent = t;
@@ -185,7 +180,7 @@
             </script>
         </div>
         <div style="display:grid;place-items:center;margin-top:24px">
-            <a href="important-locations.jsp" class="btn btn-outline" style="min-inline-size:160px">Go Back</a>
+            <a href="important-locations.jsp" class="btn btn-outline" style="min-inline-size:160px"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "common.back") %></a>
         </div>
     </div>
 </body>

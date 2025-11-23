@@ -2,17 +2,14 @@
 <%@ page import="com.smartcalendar.models.User" %>
 <%
     User user = (User) session.getAttribute("user");
-    if (user == null) {
-        response.sendRedirect("login.jsp");
-        return;
-    }
+    if (user == null) response.sendRedirect("login.jsp");
 %>
 <!DOCTYPE html>
-<html lang="en">
+<%@ include file="/WEB-INF/jspf/lang-init.jspf" %><html lang="<%= lang %>" dir="<%= textDir %>">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>College of International Education and Social Development</title>
+    <title><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "college.international.title") %></title>
     <link rel="stylesheet" href="css/main.css">
     <style>
         .card{background:#fff;border:1px solid #e5e7eb;border-radius:12px;box-shadow:0 1px 2px rgba(0,0,0,.04);padding:24px}
@@ -33,7 +30,7 @@
         <div class="nav-container">
             <h1 class="nav-title"><a href="dashboard.jsp">Smart Calendar</a></h1>
             <div class="nav-actions">
-                <span class="user-welcome">Welcome, <%= user.getFullName() %>!</span>
+                <span class="user-welcome"><%= user != null ? com.smartcalendar.utils.LanguageUtil.getText(lang, "dashboard.welcome")+", "+ user.getFullName()+"!" : com.smartcalendar.utils.LanguageUtil.getText(lang, "dashboard.welcome") %></span>
             </div>
         </div>
     </nav>
@@ -41,8 +38,8 @@
     <div class="form-container">
         <div class="form-header">
             <div>
-                <h2 class="page-title">🏫 College of International Education and Social Development</h2>
-                <div class="page-sub">Contacts and information for International Education and Social Development.</div>
+                <h2 class="page-title">🏫 <%= com.smartcalendar.utils.LanguageUtil.getText(lang, "college.international.title") %></h2>
+                <div class="page-sub"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "college.international.subtitle") %></div>
             </div>
         </div>
 
@@ -63,8 +60,8 @@
             </div>
             <div class="card-footer">
                 <div class="actions-bar">
-                    <a href="colleges-info.jsp" class="btn btn-outline btn-icon">← <span>Back</span></a>
-                    <a href="https://surl.amap.com/2x3CujMlV2Ej" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-icon">📍 <span>Go to the location</span></a>
+                    <a href="colleges-info.jsp" class="btn btn-outline btn-icon">← <span><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "common.back") %></span></a>
+                    <a href="https://surl.amap.com/2x3CujMlV2Ej" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-icon">📍 <span><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "common.goLocation") %></span></a>
                 </div>
             </div>
         </div>

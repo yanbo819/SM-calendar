@@ -10,7 +10,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Add New Department</title>
+    <title><%= com.smartcalendar.utils.LanguageUtil.getText("en", "admin.department.addNewTitle") %></title>
     <style>
         .form-container {
             max-width: 400px;
@@ -64,10 +64,10 @@
 </head>
 <body>
 <div class="form-container">
-    <h2>Add New Department</h2>
+    <h2><%= com.smartcalendar.utils.LanguageUtil.getText("en", "admin.department.addNewTitle") %></h2>
     <form method="post" action="admin-add-department">
         <div class="form-group">
-            <label for="name">Department Name</label>
+            <label for="name"><%= com.smartcalendar.utils.LanguageUtil.getText("en", "admin.volunteer.departmentLabel") %> Name</label>
             <input type="text" id="name" name="name" required maxlength="150">
         </div>
         <div class="form-group">
@@ -79,8 +79,8 @@
             <input type="text" id="leader_phone" name="leader_phone" maxlength="40">
         </div>
         <div class="actions">
-            <a href="admin-cst-team" class="back-link">Go Back</a>
-            <button type="submit">Add Department</button>
+            <a href="admin-cst-team" class="back-link"><%= com.smartcalendar.utils.LanguageUtil.getText("en", "common.back") %></a>
+            <button type="submit"><%= com.smartcalendar.utils.LanguageUtil.getText("en", "admin.department.addButton") %></button>
         </div>
     </form>
 </div>

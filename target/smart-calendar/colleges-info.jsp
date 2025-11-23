@@ -6,6 +6,13 @@
         response.sendRedirect("login.jsp");
         return;
     }
+    boolean isAdmin = user.getRole() != null && user.getRole().equalsIgnoreCase("admin");
+%>
+    User user = (User) session.getAttribute("user");
+    if (user == null) {
+        response.sendRedirect("login.jsp");
+        return;
+    }
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -49,7 +56,7 @@
 <body>
     <nav class="main-nav">
         <div class="nav-container">
-            <h1 class="nav-title"><a href="dashboard.jsp">Smart Calendar</a></h1>
+            <h1 class="nav-title"><a href="dashboard">Smart Calendar</a></h1>
             <div class="nav-actions">
                 <span class="user-welcome">Welcome, <%= user.getFullName() %>!</span>
             </div>
@@ -68,6 +75,9 @@
                 <div class="search">
                     <input id="searchBox" type="search" placeholder="Search by college or teacher name..." />
                 </div>
+                     <% if (isAdmin) { %>
+                         <a href="admin-college-teachers" class="btn btn-primary" style="white-space:nowrap;font-size:.75rem;padding:10px 14px;">Manage Teachers</a>
+                     <% } %>
             </div>
 
             <div class="accordion" id="collegeList">
@@ -76,13 +86,21 @@
                         <span class="label">College of Physics and Electronic Information Engineering</span>
                         <span class="chev" aria-hidden="true">↗</span>
                     </a>
+                    <div class="teacher-inline" style="padding:8px 16px 14px 16px;border-top:1px solid #e5e7eb;background:#fff">
+                        <strong style="font-size:.7rem;letter-spacing:.5px;color:#475569;display:block;margin:0 0 6px 0;text-transform:uppercase">Teachers</strong>
+                        <div class="teacher-tags" style="display:flex;flex-wrap:wrap;gap:6px"></div>
+                    </div>
                 </div>
 
-                <div class="accordion-item" data-college="College of Computer Science and Technology">
+                <div class="accordion-item" data-college="College of Computer Science and Technology" data-teachers="">
                     <a class="accordion-header nav-only" href="computer-science.jsp">
                         <span class="label">College of Computer Science and Technology</span>
                         <span class="chev" aria-hidden="true">↗</span>
                     </a>
+                    <div class="teacher-inline" style="padding:8px 16px 14px 16px;border-top:1px solid #e5e7eb;background:#fff">
+                        <strong style="font-size:.7rem;letter-spacing:.5px;color:#475569;display:block;margin:0 0 6px 0;text-transform:uppercase">Teachers</strong>
+                        <div class="teacher-tags" style="display:flex;flex-wrap:wrap;gap:6px"></div>
+                    </div>
                 </div>
 
                 <div class="accordion-item" data-college="College of Economics and Management" data-teachers="魏旋 WEI XUAN|傅菲 FU FEI">
@@ -90,6 +108,10 @@
                         <span class="label">College of Economics and Management</span>
                         <span class="chev" aria-hidden="true">↗</span>
                     </a>
+                    <div class="teacher-inline" style="padding:8px 16px 14px 16px;border-top:1px solid #e5e7eb;background:#fff">
+                        <strong style="font-size:.7rem;letter-spacing:.5px;color:#475569;display:block;margin:0 0 6px 0;text-transform:uppercase">Teachers</strong>
+                        <div class="teacher-tags" style="display:flex;flex-wrap:wrap;gap:6px"></div>
+                    </div>
                 </div>
 
                 <div class="accordion-item" data-college="College of International Education and Social Development" data-teachers="傅廷 FU TING|张炜 ZHANH WEI">
@@ -97,6 +119,10 @@
                         <span class="label">College of International Education and Social Development</span>
                         <span class="chev" aria-hidden="true">↗</span>
                     </a>
+                    <div class="teacher-inline" style="padding:8px 16px 14px 16px;border-top:1px solid #e5e7eb;background:#fff">
+                        <strong style="font-size:.7rem;letter-spacing:.5px;color:#475569;display:block;margin:0 0 6px 0;text-transform:uppercase">Teachers</strong>
+                        <div class="teacher-tags" style="display:flex;flex-wrap:wrap;gap:6px"></div>
+                    </div>
                 </div>
             </div>
 
@@ -105,7 +131,26 @@
                     const list = document.getElementById('collegeList');
                     const headers = list.querySelectorAll('.accordion-header:not(.nav-only)');
                     const panels = list.querySelectorAll('.accordion-panel');
-                    const items = list.querySelectorAll('.accordion-item');
+                          const items = list.querySelectorAll('.accordion-item');
+                          // Populate teacher tags
+                          items.forEach(it => {
+                              const tagWrap = it.querySelector('.teacher-tags');
+                              if(!tagWrap) return;
+                              const raw = it.getAttribute('data-teachers') || '';
+                              const teachers = raw.split('|').map(t=>t.trim()).filter(Boolean);
+                              if(teachers.length === 0){ tagWrap.innerHTML = '<span style="font-size:.6rem;color:#94a3b8">No teachers listed</span>'; return; }
+                              teachers.forEach(t => {
+                                  const span = document.createElement('span');
+                                  span.textContent = t;
+                                  span.style.background = '#f1f5f9';
+                                  span.style.border = '1px solid #e2e8f0';
+                                  span.style.padding = '4px 8px';
+                                  span.style.borderRadius = '8px';
+                                  span.style.fontSize = '.6rem';
+                                  span.style.color = '#334155';
+                                  tagWrap.appendChild(span);
+                              });
+                          });
                     const search = document.getElementById('searchBox');
 
                     // Toggle accordion

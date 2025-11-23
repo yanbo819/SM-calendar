@@ -1,0 +1,10 @@
+<%@ page import="com.smartcalendar.utils.LanguageUtil" %>
+<%
+String lang = (String) request.getAttribute("lang");
+if (lang == null) {
+    lang = (String) session.getAttribute("lang");
+    if (lang == null || !LanguageUtil.isSupportedLanguage(lang)) lang = "en";
+}
+String textDir = (String) request.getAttribute("textDir");
+if (textDir == null) textDir = LanguageUtil.getTextDirection(lang);
+%>

@@ -5,7 +5,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
 
 /**
  * Utility class for handling multi-language support
@@ -18,26 +21,29 @@ public class LanguageUtil {
      * Initialize language resources from database
      */
     public static synchronized void initializeResources() {
-        if (isInitialized) {
-            return;
-        }
-        
-        try (Connection conn = DatabaseUtil.getConnection()) {
-            String sql = "SELECT language_code, resource_key, resource_value FROM language_resources";
-            PreparedStatement stmt = conn.prepareStatement(sql);
+        if (isInitialized) return;
+        Connection conn = null;
+        try {
+            conn = DatabaseUtil.getConnection();
+            if (conn == null) { // DB unavailable, skip without failing
+                isInitialized = true; // prevent repeated attempts hammering logs
+                return;
+            }
+            PreparedStatement stmt = conn.prepareStatement("SELECT language_code, resource_key, resource_value FROM language_resources");
             ResultSet rs = stmt.executeQuery();
-            
             while (rs.next()) {
                 String langCode = rs.getString("language_code");
                 String key = rs.getString("resource_key");
                 String value = rs.getString("resource_value");
-                
                 languageResources.computeIfAbsent(langCode, k -> new HashMap<>()).put(key, value);
             }
-            
             isInitialized = true;
         } catch (SQLException e) {
-            System.err.println("Error loading language resources: " + e.getMessage());
+            // Downgrade to DEBUG-like output; rely on property bundles
+            System.err.println("[LanguageUtil] DB resource load failed; falling back to property bundles. Cause: " + e.getMessage());
+            isInitialized = true; // prevent infinite retry loop
+        } finally {
+            if (conn != null) try { conn.close(); } catch (SQLException ignore) {}
         }
     }
     
@@ -48,9 +54,7 @@ public class LanguageUtil {
      * @return Localized text or key if not found
      */
     public static String getText(String languageCode, String key) {
-        if (!isInitialized) {
-            initializeResources();
-        }
+        if (!isInitialized) initializeResources();
         
         Map<String, String> langMap = languageResources.get(languageCode);
         if (langMap != null && langMap.containsKey(key)) {
@@ -64,9 +68,29 @@ public class LanguageUtil {
                 return langMap.get(key);
             }
         }
+
+        // Property bundle fallback (allows shipping translations without DB rows)
+        String bundleVal = bundleLookup(languageCode, key);
+        if (bundleVal != null) return bundleVal;
+        if (!"en".equals(languageCode)) {
+            bundleVal = bundleLookup("en", key);
+            if (bundleVal != null) return bundleVal;
+        }
         
         // Friendly fallback: humanize the key (replace dots/underscores with spaces and title-case)
         return humanizeKey(key);
+    }
+
+    private static String bundleLookup(String languageCode, String key) {
+        try {
+            Locale locale = new Locale(languageCode);
+            ResourceBundle rb = ResourceBundle.getBundle("i18n.messages", locale);
+            if (rb.containsKey(key)) {
+                return rb.getString(key);
+            }
+        } catch (MissingResourceException ignored) {
+        }
+        return null;
     }
 
     private static String humanizeKey(String key) {

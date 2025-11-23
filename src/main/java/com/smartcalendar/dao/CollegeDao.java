@@ -3,13 +3,17 @@ package com.smartcalendar.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.smartcalendar.models.College;
 
 public class CollegeDao {
+    private static final Logger LOGGER = Logger.getLogger(CollegeDao.class.getName());
     public static List<College> listAll() {
         List<College> list = new ArrayList<>();
         try (Connection conn = DatabaseUtil.getConnection();
@@ -25,8 +29,8 @@ public class CollegeDao {
                 c.setTeacherPhotoUrl(rs.getString("teacher_photo_url"));
                 list.add(c);
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Failed to list colleges", e);
         }
         return list;
     }
@@ -47,8 +51,8 @@ public class CollegeDao {
                     return c;
                 }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Failed to find college id=" + id, e);
         }
         return null;
     }
@@ -64,8 +68,8 @@ public class CollegeDao {
             stmt.setString(5, c.getTeacherPhotoUrl());
             stmt.setInt(6, c.getId());
             stmt.executeUpdate();
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (SQLException e) {
+            LOGGER.log(Level.SEVERE, "Failed to update college id=" + c.getId(), e);
         }
     }
 }

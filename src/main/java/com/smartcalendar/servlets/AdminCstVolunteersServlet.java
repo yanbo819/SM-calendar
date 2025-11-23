@@ -48,7 +48,8 @@ public class AdminCstVolunteersServlet extends HttpServlet {
         User user = (User) req.getSession().getAttribute("user");
         if (user == null || user.getRole() == null || !user.getRole().equalsIgnoreCase("admin")) { resp.sendRedirect("login.jsp"); return; }
         String action = req.getParameter("action");
-        int deptId = Integer.parseInt(req.getParameter("department_id"));
+        int deptId = 0;
+        try { deptId = Integer.parseInt(req.getParameter("department_id")); } catch (Exception e) { deptId = 0; }
         try {
             if ("add".equals(action)) {
                 CstVolunteer v = buildVolunteer(req);
@@ -96,6 +97,7 @@ public class AdminCstVolunteersServlet extends HttpServlet {
         v.setPhone(req.getParameter("phone"));
         v.setGender(req.getParameter("gender"));
         v.setNationality(req.getParameter("nationality"));
+        v.setEmail(req.getParameter("email"));
         // photo_url no longer provided in form; keep null here and preserve existing on update
         v.setActive(true);
         return v;

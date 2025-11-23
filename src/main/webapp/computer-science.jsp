@@ -2,17 +2,14 @@
 <%@ page import="com.smartcalendar.models.User" %>
 <%
     User user = (User) session.getAttribute("user");
-    if (user == null) {
-        response.sendRedirect("login.jsp");
-        return;
-    }
 %>
 <!DOCTYPE html>
-<html lang="en">
+<%@ include file="/WEB-INF/jspf/lang-init.jspf" %>
+<html lang="<%= lang %>" dir="<%= textDir %>">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>College of Computer Science and Technology</title>
+    <title><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "college.compsci.title") %></title>
     <link rel="stylesheet" href="css/main.css">
     <style>
         .card{background:#fff;border:1px solid #e5e7eb;border-radius:12px;box-shadow:0 1px 2px rgba(0,0,0,.04);padding:24px}
@@ -32,9 +29,9 @@
 <body>
     <nav class="main-nav">
         <div class="nav-container">
-            <h1 class="nav-title"><a href="dashboard.jsp">Smart Calendar</a></h1>
+            <h1 class="nav-title"><a href="dashboard"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "app.title") %></a></h1>
             <div class="nav-actions">
-                <span class="user-welcome">Welcome, <%= user.getFullName() %>!</span>
+                <span class="user-welcome"><%= user != null ? com.smartcalendar.utils.LanguageUtil.getText(lang, "dashboard.welcome")+", "+ user.getFullName()+"!" : com.smartcalendar.utils.LanguageUtil.getText(lang, "dashboard.welcome") %></span>
             </div>
         </div>
     </nav>
@@ -42,8 +39,8 @@
     <div class="form-container">
         <div class="form-header">
             <div>
-                <h2 class="page-title">🏫 College of Computer Science and Technology</h2>
-                <div class="page-sub">Contacts and information for the Computer Science college.</div>
+                <h2 class="page-title">🏫 <%= com.smartcalendar.utils.LanguageUtil.getText(lang, "college.compsci.title") %></h2>
+                <div class="page-sub"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "college.compsci.subtitle") %></div>
             </div>
         </div>
 
@@ -53,15 +50,15 @@
             </div>
             <div class="teacher-list">
                 <div class="teacher" data-teacher="彭景云 PENG JING YUN (BARRY)">
-                    <div class="kv"><b>TEACHER NAME</b><span>彭景云 PENG JING YUN (BARRY)</span></div>
-                    <div class="kv"><b>Address</b><span>Building 17, Room 423</span></div>
-                    <div class="kv"><b>Phone</b><span><a href="tel:+8657982281931">0579–8 2281931</a></span></div>
+                    <div class="kv"><b><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.colleges.teacher.name") %></b><span>彭景云 PENG JING YUN (BARRY)</span></div>
+                    <div class="kv"><b><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.colleges.address") %></b><span>Building 17, Room 423</span></div>
+                    <div class="kv"><b><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.colleges.phone") %></b><span><a href="tel:+8657982281931">0579–8 2281931</a></span></div>
                 </div>
             </div>
             <div class="card-footer">
                 <div class="actions-bar">
-                    <a href="colleges-info.jsp" class="btn btn-outline btn-icon">← <span>Back</span></a>
-                    <a href="https://map.wap.qq.com/online/h5-map-share/line.html?type=drive&cond=0&startLat=29.131843&startLng=119.638342&endLat=29.131890&endLng=119.638333&key=%E6%88%91%E7%9A%84%E4%BD%8D%E7%BD%AE%7C%7C%E6%B5%99%E6%B1%9F%E5%B8%88%E8%8C%83%E5%A4%A7%E5%AD%A6" class="btn btn-primary btn-icon" target="_blank" rel="noopener noreferrer">📍 <span>Go to the location</span></a>
+                    <a href="colleges-info.jsp" class="btn btn-outline btn-icon">← <span><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "common.back") %></span></a>
+                    <a href="https://map.wap.qq.com/online/h5-map-share/line.html?type=drive&cond=0&startLat=29.131843&startLng=119.638342&endLat=29.131890&endLng=119.638333&key=%E6%88%91%E7%9A%84%E4%BD%8D%E7%BD%AE%7C%7C%E6%B5%99%E6%B1%9F%E5%B8%88%E8%8C%83%E5%A4%A7%E5%AD%A6" class="btn btn-primary btn-icon" target="_blank" rel="noopener noreferrer">📍 <span><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "common.goLocation") %></span></a>
                 </div>
             </div>
         </div>

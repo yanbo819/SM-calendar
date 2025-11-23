@@ -35,8 +35,8 @@ public class LanguageServlet extends HttpServlet {
                 ps.executeUpdate();
             } catch (Exception ignore) {}
         }
-        // refresh cached resources in case new language resources were added externally
-        LanguageUtil.refreshResources();
+        // refresh cached resources (ignore failures to avoid 500 page)
+        try { LanguageUtil.refreshResources(); } catch (Exception e) { System.err.println("Language refresh failed: " + e.getMessage()); }
         String referer = req.getHeader("Referer");
         if (referer == null || referer.isEmpty()) referer = "dashboard.jsp";
         resp.sendRedirect(referer);
@@ -60,7 +60,7 @@ public class LanguageServlet extends HttpServlet {
                 ps.executeUpdate();
             } catch (Exception ignore) {}
         }
-        LanguageUtil.refreshResources();
+        try { LanguageUtil.refreshResources(); } catch (Exception e) { System.err.println("Language refresh failed: " + e.getMessage()); }
         String referer = req.getHeader("Referer");
         if (referer == null || referer.isEmpty()) referer = "dashboard.jsp";
         resp.sendRedirect(referer);

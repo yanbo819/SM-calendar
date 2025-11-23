@@ -29,6 +29,7 @@
   </style>
 </head>
 <body>
+<%@ include file="/WEB-INF/jspf/flash-messages.jspf" %>
   <nav class="main-nav">
     <div class="nav-container">
       <h1 class="nav-title"><a href="dashboard.jsp">Smart Calendar</a></h1>
@@ -43,8 +44,8 @@
   <div class="form-container">
     <div class="form-header" style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
       <div>
-        <h2 class="page-title">Publish Admin Event</h2>
-        <div class="page-sub" style="color:#6b7280">Create a read-only event visible to all users.</div>
+        <h2 class="page-title"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "events.createNew") %></h2>
+        <div class="page-sub" style="color:#6b7280"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "event.createPageSub") %></div>
       </div>
   <!-- toolbar provides navigation; removed per-page back button -->
     </div>
@@ -52,15 +53,15 @@
       <form method="post" action="admin-event" class="admin-event-form">
         <div class="form-grid">
           <div class="full-span">
-            <label>Title</label>
+            <label><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "events.subject") %></label>
             <input type="text" name="title" required class="form-control" />
           </div>
           <div>
-            <label>Date</label>
+            <label><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "events.fromDate") %></label>
             <input type="date" name="eventDate" required class="form-control" />
           </div>
           <div>
-            <label>Time</label>
+            <label><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "events.toDate") %></label>
             <input type="time" name="eventTime" required class="form-control" />
           </div>
           <div>
@@ -68,7 +69,7 @@
             <input type="number" name="duration" value="60" min="1" class="form-control" />
           </div>
           <div>
-            <label>Reminder (minutes before)</label>
+            <label><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "events.reminder") %></label>
             <select name="reminder" class="form-control">
               <option value="15">15</option>
               <option value="30">30</option>
@@ -77,16 +78,16 @@
             </select>
           </div>
           <div class="full-span">
-            <label>Location (optional)</label>
+            <label><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "event.locationPlaceholder") %></label>
             <input type="text" name="location" class="form-control" />
           </div>
           <div class="full-span">
-            <label>Description (optional)</label>
+            <label><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "event.descriptionPlaceholder") %></label>
             <textarea name="description" rows="4" class="form-control"></textarea>
           </div>
         </div>
         <div class="actions">
-          <button type="submit" class="btn btn-primary">Publish</button>
+          <button type="submit" class="btn btn-primary"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "event.save") %></button>
         </div>
       </form>
     </div>

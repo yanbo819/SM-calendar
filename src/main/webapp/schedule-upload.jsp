@@ -11,37 +11,36 @@
     String successMessage = (String) request.getAttribute("successMessage");
 %>
 <!DOCTYPE html>
-<html lang="en">
+<%@ include file="/WEB-INF/jspf/lang-init.jspf" %>
+<html lang="<%= lang %>" dir="<%= textDir %>">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Upload Course Schedule</title>
+    <title><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "schedule.uploadTitle") %></title>
     <link rel="stylesheet" href="css/main.css">
         <link rel="stylesheet" href="css/forms.css">
         <style>
             .card{background:#fff;border:1px solid #e5e7eb;border-radius:12px;box-shadow:0 1px 2px rgba(0,0,0,.04);padding:24px}
             .page-title{margin:0;font-size:1.5rem;font-weight:600}
-            .page-sub{color:#6b7280;margin-top:4px}
+            .page-sub{color:#6b7280;margin-block-start:4px}
             .hint{color:#6b7280;font-size:.9rem}
         </style>
 </head>
 <body>
     <nav class="main-nav">
         <div class="nav-container">
-            <h1 class="nav-title"><a href="dashboard.jsp">Smart Calendar</a></h1>
-            <div class="nav-actions">
-                <span class="user-welcome">Welcome, <%= user.getFullName() %>!</span>
-            </div>
+            <h1 class="nav-title"><a href="dashboard.jsp"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "app.title") %></a></h1>
+            <div class="nav-actions" style="display:none"></div>
         </div>
     </nav>
 
     <div class="form-container">
         <div class="form-header" style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
             <div>
-                <h2 class="page-title">Upload Course Schedule</h2>
-                <div class="page-sub">Import from a CSV file. We’ll auto-create subjects and categories.</div>
+                <h2 class="page-title"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "schedule.uploadTitle") %></h2>
+                <div class="page-sub"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "schedule.uploadSub") %></div>
             </div>
-            <a href="dashboard.jsp" class="btn btn-outline">← Back to Dashboard</a>
+            <a href="dashboard.jsp" class="btn btn-outline"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "schedule.backDashboard") %></a>
         </div>
 
         <% if (errorMessage != null) { %>
@@ -59,12 +58,12 @@
             </div>
             <div class="form-row">
                 <div class="form-group full-width">
-                    <p class="hint">Upload either: CSV (title, category, subject, date YYYY-MM-DD, time HH:mm, durationMinutes, location, reminderMinutes), iCalendar .ics (from the Timetable-to-Calendar tool), or a PDF timetable (we'll auto-extract and import).</p>
+                    <p class="hint"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "schedule.uploadHint") %></p>
                 </div>
             </div>
-            <div class="form-actions" style="display:flex;gap:10px;justify-content:flex-end;border-top:1px dashed #e5e7eb;padding-top:16px;margin-top:8px;">
-                <a href="events.jsp" class="btn btn-secondary">View Events</a>
-                <button type="submit" class="btn btn-primary">Upload & Import</button>
+            <div class="form-actions" style="display:flex;gap:10px;justify-content:flex-end;border-block-start:1px dashed #e5e7eb;padding-block-start:16px;margin-block-start:8px;">
+                <a href="events" class="btn btn-secondary"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "schedule.viewEvents") %></a>
+                <button type="submit" class="btn btn-primary"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "schedule.uploadSubmit") %></button>
             </div>
         </form>
     </div>

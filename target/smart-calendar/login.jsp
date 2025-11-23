@@ -1,10 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="com.smartcalendar.utils.LanguageUtil" %>
 <%
-    String lang = request.getParameter("lang") != null ? request.getParameter("lang") : (session.getAttribute("userLanguage") != null ? (String)session.getAttribute("userLanguage") : "en");
-    if (!LanguageUtil.isSupportedLanguage(lang)) lang = "en";
-    session.setAttribute("userLanguage", lang);
-    String textDir = LanguageUtil.getTextDirection(lang);
+    // LanguageFilter sets request attributes 'lang' and 'textDir'; fall back gracefully if absent
+    String lang = (String) request.getAttribute("lang");
+    if (lang == null) {
+        lang = (String) session.getAttribute("lang");
+        if (lang == null || !LanguageUtil.isSupportedLanguage(lang)) lang = "en";
+    }
+    String textDir = (String) request.getAttribute("textDir");
+    if (textDir == null) textDir = LanguageUtil.getTextDirection(lang);
     String errorMessage = (String) request.getAttribute("errorMessage");
 %>
 <!DOCTYPE html>

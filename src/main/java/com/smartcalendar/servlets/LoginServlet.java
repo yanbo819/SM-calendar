@@ -28,7 +28,7 @@ public class LoginServlet extends HttpServlet {
         // Check if user is already logged in
         HttpSession session = request.getSession(false);
         if (session != null && session.getAttribute("user") != null) {
-            response.sendRedirect("dashboard.jsp");
+            response.sendRedirect("dashboard");
             return;
         }
         // Preserve selected portal (user/admin)
@@ -63,7 +63,12 @@ public class LoginServlet extends HttpServlet {
             session.setAttribute("userId", adminUser.getUserId());
             session.setAttribute("userLanguage", adminUser.getPreferredLanguage() != null ? adminUser.getPreferredLanguage() : "en");
             session.setMaxInactiveInterval(30 * 60);
-            response.sendRedirect(request.getContextPath() + "/dashboard.jsp");
+            // Redirect admin portal login directly to admin tools for convenience
+            if ("admin".equalsIgnoreCase(portal)) {
+                response.sendRedirect(request.getContextPath() + "/admin-tools.jsp");
+            } else {
+                response.sendRedirect(request.getContextPath() + "/dashboard.jsp");
+            }
             return;
         }
         
@@ -94,8 +99,12 @@ public class LoginServlet extends HttpServlet {
                 session.setAttribute("userLanguage", "en");
                 session.setMaxInactiveInterval(30 * 60); // 30 minutes
                 
-                // Redirect to dashboard
-                response.sendRedirect("dashboard.jsp");
+                // Redirect based on portal selection
+                if ("admin".equalsIgnoreCase(portal)) {
+                    response.sendRedirect("admin-tools.jsp");
+                } else {
+                    response.sendRedirect("dashboard");
+                }
                 return;
             } else {
                 errorMessage = "Invalid username or password";

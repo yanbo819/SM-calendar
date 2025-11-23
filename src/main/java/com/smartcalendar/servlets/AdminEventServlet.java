@@ -7,7 +7,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.smartcalendar.models.User;
 import com.smartcalendar.utils.DatabaseUtil;
@@ -28,6 +31,7 @@ import jakarta.servlet.http.HttpSession;
 public class AdminEventServlet extends HttpServlet {
     private static final String ADMIN_CATEGORY_NAME = "Admin Announcement";
     private static final String ADMIN_CATEGORY_COLOR = "#ff9800"; // orange
+    private static final Logger LOGGER = Logger.getLogger(AdminEventServlet.class.getName());
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -71,10 +75,8 @@ public class AdminEventServlet extends HttpServlet {
             SimpleDateFormat tf = new SimpleDateFormat("HH:mm");
             Date sqlDate = new Date(df.parse(eventDateStr).getTime());
             Time sqlTime = new Time(tf.parse(eventTimeStr).getTime());
-            int duration = 60;
-            try { if (durationStr != null && !durationStr.isBlank()) duration = Integer.parseInt(durationStr.trim()); } catch (Exception ignored) {}
-            int reminder = 15;
-            try { if (reminderStr != null && !reminderStr.isBlank()) reminder = Integer.parseInt(reminderStr.trim()); } catch (Exception ignored) {}
+            int duration = parsePositiveInt(durationStr, 60);
+            int reminder = parsePositiveInt(reminderStr, 15);
 
         PreparedStatement stmt = conn.prepareStatement(
                     "INSERT INTO events (user_id, category_id, title, description, event_date, event_time, duration_minutes, location, notes, reminder_minutes_before, is_active) " +
@@ -114,7 +116,8 @@ public class AdminEventServlet extends HttpServlet {
                 insNotif.executeBatch();
             }
             conn.commit();
-        } catch (Exception e) {
+        } catch (SQLException | ParseException e) {
+            LOGGER.log(Level.SEVERE, "Failed to publish admin event", e);
             req.setAttribute("errorMessage", "Failed to publish admin event: " + e.getMessage());
             req.getRequestDispatcher("/admin-event.jsp").forward(req, resp);
             return;
@@ -144,5 +147,16 @@ public class AdminEventServlet extends HttpServlet {
     private String param(HttpServletRequest req, String name) {
         String v = req.getParameter(name);
         return v != null ? v : null;
+    }
+
+    private int parsePositiveInt(String raw, int defaultVal) {
+        if (raw == null || raw.isBlank()) return defaultVal;
+        try {
+            int val = Integer.parseInt(raw.trim());
+            return val > 0 ? val : defaultVal;
+        } catch (NumberFormatException nfe) {
+            LOGGER.log(Level.FINE, "Invalid integer '{0}', using default {1}", new Object[]{raw, defaultVal});
+            return defaultVal;
+        }
     }
 }

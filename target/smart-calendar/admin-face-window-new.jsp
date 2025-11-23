@@ -3,8 +3,8 @@
 <%
     User user = (User) session.getAttribute("user");
     if (user == null) { response.sendRedirect("login.jsp"); return; }
-    boolean isAdmin = (user.getFullName() != null && user.getFullName().equalsIgnoreCase("admin")) || (user.getEmail() != null && user.getEmail().toLowerCase().startsWith("admin"));
-    if (!isAdmin) { response.sendRedirect("dashboard.jsp?error=Not+authorized"); return; }
+    boolean isAdmin = user.getRole() != null && user.getRole().equalsIgnoreCase("admin");
+    if (!isAdmin) { response.sendRedirect("dashboard?error=Not+authorized"); return; }
 
     String dayParam = request.getParameter("day");
     String startParam = request.getParameter("start");
@@ -30,6 +30,14 @@
     </style>
     <script>
         function goBack(){ window.location.href = 'admin-face-config'; }
+        function validateAndSubmit(form){
+            const start = form.start.value.trim();
+            const end = form.end.value.trim();
+            const pattern = /^[0-2][0-9]:[0-5][0-9]$/;
+            if(!pattern.test(start) || !pattern.test(end)) { alert('Time format must be HH:MM'); return false; }
+            if(start >= end) { alert('End time must be after start time'); return false; }
+            return true;
+        }
     </script>
     </head>
 <body>
@@ -43,7 +51,7 @@
             <!-- Removed top-right Go Back per request; bottom actions retain navigation -->
         </div>
 
-        <form class="card" method="post" action="admin-face-config">
+        <form class="card" method="post" action="admin-face-config" onsubmit="return validateAndSubmit(this)">
             <input type="hidden" name="action" value="create" />
             <div class="form-grid">
                 <div class="form-group">

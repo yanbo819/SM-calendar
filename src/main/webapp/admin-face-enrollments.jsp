@@ -11,6 +11,7 @@
     List<FaceEnrollment> faces = (List<FaceEnrollment>) request.getAttribute("faces");
     String loadError = (String) request.getAttribute("loadError");
 %>
+<%-- Language handled by filter; ensure fallback only if absent --%>
 <%
     String lang = (String) session.getAttribute("lang");
     if (lang == null && user.getPreferredLanguage() != null) lang = user.getPreferredLanguage();

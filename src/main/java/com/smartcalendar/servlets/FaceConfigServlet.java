@@ -30,7 +30,7 @@ public class FaceConfigServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession(false);
         User user = session != null ? (User) session.getAttribute("user") : null;
-        if (!isAdmin(user)) { resp.sendRedirect("dashboard.jsp?error=Not+authorized"); return; }
+        if (!isAdmin(user)) { resp.sendRedirect("dashboard?error=Not+authorized"); return; }
         try {
             List<FaceConfig> windows = FaceConfigDao.getActiveWindows();
             req.setAttribute("windows", windows);
@@ -38,7 +38,6 @@ public class FaceConfigServlet extends HttpServlet {
         } catch (SQLException e) {
             LOG.log(Level.SEVERE, "Failed to load face config windows", e);
             resp.sendRedirect("admin-face-config?error=Failed+to+load+face+config");
-            return;
         }
     }
 
@@ -46,7 +45,7 @@ public class FaceConfigServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession(false);
         User user = session != null ? (User) session.getAttribute("user") : null;
-        if (!isAdmin(user)) { resp.sendRedirect("dashboard.jsp?error=Not+authorized"); return; }
+        if (!isAdmin(user)) { resp.sendRedirect("dashboard?error=Not+authorized"); return; }
 
         String action = req.getParameter("action");
         if (action == null) { resp.sendRedirect("admin-face-config?error=Missing+action"); return; }
@@ -58,7 +57,6 @@ public class FaceConfigServlet extends HttpServlet {
                     String endParam = req.getParameter("end");
                     if (dayParam == null || startParam == null || endParam == null) {
                         resp.sendRedirect("admin-face-config?error=Missing+parameters");
-                        return;
                     }
                     int day = Integer.parseInt(dayParam);
                     Time start = Time.valueOf(normalizeTime(startParam));
@@ -78,7 +76,6 @@ public class FaceConfigServlet extends HttpServlet {
                     String uEndParam = req.getParameter("end");
                     if (idParam == null || uDayParam == null || uStartParam == null || uEndParam == null) {
                         resp.sendRedirect("admin-face-config?error=Missing+parameters");
-                        return;
                     }
                     int id = Integer.parseInt(idParam);
                     int uDay = Integer.parseInt(uDayParam);
@@ -102,7 +99,6 @@ public class FaceConfigServlet extends HttpServlet {
                 }
                 default: {
                     resp.sendRedirect("admin-face-config?error=Unknown+action");
-                    return;
                 }
             }
         } catch (SQLException | IllegalArgumentException ex) {
@@ -110,7 +106,8 @@ public class FaceConfigServlet extends HttpServlet {
             String msg = "Operation+failed";
             if (ex instanceof IllegalArgumentException) msg = "Invalid+time+format";
             resp.sendRedirect("admin-face-config?error=" + msg);
-            return;
+        } finally {
+            // no-op; could add audit logging here later
         }
         resp.sendRedirect("admin-face-config?success=Done");
     }

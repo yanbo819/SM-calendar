@@ -118,6 +118,14 @@ CREATE TABLE IF NOT EXISTS face_config (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- College teachers (added for admin teacher management feature)
+CREATE TABLE IF NOT EXISTS college_teachers (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    college_name VARCHAR(255) NOT NULL,
+    teacher_name VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 -- Campus & local locations (gates, hospitals, immigration, etc.)
 CREATE TABLE IF NOT EXISTS locations (
     location_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -149,11 +157,13 @@ CREATE TABLE IF NOT EXISTS cst_volunteers (
     chinese_name VARCHAR(150),
     gender VARCHAR(20),
     nationality VARCHAR(100),
+    email VARCHAR(150),
     photo_url VARCHAR(500),
     is_active BOOLEAN DEFAULT TRUE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (department_id) REFERENCES cst_departments(id) ON DELETE CASCADE
 );
+ALTER TABLE cst_volunteers ADD COLUMN IF NOT EXISTS email VARCHAR(150);
 
 -- Seed initial departments if not present
 MERGE INTO cst_departments (name, leader_name, leader_phone)

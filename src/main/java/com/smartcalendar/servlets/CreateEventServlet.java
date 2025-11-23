@@ -138,7 +138,7 @@ public class CreateEventServlet extends HttpServlet {
                     if (reminder3 != null && !reminder3.equals(primary) && (reminder2 == null || !reminder3.equals(reminder2))) {
                         insertAdditionalReminder(newEventId, reminder3);
                     }
-                    response.sendRedirect("dashboard.jsp?success=Event created successfully");
+                    response.sendRedirect("dashboard?success=Event+created+successfully");
                     return;
                 } else {
                     errorMessage = "Failed to create event. Please try again.";

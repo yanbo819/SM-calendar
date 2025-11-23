@@ -9,37 +9,33 @@ import com.smartcalendar.models.User;
 import com.smartcalendar.utils.DatabaseUtil;
 
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-/**
- * Servlet to delete an event belonging to the logged-in user
- */
+@WebServlet(urlPatterns = {"/delete-event"})
 public class DeleteEventServlet extends HttpServlet {
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        HttpSession session = request.getSession(false);
-        User user = (User) (session != null ? session.getAttribute("user") : null);
-        if (user == null) {
-            response.sendRedirect("login.jsp");
-            return;
-        }
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        HttpSession session = req.getSession(false);
+        User user = session != null ? (User) session.getAttribute("user") : null;
+        if (user == null) { resp.sendRedirect("login.jsp"); return; }
 
-        String id = request.getParameter("id");
-        if (id == null) {
-            response.sendRedirect("events.jsp");
-            return;
-        }
+        String idStr = req.getParameter("id");
+        int eventId;
+        try { eventId = Integer.parseInt(idStr); } catch (Exception e) { resp.sendRedirect("events.jsp?error=invalidId"); return; }
+
         try (Connection conn = DatabaseUtil.getConnection()) {
-            PreparedStatement stmt = conn.prepareStatement("DELETE FROM events WHERE event_id = ? AND user_id = ?");
-            stmt.setInt(1, Integer.parseInt(id));
+            PreparedStatement stmt = conn.prepareStatement("UPDATE events SET is_active=FALSE WHERE event_id=? AND user_id=?");
+            stmt.setInt(1, eventId);
             stmt.setInt(2, user.getUserId());
             stmt.executeUpdate();
         } catch (SQLException e) {
-            // log
+            resp.sendRedirect("events.jsp?error=deleteFailed");
+            return;
         }
-        response.sendRedirect("events.jsp");
+        resp.sendRedirect("events.jsp?success=deleted");
     }
 }

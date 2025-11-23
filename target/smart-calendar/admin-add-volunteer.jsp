@@ -5,11 +5,11 @@
 <%
     User user = (User) session.getAttribute("user");
     if (user == null) { response.sendRedirect("login.jsp"); return; }
-    if (user.getRole() == null || !user.getRole().equalsIgnoreCase("admin")) { response.sendRedirect("dashboard.jsp"); return; }
+    if (user.getRole() == null || !user.getRole().equalsIgnoreCase("admin")) { response.sendRedirect("dashboard"); return; }
     String deptIdStr = request.getParameter("dept");
     int deptId = deptIdStr != null ? Integer.parseInt(deptIdStr) : -1;
     CstDepartment dept = CstDepartmentDao.findById(deptId);
-    if (dept == null) { response.sendRedirect("admin-cst-team.jsp"); return; }
+    if (dept == null) { response.sendRedirect("admin-cst-team"); return; }
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -50,6 +50,9 @@
             <label>Volunteer Picture
                 <input type="file" name="photo_file" accept="image/*" required onchange="previewPhoto(this)">
                 <img id="photoPreview" class="photo-preview" alt="Preview" />
+            </label>
+            <label>Email
+                <input type="email" name="email" maxlength="255" placeholder="volunteer@example.com">
             </label>
             <label>Passport Name
                 <input type="text" name="passport_name" required maxlength="100">

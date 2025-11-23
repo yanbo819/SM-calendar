@@ -11,6 +11,7 @@ public class CstVolunteer {
     private String chineseName;
     private String gender;
     private String nationality;
+    private String email; // optional contact email
     private String photoUrl;
     private boolean active;
     private Timestamp createdAt;
@@ -31,6 +32,8 @@ public class CstVolunteer {
     public void setGender(String gender) { this.gender = gender; }
     public String getNationality() { return nationality; }
     public void setNationality(String nationality) { this.nationality = nationality; }
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
     public String getPhotoUrl() { return photoUrl; }
     public void setPhotoUrl(String photoUrl) { this.photoUrl = photoUrl; }
     public boolean isActive() { return active; }

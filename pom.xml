@@ -20,9 +20,10 @@
         <tomcat.version>7.0.109</tomcat.version>
         <jakarta.servlet.version>6.0.0</jakarta.servlet.version>
         <jakarta.jsp.version>3.1.1</jakarta.jsp.version>
-        <jakarta.jstl.version>3.0.1</jakarta.jstl.version>
-        <!-- Default JSTL scope is compile so the WAR bundles JSTL for Tomcat -->
-        <jstl.scope>compile</jstl.scope>
+           <jakarta.jstl.version>3.0.1</jakarta.jstl.version>
+           <!-- Default JSTL scope set to provided to avoid duplicate JSTL classes when running on Jetty.
+               A separate Tomcat profile can re-enable bundling if required. -->
+           <jstl.scope>provided</jstl.scope>
         <!-- Jetty runtime port (overridable with -Djetty.port=XXXX) -->
         <jetty.port>8082</jetty.port>
     </properties>
@@ -133,16 +134,16 @@
     <!-- Use a profile to avoid duplicate JSTL on Jetty's classpath during local runs -->
     <profiles>
         <profile>
-            <id>jetty</id>
+            <id>tomcat</id>
             <activation>
                 <property>
                     <name>run.env</name>
-                    <value>jetty</value>
+                    <value>tomcat</value>
                 </property>
             </activation>
             <properties>
-                <!-- On Jetty, rely on the container's JSTL to prevent duplicate scanning -->
-                <jstl.scope>provided</jstl.scope>
+                <!-- For older standalone Tomcat requiring bundled JSTL, override scope to compile -->
+                <jstl.scope>compile</jstl.scope>
             </properties>
         </profile>
     </profiles>

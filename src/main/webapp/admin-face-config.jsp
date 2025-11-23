@@ -5,7 +5,7 @@
     com.smartcalendar.models.User user = (com.smartcalendar.models.User) session.getAttribute("user");
     if (user == null) { response.sendRedirect("login.jsp"); return; }
     boolean isAdmin = (user.getFullName() != null && user.getFullName().equalsIgnoreCase("admin")) || (user.getEmail() != null && user.getEmail().toLowerCase().startsWith("admin"));
-    if (!isAdmin) { response.sendRedirect("dashboard.jsp?error=Not+authorized"); return; }
+    if (!isAdmin) { response.sendRedirect("dashboard?error=Not+authorized"); return; }
     List<FaceConfig> windows = (List<FaceConfig>) request.getAttribute("windows");
 %>
 <%
@@ -19,7 +19,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Admin: Face Recognition Windows</title>
+    <title><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "face.modalTitle") %></title>
     <link rel="stylesheet" href="css/main.css" />
     <link rel="stylesheet" href="css/ui.css" />
     <style>
@@ -35,7 +35,7 @@
 %>
 <nav class="main-nav" <%= noHeader?"style=\"display:none\"":"" %>>
     <div class="nav-container">
-        <h1 class="nav-title"><a href="dashboard.jsp">Smart Calendar</a></h1>
+        <h1 class="nav-title"><a href="dashboard">Smart Calendar</a></h1>
         <div class="nav-actions"><!-- admin toolbar below --></div>
     </div>
 </nav>
@@ -52,10 +52,10 @@
 <div class="page-wrap">
     <div class="form-header" style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
         <div>
-            <h2 class="page-title">Face Recognition Windows</h2>
-            <div class="page-sub">Configure allowed days and time ranges for Face Recognition usage.</div>
+            <h2 class="page-title"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "face.modalTitle") %></h2>
+            <div class="page-sub"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "face.enrollSub") %></div>
         </div>
-        <a class="btn btn-primary" href="admin-face-window-new.jsp">+ Add Window</a>
+        <a class="btn btn-primary" href="admin-face-window-new.jsp"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.face.addWindow") %></a>
     </div>
 
     <div class="card" style="margin-top:12px">
@@ -94,12 +94,12 @@
                         <input type="text" name="end" value="<%= endStr %>" required pattern="[0-2][0-9]:[0-5][0-9]" class="form-control" style="inline-size:9rem">
                 </td>
                 <td>
-                        <button type="submit" class="btn btn-primary btn-sm action-btn-sm">Update</button>
+                        <button type="submit" class="btn btn-primary btn-sm action-btn-sm"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "common.save") %></button>
                     </form>
-                    <form method="post" action="admin-face-config" onsubmit="return confirm('Delete this window?');" style="display:inline-block;margin-inline-start:6px">
+                    <form method="post" action="admin-face-config" onsubmit="return confirm('<%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.face.deleteWindowConfirm") %>');" style="display:inline-block;margin-inline-start:6px">
                         <input type="hidden" name="action" value="delete" />
                         <input type="hidden" name="id" value="<%= fc.getId() %>" />
-                        <button type="submit" class="btn btn-danger btn-sm action-btn-sm">Delete</button>
+                        <button type="submit" class="btn btn-danger btn-sm action-btn-sm"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "common.delete") %></button>
                     </form>
                 </td>
             </tr>
@@ -109,7 +109,7 @@
     </div>
 </div>
 <div style="margin-block-start:16px;display:flex;justify-content:center">
-    <a href="admin-tools.jsp" class="btn btn-outline" style="min-inline-size:160px">Go Back</a>
+    <a href="admin-tools.jsp" class="btn btn-outline" style="min-inline-size:160px"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "common.back") %></a>
 </div>
 </body>
 </html>

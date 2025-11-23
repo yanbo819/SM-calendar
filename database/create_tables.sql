@@ -111,3 +111,12 @@ CREATE TABLE user_sessions (
     INDEX idx_user_active (user_id, is_active),
     INDEX idx_expires (expires_at)
 );
+
+-- College teachers table (for managing teacher listings per college)
+CREATE TABLE IF NOT EXISTS college_teachers (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    college_name VARCHAR(255) NOT NULL,
+    teacher_name VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    INDEX idx_college_name (college_name)
+);

@@ -19,7 +19,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Admin: New Location</title>
+    <title><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.location.addNewTitle") %></title>
     <link rel="stylesheet" href="css/main.css" />
     <link rel="stylesheet" href="css/ui.css" />
     <style>
@@ -33,7 +33,7 @@
 <!-- Navigation and admin toolbar removed for streamlined new location form -->
 <div class="form-container page">
     <div class="header-row" style="justify-content:center;flex-direction:column;text-align:center">
-        <h2 style="margin:0">Add New Location</h2>
+        <h2 style="margin:0"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.location.addNewTitle") %></h2>
     </div>
 
     <div class="card">
@@ -43,7 +43,7 @@
                 <input type="hidden" name="returnCategory" value="<%= currentCategory %>" />
                 <div class="create-grid">
                     <div>
-                        <label>Name</label>
+                        <label><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.colleges.name") %></label>
                         <input class="form-control" type="text" name="name" required />
                     </div>
                     <div>
@@ -67,8 +67,8 @@
                 <div class="form-actions" style="display:flex;flex-direction:column;align-items:center;gap:14px;margin-top:18px;">
                     <label style="display:inline-flex;align-items:center;gap:8px;font-size:.9rem;color:#374151"><input type="checkbox" name="active" checked /> Active</label>
                     <div style="display:flex; gap:12px; justify-content:center;">
-                        <a href="admin-tools.jsp" class="btn btn-outline" style="min-inline-size:140px">Go Back</a>
-                        <button type="submit" class="btn btn-primary" style="min-inline-size:140px">Add Location</button>
+                        <a href="admin-tools.jsp" class="btn btn-outline" style="min-inline-size:140px"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "common.back") %></a>
+                        <button type="submit" class="btn btn-primary" style="min-inline-size:140px"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.location.addButton") %></button>
                     </div>
                 </div>
             </form>

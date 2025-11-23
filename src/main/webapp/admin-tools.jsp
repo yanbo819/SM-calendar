@@ -3,18 +3,13 @@
 <%
     User user = (User) session.getAttribute("user");
     if (user == null) { response.sendRedirect("login.jsp"); return; }
-    if (user.getRole() == null || !user.getRole().equalsIgnoreCase("admin")) { response.sendRedirect("dashboard.jsp"); return; }
+    if (user.getRole() == null || !user.getRole().equalsIgnoreCase("admin")) { response.sendRedirect("dashboard"); return; }
 %>
 <!DOCTYPE html>
-<html lang="en">
+<%@ include file="/WEB-INF/jspf/lang-init.jspf" %>
+<html lang="<%= lang %>" dir="<%= textDir %>">
 <head>
 <meta charset="UTF-8" />
-<%
-    String lang = (String) session.getAttribute("lang");
-    if (lang == null && user.getPreferredLanguage() != null) lang = user.getPreferredLanguage();
-    if (lang == null) lang = "en";
-    String textDir = com.smartcalendar.utils.LanguageUtil.getTextDirection(lang);
-%>
 <title><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.tools") %></title>
 <link rel="stylesheet" href="css/main.css" />
 <link rel="stylesheet" href="css/dashboard.css" />
@@ -31,7 +26,7 @@
 <body dir="<%= textDir %>">
 <nav class="main-nav">
     <div class="nav-container">
-        <h1 class="nav-title"><a href="dashboard.jsp"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "app.title") %></a></h1>
+        <h1 class="nav-title"><a href="dashboard"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "app.title") %></a></h1>
         <div class="nav-actions" style="display:flex;gap:8px;align-items:center;">
             <form action="set-language" method="post" style="margin:0;display:flex;align-items:center;gap:4px;">
                 <select name="lang" onchange="this.form.submit()" class="form-control" style="padding:4px 8px;min-inline-size:110px;">
@@ -42,7 +37,7 @@
                     <% } %>
                 </select>
             </form>
-            <a href="dashboard.jsp" class="btn btn-outline"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "dashboard.view_events") %></a>
+            <a href="events" class="btn btn-outline"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "dashboard.view_events") %></a>
             <a href="logout" class="btn btn-outline"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "nav.logout") %></a>
         </div>
     </div>
@@ -80,18 +75,23 @@
             <a href="face-id.jsp?noheader=1" target="_blank" rel="noopener" class="btn btn-primary"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.face.add") %></a>
         </div>
         <div class="tool-card">
-            <h3>🤝 CST Shining Team</h3>
-            <p>Manage departments and volunteers (names, phone, nationality, gender, photo).</p>
-            <a href="admin-cst-team?noheader=1" target="_blank" rel="noopener" class="btn btn-primary">Open Manager</a>
+            <h3>🤝 <%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.cst.title") %></h3>
+            <p><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.cst.desc") %></p>
+            <a href="admin-cst-team?noheader=1" target="_blank" rel="noopener" class="btn btn-primary"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.cst.open") %></a>
         </div>
         <div class="tool-card">
-            <h3>🏫 Colleges Info</h3>
-            <p>Manage colleges, teachers, address, phone, and teacher photos.</p>
-            <a href="admin-colleges" class="btn btn-primary">Colleges Info</a>
+            <h3>🏫 <%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.colleges.title") %></h3>
+            <p><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.colleges.desc") %></p>
+            <a href="admin-colleges" class="btn btn-primary"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.colleges.title") %></a>
+        </div>
+        <div class="tool-card">
+            <h3>👨‍🏫 Manage Teachers</h3>
+            <p>CRUD teacher entries per college.</p>
+            <a href="admin-college-teachers" class="btn btn-primary">Manage Teachers</a>
         </div>
     </div>
     <div style="margin-top:20px;display:flex;justify-content:center">
-        <a href="dashboard.jsp" class="btn btn-outline" style="min-inline-size:160px">Go Back</a>
+        <a href="dashboard" class="btn btn-outline" style="min-inline-size:160px"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "common.back") %></a>
     </div>
 </div>
 </body>

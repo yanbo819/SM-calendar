@@ -15,7 +15,7 @@ public class CstVolunteerDao {
     public static List<CstVolunteer> listByDepartment(int departmentId) throws SQLException {
         List<CstVolunteer> list = new ArrayList<>();
         try (Connection conn = DatabaseUtil.getConnection();
-             PreparedStatement ps = conn.prepareStatement("SELECT id, department_id, phone, student_id, passport_name, chinese_name, gender, nationality, photo_url, is_active, created_at FROM cst_volunteers WHERE department_id=? AND is_active=TRUE ORDER BY created_at DESC")) {
+             PreparedStatement ps = conn.prepareStatement("SELECT id, department_id, phone, student_id, passport_name, chinese_name, gender, nationality, email, photo_url, is_active, created_at FROM cst_volunteers WHERE department_id=? AND is_active=TRUE ORDER BY created_at DESC")) {
             ps.setInt(1, departmentId);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) list.add(map(rs));
@@ -24,7 +24,7 @@ public class CstVolunteerDao {
     }
 
     public static void insert(CstVolunteer v) throws SQLException {
-        String sql = "INSERT INTO cst_volunteers (department_id, phone, student_id, passport_name, chinese_name, gender, nationality, photo_url, is_active) VALUES (?,?,?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO cst_volunteers (department_id, phone, student_id, passport_name, chinese_name, gender, nationality, email, photo_url, is_active) VALUES (?,?,?,?,?,?,?,?,?,?)";
         try (Connection conn = DatabaseUtil.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, v.getDepartmentId());
             ps.setString(2, v.getPhone());
@@ -33,14 +33,15 @@ public class CstVolunteerDao {
             ps.setString(5, v.getChineseName());
             ps.setString(6, v.getGender());
             ps.setString(7, v.getNationality());
-            ps.setString(8, v.getPhotoUrl());
-            ps.setBoolean(9, v.isActive());
+            ps.setString(8, v.getEmail());
+            ps.setString(9, v.getPhotoUrl());
+            ps.setBoolean(10, v.isActive());
             ps.executeUpdate();
         }
     }
 
     public static int insertReturningId(CstVolunteer v) throws SQLException {
-        String sql = "INSERT INTO cst_volunteers (department_id, phone, student_id, passport_name, chinese_name, gender, nationality, photo_url, is_active) VALUES (?,?,?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO cst_volunteers (department_id, phone, student_id, passport_name, chinese_name, gender, nationality, email, photo_url, is_active) VALUES (?,?,?,?,?,?,?,?,?,?)";
         try (Connection conn = DatabaseUtil.getConnection(); PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             ps.setInt(1, v.getDepartmentId());
             ps.setString(2, v.getPhone());
@@ -49,8 +50,9 @@ public class CstVolunteerDao {
             ps.setString(5, v.getChineseName());
             ps.setString(6, v.getGender());
             ps.setString(7, v.getNationality());
-            ps.setString(8, v.getPhotoUrl());
-            ps.setBoolean(9, v.isActive());
+            ps.setString(8, v.getEmail());
+            ps.setString(9, v.getPhotoUrl());
+            ps.setBoolean(10, v.isActive());
             ps.executeUpdate();
             try (ResultSet rs = ps.getGeneratedKeys()) {
                 if (rs.next()) return rs.getInt(1);
@@ -60,7 +62,7 @@ public class CstVolunteerDao {
     }
 
     public static void update(CstVolunteer v) throws SQLException {
-        String sql = "UPDATE cst_volunteers SET department_id=?, phone=?, student_id=?, passport_name=?, chinese_name=?, gender=?, nationality=?, photo_url=?, is_active=? WHERE id=?";
+        String sql = "UPDATE cst_volunteers SET department_id=?, phone=?, student_id=?, passport_name=?, chinese_name=?, gender=?, nationality=?, email=?, photo_url=?, is_active=? WHERE id=?";
         try (Connection conn = DatabaseUtil.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, v.getDepartmentId());
             ps.setString(2, v.getPhone());
@@ -69,9 +71,10 @@ public class CstVolunteerDao {
             ps.setString(5, v.getChineseName());
             ps.setString(6, v.getGender());
             ps.setString(7, v.getNationality());
-            ps.setString(8, v.getPhotoUrl());
-            ps.setBoolean(9, v.isActive());
-            ps.setInt(10, v.getId());
+            ps.setString(8, v.getEmail());
+            ps.setString(9, v.getPhotoUrl());
+            ps.setBoolean(10, v.isActive());
+            ps.setInt(11, v.getId());
             ps.executeUpdate();
         }
     }
@@ -86,7 +89,7 @@ public class CstVolunteerDao {
 
     public static CstVolunteer findById(int id) throws SQLException {
         try (Connection conn = DatabaseUtil.getConnection();
-             PreparedStatement ps = conn.prepareStatement("SELECT id, department_id, phone, student_id, passport_name, chinese_name, gender, nationality, photo_url, is_active, created_at FROM cst_volunteers WHERE id=?")) {
+             PreparedStatement ps = conn.prepareStatement("SELECT id, department_id, phone, student_id, passport_name, chinese_name, gender, nationality, email, photo_url, is_active, created_at FROM cst_volunteers WHERE id=?")) {
             ps.setInt(1, id);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) return map(rs);
@@ -105,6 +108,7 @@ public class CstVolunteerDao {
         v.setChineseName(rs.getString("chinese_name"));
         v.setGender(rs.getString("gender"));
         v.setNationality(rs.getString("nationality"));
+        try { v.setEmail(rs.getString("email")); } catch (SQLException ignore) { v.setEmail(null); }
         v.setPhotoUrl(rs.getString("photo_url"));
         v.setActive(rs.getBoolean("is_active"));
         v.setCreatedAt(rs.getTimestamp("created_at"));

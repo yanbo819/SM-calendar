@@ -1,6 +1,8 @@
 package com.smartcalendar.servlets;
 
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.smartcalendar.dao.CstDepartmentDao;
 import com.smartcalendar.models.User;
@@ -13,6 +15,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @WebServlet(urlPatterns = {"/admin-add-department"})
 public class AdminAddDepartmentServlet extends HttpServlet {
+    private static final Logger LOGGER = Logger.getLogger(AdminAddDepartmentServlet.class.getName());
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         User user = (User) req.getSession().getAttribute("user");
@@ -38,7 +41,11 @@ public class AdminAddDepartmentServlet extends HttpServlet {
                 CstDepartmentDao.insert(name.trim(),
                         leaderName == null ? "" : leaderName.trim(),
                         leaderPhone == null ? "" : leaderPhone.trim());
-            } catch (Exception ignored) {}
+            } catch (java.sql.SQLException ex) {
+                LOGGER.log(Level.SEVERE, "Failed to insert department", ex);
+                resp.sendRedirect("admin-cst-team?error=dept");
+                return;
+            }
         }
         resp.sendRedirect("admin-cst-team");
     }

@@ -1,10 +1,23 @@
+<%-- Ensure lang is available for toolbar localization --%>
+<%
+String lang = (String) request.getAttribute("lang");
+if (lang == null) {
+    Object sessionLang = session.getAttribute("lang");
+    if (sessionLang != null) {
+        lang = sessionLang.toString();
+    }
+}
+if (lang == null) {
+    lang = "en"; // fallback
+}
+%>
 <div class="admin-toolbar" id="adminToolbar">
-        <a href="dashboard.jsp" class="btn btn-nav" data-path="dashboard.jsp">Dashboard</a>
-        <a href="admin-event.jsp" class="btn btn-nav" data-path="admin-event">Admin Publish</a>
-        <a href="admin-users" class="btn btn-nav" data-path="admin-users">Manage Users</a>
-        <a href="admin-locations" class="btn btn-nav" data-path="admin-locations">Locations</a>
+        <a href="dashboard.jsp" class="btn btn-nav" data-path="dashboard.jsp"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "dashboard.title") %></a>
+        <a href="admin-event.jsp" class="btn btn-nav" data-path="admin-event"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "events.createNew") %></a>
+        <a href="admin-users" class="btn btn-nav" data-path="admin-users"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.colleges.teacher.name") %></a>
+        <a href="admin-locations" class="btn btn-nav" data-path="admin-locations"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "dashboard.importantLocations") %></a>
         <!-- Deprecated inline toolbar; links moved to admin-tools.jsp -->
-        <a href="admin-tools.jsp" class="btn btn-nav" data-path="admin-tools.jsp">Admin Tools</a>
+        <a href="admin-tools.jsp" class="btn btn-nav" data-path="admin-tools.jsp"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.back.tools") %></a>
         
 </div>
 <script>

@@ -21,7 +21,7 @@
 <body>
     <nav class="main-nav">
         <div class="nav-container">
-            <h1 class="nav-title"><a href="dashboard.jsp">Smart Calendar</a></h1>
+            <h1 class="nav-title"><a href="dashboard">Smart Calendar</a></h1>
             <div class="nav-actions">
                 <span class="user-welcome">Welcome, <%= user.getFullName() %>!</span>
             </div>

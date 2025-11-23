@@ -2,28 +2,28 @@
 <%@ page import="com.smartcalendar.models.User" %>
 <%@ page import="com.smartcalendar.models.Location" %>
 <%@ page import="com.smartcalendar.dao.LocationDao" %>
+<%@ include file="/WEB-INF/jspf/lang-init.jspf" %>
 <%
+    // Allow anonymous viewing
     User user = (User) session.getAttribute("user");
-    if (user == null) {
-        response.sendRedirect("login.jsp");
-        return;
-    }
 %>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="<%= lang %>" dir="<%= textDir %>">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>School location, Buildings &amp; gates</title>
+    <title><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "locations.schoolBuildings") %></title>
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/locations.css">
 </head>
 <body>
     <nav class="main-nav">
         <div class="nav-container">
-            <h1 class="nav-title"><a href="dashboard.jsp">Smart Calendar</a></h1>
+            <h1 class="nav-title"><a href="dashboard"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "app.title") %></a></h1>
             <div class="nav-actions">
-                <span class="user-welcome">Welcome, <%= user.getFullName() %>!</span>
+                <% if (user != null) { %>
+                <span class="user-welcome"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "dashboard.welcome") %> <%= user.getFullName() %>!</span>
+                <% } %>
             </div>
         </div>
     </nav>
@@ -31,26 +31,26 @@
     <div class="form-container">
         <div class="form-header" style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
             <div>
-                <h2 class="page-title">School location, Buildings &amp; gates</h2>
-                <div class="page-sub">Locations of buildings, classrooms, offices, facilities, and campus gates.</div>
+                <h2 class="page-title"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "locations.schoolBuildings") %></h2>
+                <div class="page-sub"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "locations.schoolBuildings.desc") %></div>
             </div>
         </div>
         <div class="card">
             <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px">
-                <strong>Gates & Buildings</strong>
-                <button id="toggleSearchGate" type="button" class="btn btn-outline btn-sm">Search</button>
+                <strong><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "locations.schoolBuildings") %></strong>
+                <button id="toggleSearchGate" type="button" class="btn btn-outline btn-sm"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "common.search") %></button>
             </div>
             <div class="search-row" id="searchRowGate" style="display:none">
-                <input id="searchGate" class="search-input" type="search" placeholder="Search school buildings & gates..." />
+                <input id="searchGate" class="search-input" type="search" placeholder="<%= com.smartcalendar.utils.LanguageUtil.getText(lang, "search.schoolBuildings.placeholder") %>" />
             </div>
             <%
                 java.util.List<Location> gates = new java.util.ArrayList<>();
                 try { gates = LocationDao.listByCategory("gate"); } catch (Exception ignore) {}
                 int gateCount = gates.size();
             %>
-            <h3 class="section-heading">Gates <span class="badge"><%= gateCount %></span></h3>
+            <h3 class="section-heading"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "locations.schoolBuildings") %> <span class="badge"><%= gateCount %></span></h3>
             <% if (gateCount == 0) { %>
-                <div class="empty">No gates or buildings yet.</div>
+                <div class="empty"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "schoolBuildings.empty") %></div>
             <% } %>
             <div id="accGate" class="acc-list">
                 <% for (Location g : gates) { %>
@@ -58,7 +58,7 @@
                     <summary><span class="summary-icon">🚪</span> <span class="acc-title"><%= g.getName() %></span>
                         <span class="summary-actions">
                             <% if (g.getMapUrl() != null && !g.getMapUrl().isEmpty()) { %>
-                            <a class="btn btn-primary btn-sm" href="<%= g.getMapUrl() %>" target="_blank" rel="noopener">Go</a>
+                            <a class="btn btn-primary btn-sm" href="<%= g.getMapUrl() %>" target="_blank" rel="noopener"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "common.goLocation") %></a>
                             <% } %>
                         </span>
                     </summary>
@@ -70,7 +70,7 @@
             </div>
         </div>
         <div style="display:grid;place-items:center;margin-top:24px">
-            <a href="important-locations.jsp" class="btn btn-outline" style="min-inline-size:160px">Go Back</a>
+            <a href="important-locations.jsp" class="btn btn-outline" style="min-inline-size:160px"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "common.back") %></a>
         </div>
     </div>
     <script>

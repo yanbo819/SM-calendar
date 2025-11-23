@@ -12,8 +12,7 @@
         return;
     }
     
-    String lang = "en";
-    String textDir = "ltr";
+    // Language handled by filter; include fragment for lang/textDir
     String errorMessage = (String) request.getAttribute("errorMessage");
     
     // Get form values for repopulation on error
@@ -35,11 +34,12 @@
     String reminder3Val = (String) request.getAttribute("reminder3");
 %>
 <!DOCTYPE html>
+<%@ include file="/WEB-INF/jspf/lang-init.jspf" %>
 <html lang="<%= lang %>" dir="<%= textDir %>">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= LanguageUtil.getText(lang, "app.title") %> - Create Event</title>
+    <title><%= LanguageUtil.getText(lang, "event.createPageTitle") %></title>
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/forms.css">
     <style>
@@ -99,8 +99,8 @@
     <div class="form-container">
         <div class="form-header" style="display:flex; align-items:center; justify-content:space-between; gap:12px;">
             <div>
-                <h2 class="page-title">Create New Reminder</h2>
-                <div class="page-subtitle">Choose a type, add subject, time, and a reminder. You can always edit later.</div>
+                <h2 class="page-title"><%= LanguageUtil.getText(lang, "event.createPageTitle") %></h2>
+                <div class="page-subtitle"><%= LanguageUtil.getText(lang, "event.createPageSub") %></div>
             </div>
             <!-- Removed top back to dashboard for cleaner layout when opened from Admin Tools -->
         </div>
@@ -115,33 +115,33 @@
             <div class="sections">
                 <!-- Type -->
                 <div class="section">
-                    <h3>Type</h3>
+                    <h3><%= LanguageUtil.getText(lang, "event.type") %></h3>
                     <div class="quick-types" style="display:flex; gap:8px; flex-wrap:wrap">
-                        <button type="button" class="btn btn-chip" data-type="Meeting">Meeting</button>
-                        <button type="button" class="btn btn-chip" data-type="Course">Course</button>
-                        <button type="button" class="btn btn-chip" data-type="Exam">Exam</button>
-                        <button type="button" class="btn btn-chip" data-type="Activity">Activity</button>
-                        <button type="button" class="btn btn-chip" data-type="Others">Others</button>
+                        <button type="button" class="btn btn-chip" data-type="Meeting"><%= LanguageUtil.getText(lang, "event.type.meeting") %></button>
+                        <button type="button" class="btn btn-chip" data-type="Course"><%= LanguageUtil.getText(lang, "event.type.course") %></button>
+                        <button type="button" class="btn btn-chip" data-type="Exam"><%= LanguageUtil.getText(lang, "event.type.exam") %></button>
+                        <button type="button" class="btn btn-chip" data-type="Activity"><%= LanguageUtil.getText(lang, "event.type.activity") %></button>
+                        <button type="button" class="btn btn-chip" data-type="Others"><%= LanguageUtil.getText(lang, "event.type.others") %></button>
                     </div>
-                    <div class="hint">Pick a type to help categorize this reminder. You can change it later.</div>
+                    <div class="hint"><%= LanguageUtil.getText(lang, "event.type.hint") %></div>
                 </div>
 
                 <!-- Details: Subject, Location, Reminder before (dynamic) -->
                 <div class="section">
-                    <h3>Details</h3>
+                    <h3><%= LanguageUtil.getText(lang, "event.details") %></h3>
                     <div class="form-grid cols-2">
                         <div class="input-required"><input type="text" id="title" name="title" required maxlength="255"
                                value="<%= title != null ? title : "" %>"
-                               placeholder="Subject"></div>
+                               placeholder="<%= LanguageUtil.getText(lang, "event.subjectPlaceholder") %>"></div>
                         <input type="text" id="location" name="location" maxlength="255"
                                value="<%= location != null ? location : "" %>"
-                               placeholder="Location (optional)">
+                               placeholder="<%= LanguageUtil.getText(lang, "event.locationPlaceholder") %>">
                     </div>
 
                     <div class="form-grid">
                         <div class="input-required">
                             <select id="reminder1" name="reminder1" class="form-control" required>
-                                <option value="">Reminder before</option>
+                                <option value=""><%= LanguageUtil.getText(lang, "event.reminderBefore") %></option>
                                 <option value="5" <%= "5".equals(reminderMinutes) ? "selected" : "" %>>5 minutes</option>
                                 <option value="15" <%= reminderMinutes == null || "15".equals(reminderMinutes) ? "selected" : "" %>>15 minutes</option>
                                 <option value="30" <%= "30".equals(reminderMinutes) ? "selected" : "" %>>30 minutes</option>
@@ -151,15 +151,15 @@
                         </div>
                         <div id="extra-reminders" class="form-grid cols-2"></div>
                         <div class="inline-actions">
-                            <button type="button" id="add-reminder-btn" class="btn-small">+ Add another reminder</button>
-                            <span class="hint">You can add up to 2 more.</span>
+                            <button type="button" id="add-reminder-btn" class="btn-small"><%= LanguageUtil.getText(lang, "event.addReminder") %></button>
+                            <span class="hint"><%= LanguageUtil.getText(lang, "event.addReminderHint") %></span>
                         </div>
                     </div>
                 </div>
 
                 <!-- When: date & time only -->
                 <div class="section">
-                    <h3>When</h3>
+                    <h3><%= LanguageUtil.getText(lang, "event.when") %></h3>
               <div class="form-grid cols-2">
                <div class="input-required"><input type="date" id="eventDate" name="eventDate" required
                    value="<%= eventDate != null ? eventDate : "" %>"></div>
@@ -197,13 +197,13 @@
 
                 <!-- Extra -->
                 <div class="section">
-                    <h3>Notes</h3>
-                    <textarea id="notes" name="notes" rows="3" maxlength="1000" placeholder="Notes (optional)"><%= notes != null ? notes : "" %></textarea>
+                    <h3><%= LanguageUtil.getText(lang, "event.notes") %></h3>
+                    <textarea id="notes" name="notes" rows="3" maxlength="1000" placeholder="<%= LanguageUtil.getText(lang, "event.notesPlaceholder") %>"><%= notes != null ? notes : "" %></textarea>
                 </div>
 
                 <div class="actions" style="justify-content:center">
-                    <a href="admin-tools.jsp" class="btn btn-outline" style="min-inline-size:160px">Go Back</a>
-                    <button type="submit" class="btn btn-primary" style="min-inline-size:160px">Save</button>
+                    <a href="admin-tools.jsp" class="btn btn-outline" style="min-inline-size:160px"><%= LanguageUtil.getText(lang, "common.back") %></a>
+                    <button type="submit" class="btn btn-primary" style="min-inline-size:160px"><%= LanguageUtil.getText(lang, "event.save") %></button>
                 </div>
             </div>
         </form>

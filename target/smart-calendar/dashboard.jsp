@@ -4,8 +4,6 @@
 <%@ page import="com.smartcalendar.models.FaceConfig" %>
 <%@ page import="com.smartcalendar.dao.FaceConfigDao" %>
 <%@ page import="com.smartcalendar.utils.LanguageUtil" %>
-<%@ page import="com.smartcalendar.utils.DatabaseUtil" %>
-<%@ page import="java.sql.*" %>
 <%@ page import="java.util.*" %>
 <%@ page import="java.text.SimpleDateFormat" %>
 <%
@@ -21,46 +19,15 @@
     if (lang == null) lang = "en";
     String textDir = com.smartcalendar.utils.LanguageUtil.getTextDirection(lang);
     
-    // Determine admin role using roles column
     boolean isAdmin = user.getRole() != null && user.getRole().equalsIgnoreCase("admin");
-    // Get upcoming events for dashboard preview (include admin-published events)
-    List<Event> upcomingEvents = new ArrayList<Event>();
-    Connection conn = null;
-    try {
-        conn = DatabaseUtil.getConnection();
-    String sql = "SELECT e.event_id, e.user_id, e.title, e.event_date, e.event_time, e.location, " +
-            "c.category_name, c.category_color, s.subject_name " +
-            "FROM events e " +
-            "LEFT JOIN categories c ON e.category_id = c.category_id " +
-            "LEFT JOIN subjects s ON e.subject_id = s.subject_id " +
-        "WHERE e.event_date >= CURRENT_DATE AND e.is_active = TRUE AND (e.user_id = ? OR e.user_id IN (SELECT user_id FROM users WHERE role='admin')) " +
-            "ORDER BY e.event_date ASC, e.event_time ASC LIMIT 5";
-        
-        PreparedStatement stmt = conn.prepareStatement(sql);
-            stmt.setInt(1, user.getUserId());
-        ResultSet rs = stmt.executeQuery();
-        
-        while (rs.next()) {
-            Event event = new Event();
-            event.setEventId(rs.getInt("event_id"));
-            event.setUserId(rs.getInt("user_id"));
-            event.setTitle(rs.getString("title"));
-            event.setEventDate(rs.getDate("event_date"));
-            event.setEventTime(rs.getTime("event_time"));
-            event.setLocation(rs.getString("location"));
-            event.setCategoryName(rs.getString("category_name"));
-            event.setCategoryColor(rs.getString("category_color"));
-            event.setSubjectName(rs.getString("subject_name"));
-            upcomingEvents.add(event);
-        }
-    } catch (SQLException e) {
-        // Error fetching upcoming events: " + e.getMessage()
-    } finally {
-        if (conn != null) {
-            try { conn.close(); } catch (SQLException e) {}
-        }
-    }
-    
+    @SuppressWarnings("unchecked") List<Event> upcomingEvents = (List<Event>) request.getAttribute("upcomingEvents");
+    if (upcomingEvents == null) upcomingEvents = java.util.Collections.emptyList();
+    Integer todayEventsAttr = (Integer) request.getAttribute("todayEvents");
+    Integer weekEventsAttr = (Integer) request.getAttribute("weekEvents");
+    Integer totalEventsAttr = (Integer) request.getAttribute("totalEvents");
+    int todayEventsVal = todayEventsAttr != null ? todayEventsAttr : 0;
+    int weekEventsVal = weekEventsAttr != null ? weekEventsAttr : 0;
+    int totalEventsVal = totalEventsAttr != null ? totalEventsAttr : 0;
     SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy");
     SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
 
@@ -83,7 +50,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= LanguageUtil.getText(lang, "app.title") %> - Dashboard</title>
+    <title><%= LanguageUtil.getText(lang, "app.title") %> - <%= LanguageUtil.getText(lang, "dashboard.title") %></title>
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/dashboard.css">
     <style>
@@ -95,6 +62,7 @@
     </style>
 </head>
 <body>
+    <%@ include file="/WEB-INF/jspf/flash-messages.jspf" %>
     <!-- Animated background behind tiles -->
     <div class="dashboard-bg">
         <div class="orb orb-1"></div>
@@ -109,18 +77,11 @@
                     <%= LanguageUtil.getText(lang, "dashboard.welcome") %>, <%= user.getFullName() %>!
                 </span>
                 <%
-                    int notifCount = 0;
-                    try {
-                        Connection nc = DatabaseUtil.getConnection();
-                        PreparedStatement pc = nc.prepareStatement("SELECT COUNT(*) FROM notifications WHERE user_id=? AND is_sent=FALSE");
-                        pc.setInt(1, user.getUserId());
-                        ResultSet crs = pc.executeQuery();
-                        if (crs.next()) notifCount = crs.getInt(1);
-                        nc.close();
-                    } catch (SQLException ignore) {}
+                    Integer notifCountAttr = (Integer) request.getAttribute("pendingNotifications");
+                    int notifCount = notifCountAttr != null ? notifCountAttr : 0;
                 %>
                 <div id="notifWrapper" style="position:relative;">
-                    <button id="notifBell" class="btn btn-outline" title="Notifications" style="position:relative;padding:4px 10px;line-height:1;display:flex;align-items:center;gap:4px;" onclick="(function(){var d=document.getElementById('notifDropdown');d.style.display=d.style.display==='none'||d.style.display===''?'block':'none';})();">
+                    <button id="notifBell" class="btn btn-outline" title="<%= LanguageUtil.getText(lang, "notif.title") %>" style="position:relative;padding:4px 10px;line-height:1;display:flex;align-items:center;gap:4px;" onclick="(function(){var d=document.getElementById('notifDropdown');d.style.display=d.style.display==='none'||d.style.display===''?'block':'none';})();">
                         <span style="font-size:1.1rem">🔔</span>
                         <% if (notifCount > 0) { %>
                         <span class="badge" style="position:absolute;top:-4px;right:-4px;background:#dc3545;color:#fff;border-radius:12px;padding:2px 6px;font-size:.65rem;"><%= notifCount %></span>
@@ -128,14 +89,14 @@
                     </button>
                     <div id="notifDropdown" style="display:none;position:absolute;top:110%;right:0;background:#fff;border:1px solid #ddd;border-radius:8px;min-width:220px;box-shadow:0 4px 14px rgba(0,0,0,.15);padding:8px;z-index:60;">
                         <div style="font-weight:600;margin-bottom:4px;display:flex;justify-content:space-between;align-items:center;">
-                            <span>Notifications</span>
+                            <span><%= LanguageUtil.getText(lang, "notif.title") %></span>
                             <button type="button" class="btn btn-outline btn-sm" style="padding:2px 6px;font-size:.65rem" onclick="document.getElementById('notifDropdown').style.display='none'">✕</button>
                         </div>
                         <div style="font-size:.75rem;color:#374151;padding:2px 0">
                             <% if (notifCount == 0) { %>
-                                No notifications
+                                <%= LanguageUtil.getText(lang, "notif.none") %>
                             <% } else { %>
-                                You have notifications (hidden)
+                                <%= LanguageUtil.getText(lang, "notif.haveHidden") %>
                             <% } %>
                         </div>
                     </div>
@@ -152,8 +113,8 @@
                 <button id="navMoreToggle" class="btn btn-outline" title="Menu" aria-haspopup="true" aria-expanded="false" style="padding-inline:12px">⋮</button>
                 <div id="navMoreMenu" style="display:none;position:absolute;inset-block-start:100%;inset-inline-end:0;background:#fff;border:1px solid #ddd;border-radius:8px;padding:8px;min-inline-size:180px;box-shadow:0 4px 12px rgba(0,0,0,.12);z-index:50">
                     <% if (isAdmin) { %>
-                        <a href="admin-tools.jsp" class="btn btn-outline" style="inline-size:100%;margin-block:4px">Admin Tools</a>
-                        <a href="face-id.jsp" class="btn btn-outline" style="inline-size:100%;margin-block:4px">Add My New Face ID</a>
+                        <a href="admin-tools.jsp" class="btn btn-outline" style="inline-size:100%;margin-block:4px"><%= LanguageUtil.getText(lang, "nav.adminTools") %></a>
+                        <a href="face-id.jsp" class="btn btn-outline" style="inline-size:100%;margin-block:4px"><%= LanguageUtil.getText(lang, "nav.addFaceId") %></a>
                     <% } %>
                     <a href="logout" class="btn btn-outline" style="inline-size:100%;margin-block:4px"><%= LanguageUtil.getText(lang, "nav.logout") %></a>
                 </div>
@@ -170,56 +131,32 @@
                 <div class="tile-content">
                     <div class="tile-header">
                         <span class="tile-icon">🛠️</span>
-                        <h3>Admin: Quick Manage</h3>
+                        <h3><%= LanguageUtil.getText(lang, "dashboard.adminQuick") %></h3>
                     </div>
                     <div style="display:flex;flex-wrap:wrap;gap:8px;margin-block-start:8px">
-                        <a class="btn btn-outline" href="admin-locations?category=gate">Colleges / Gates</a>
-                        <a class="btn btn-outline" href="admin-locations?category=hospital">Hospitals</a>
-                        <a class="btn btn-outline" href="admin-locations?category=immigration">Police &amp; Immigration</a>
-                        <a class="btn btn-outline" href="admin-cst-team">CST Shining Team</a>
+                        <a class="btn btn-outline" href="admin-locations?category=gate"><%= LanguageUtil.getText(lang, "dashboard.collegesGates") %></a>
+                        <a class="btn btn-outline" href="admin-locations?category=hospital"><%= LanguageUtil.getText(lang, "dashboard.hospitals") %></a>
+                        <a class="btn btn-outline" href="admin-locations?category=immigration"><%= LanguageUtil.getText(lang, "dashboard.policeImmigration") %></a>
+                        <a class="btn btn-outline" href="admin-cst-team"><%= LanguageUtil.getText(lang, "dashboard.cstTeam") %></a>
                     </div>
                 </div>
             </div>
             <% } %>
             <!-- Tile 1: My Events with quick stats and next upcoming -->
-            <a class="tile tile-events" href="events.jsp">
+            <a class="tile tile-events" href="events">
                 <div class="tile-content">
                     <div class="tile-header">
                         <span class="tile-icon">📅</span>
-                        <h3>My Events</h3>
+                        <h3><%= LanguageUtil.getText(lang, "dashboard.myEvents") %></h3>
                     </div>
                     <div class="tile-stats">
-                        <%
-                            int todayEvents = 0;
-                            int weekEvents = 0;
-                            int totalEvents = 0;
-                            Connection conn2 = null;
-                            try {
-                                conn2 = DatabaseUtil.getConnection();
-                                PreparedStatement stmt1 = conn2.prepareStatement(
-                                    "SELECT COUNT(*) FROM events WHERE user_id = ? AND event_date = CURRENT_DATE AND is_active = TRUE");
-                                stmt1.setInt(1, user.getUserId());
-                                ResultSet rs1 = stmt1.executeQuery();
-                                if (rs1.next()) todayEvents = rs1.getInt(1);
-                                PreparedStatement stmt2 = conn2.prepareStatement(
-                                    "SELECT COUNT(*) FROM events WHERE user_id = ? AND event_date BETWEEN CURRENT_DATE AND DATEADD('DAY', 7, CURRENT_DATE) AND is_active = TRUE");
-                                stmt2.setInt(1, user.getUserId());
-                                ResultSet rs2 = stmt2.executeQuery();
-                                if (rs2.next()) weekEvents = rs2.getInt(1);
-                                PreparedStatement stmt3 = conn2.prepareStatement(
-                                    "SELECT COUNT(*) FROM events WHERE user_id = ? AND is_active = TRUE");
-                                stmt3.setInt(1, user.getUserId());
-                                ResultSet rs3 = stmt3.executeQuery();
-                                if (rs3.next()) totalEvents = rs3.getInt(1);
-                            } catch (SQLException e) { /* ignore */ } finally { if (conn2 != null) { try { conn2.close(); } catch (SQLException e) {} } }
-                        %>
-                        <div class="stat"><span class="stat-number"><%= todayEvents %></span><span class="stat-label">Today</span></div>
-                        <div class="stat"><span class="stat-number"><%= weekEvents %></span><span class="stat-label">This Week</span></div>
-                        <div class="stat"><span class="stat-number"><%= totalEvents %></span><span class="stat-label">Total</span></div>
+                        <div class="stat"><span class="stat-number"><%= todayEventsVal %></span><span class="stat-label"><%= LanguageUtil.getText(lang, "dashboard.today") %></span></div>
+                        <div class="stat"><span class="stat-number"><%= weekEventsVal %></span><span class="stat-label"><%= LanguageUtil.getText(lang, "dashboard.thisWeek") %></span></div>
+                        <div class="stat"><span class="stat-number"><%= totalEventsVal %></span><span class="stat-label"><%= LanguageUtil.getText(lang, "dashboard.total") %></span></div>
                     </div>
                     <div class="tile-upcoming">
                         <% if (upcomingEvents.isEmpty()) { %>
-                            <div class="upcoming-empty">No upcoming events</div>
+                            <div class="upcoming-empty"><%= LanguageUtil.getText(lang, "dashboard.noUpcoming") %></div>
                         <% } else { Event next = upcomingEvents.get(0); %>
                             <div class="upcoming-row">
                                 <div class="upcoming-when"><%= dateFormat.format(next.getEventDate()) %> · <%= timeFormat.format(next.getEventTime()) %></div>
@@ -227,14 +164,14 @@
                                 <% if (next.getUserId() != user.getUserId()) { %>
                                     <form action="follow-admin-event" method="post" style="display:inline; margin-inline-start:6px;">
                                         <input type="hidden" name="id" value="<%= next.getEventId() %>" />
-                                        <button type="submit" style="font-size:0.70em;" title="Add to My Events">Follow</button>
+                                        <button type="submit" style="font-size:0.70em;" title="<%= LanguageUtil.getText(lang, "dashboard.addToMyEvents") %>"><%= LanguageUtil.getText(lang, "dashboard.follow") %></button>
                                     </form>
                                 <% } %>
                             </div>
                         <% } %>
                     </div>
                 </div>
-                <span class="tile-cta">Open →</span>
+                <span class="tile-cta"><%= LanguageUtil.getText(lang, "dashboard.openCta") %> →</span>
             </a>
 
             <!-- Tile 2: Create Reminder -->
@@ -242,11 +179,11 @@
                 <div class="tile-content">
                     <div class="tile-header">
                         <span class="tile-icon">➕</span>
-                        <h3>Create Reminder</h3>
+                        <h3><%= LanguageUtil.getText(lang, "dashboard.createReminder") %></h3>
                     </div>
-                    <p class="tile-desc">Add a new meeting, exam, course, or activity with a reminder.</p>
+                    <p class="tile-desc"><%= LanguageUtil.getText(lang, "dashboard.createReminderDesc") %></p>
                 </div>
-                <span class="tile-cta">Create →</span>
+                <span class="tile-cta"><%= LanguageUtil.getText(lang, "dashboard.createCta") %> →</span>
             </a>
 
             <!-- Tile 3: Upload Schedule -->
@@ -254,11 +191,11 @@
                 <div class="tile-content">
                     <div class="tile-header">
                         <span class="tile-icon">⬆️</span>
-                        <h3>Upload Schedule</h3>
+                        <h3><%= LanguageUtil.getText(lang, "dashboard.uploadSchedule") %></h3>
                     </div>
-                    <p class="tile-desc">Import your course schedule from CSV or iCalendar (.ics) in seconds.</p>
+                    <p class="tile-desc"><%= LanguageUtil.getText(lang, "dashboard.uploadScheduleDesc") %></p>
                 </div>
-                <span class="tile-cta">Upload →</span>
+                <span class="tile-cta"><%= LanguageUtil.getText(lang, "dashboard.uploadCta") %> →</span>
             </a>
 
             <!-- Tile 4: Important Locations -->
@@ -266,22 +203,22 @@
                 <div class="tile-content">
                     <div class="tile-header">
                         <span class="tile-icon">🏫</span>
-                        <h3>Important Locations</h3>
+                        <h3><%= LanguageUtil.getText(lang, "dashboard.importantLocations") %></h3>
                     </div>
-                    <p class="tile-desc">Find colleges, hospitals, police & immigration, schools, and restaurants.</p>
+                    <p class="tile-desc"><%= LanguageUtil.getText(lang, "dashboard.importantLocationsDesc") %></p>
                 </div>
-                <span class="tile-cta">Open →</span>
+                <span class="tile-cta"><%= LanguageUtil.getText(lang, "dashboard.openCta") %> →</span>
             </a>
             <!-- Tile 5: Face ID Windows (management / scanning gated by time) -->
-            <button id="faceRecTile" class="tile tile-face" type="button" title="Face ID Windows">
+            <button id="faceRecTile" class="tile tile-face" type="button" title="<%= LanguageUtil.getText(lang, "dashboard.faceWindows") %>">
                 <div class="tile-content">
                     <div class="tile-header">
                         <span class="tile-icon">🧑‍🦰</span>
-                        <h3>Face ID Windows</h3>
+                        <h3><%= LanguageUtil.getText(lang, "dashboard.faceWindows") %></h3>
                     </div>
-                        <p class="tile-desc">Use Face ID during allowed windows configured by admin.</p>
+                        <p class="tile-desc"><%= LanguageUtil.getText(lang, "dashboard.faceWindowsDesc") %></p>
                 </div>
-                <span class="tile-cta">Scan →</span>
+                <span class="tile-cta"><%= LanguageUtil.getText(lang, "dashboard.scanCta") %> →</span>
             </button>
 
             <!-- Tile 6: CST Shining Team (user view) -->
@@ -289,11 +226,11 @@
                 <div class="tile-content">
                     <div class="tile-header">
                         <span class="tile-icon">🤝</span>
-                        <h3>CST Shining Team</h3>
+                        <h3><%= LanguageUtil.getText(lang, "dashboard.cstTeam") %></h3>
                     </div>
-                    <p class="tile-desc">Student volunteers to help with accommodation and academic support.</p>
+                    <p class="tile-desc"><%= LanguageUtil.getText(lang, "dashboard.cstTeamDesc") %></p>
                 </div>
-                <span class="tile-cta">Open →</span>
+                <span class="tile-cta"><%= LanguageUtil.getText(lang, "dashboard.openCta") %> →</span>
             </a>
         </div>
     </div>
@@ -323,7 +260,7 @@
                         e.stopPropagation();
                         const open = adminWrapper.style.display !== 'none';
                         adminWrapper.style.display = open ? 'none' : '';
-                        adminToggle.textContent = open ? 'Admin Tools ▾' : 'Admin Tools ▴';
+                        adminToggle.textContent = open ? '<%= LanguageUtil.getText(lang, "nav.adminTools") %> ▾' : '<%= LanguageUtil.getText(lang, "nav.adminTools") %> ▴';
                     });
                 }
             }
@@ -349,23 +286,35 @@
 
             // Face add button is always visible; windows gating handled on click
 
-            // Face recognition tile handler
+            // Face recognition tile handler (i18n)
+            const I18N_FACE = {
+                unavailable: '<%= LanguageUtil.getText(lang, "face.unavailable") %>',
+                needEnroll: '<%= LanguageUtil.getText(lang, "face.needEnroll") %>',
+                requesting: '<%= LanguageUtil.getText(lang, "face.requesting") %>',
+                positionFace: '<%= LanguageUtil.getText(lang, "face.positionFace") %>',
+                cameraDenied: '<%= LanguageUtil.getText(lang, "face.cameraDenied") %>',
+                recognized: '<%= LanguageUtil.getText(lang, "face.recognized") %>',
+                noEnrollment: '<%= LanguageUtil.getText(lang, "face.noEnrollment") %>',
+                notRecognized: '<%= LanguageUtil.getText(lang, "face.notRecognized") %>',
+                serviceError: '<%= LanguageUtil.getText(lang, "face.serviceError") %>',
+                modalTitle: '<%= LanguageUtil.getText(lang, "face.modalTitle") %>',
+                cancel: '<%= LanguageUtil.getText(lang, "common.cancel") %>',
+                scan: '<%= LanguageUtil.getText(lang, "face.scan") %>'
+            };
             const faceTile = document.getElementById('faceRecTile');
-            function showTimeNotice() {
-                alert('Face Recognition is not available right now (outside configured windows).');
-            }
+            function showTimeNotice() { alert(I18N_FACE.unavailable); }
 
             // Create a simple modal for camera preview and scan
             const modalHtml = `
                 <div id="faceModal" class="face-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);align-items:center;justify-content:center;z-index:9999;">
                     <div class="face-modal-panel" style="background:#fff;padding:16px;border-radius:8px;max-inline-size:480px;inline-size:90%;box-shadow:0 6px 20px rgba(0,0,0,0.3);">
-                        <h3 style="margin-block-start:0">Face Recognition</h3>
-                        <p id="faceStatus">Requesting camera and location...</p>
+                        <h3 style="margin-block-start:0"><%= LanguageUtil.getText(lang, "face.modalTitle") %></h3>
+                        <p id="faceStatus"><%= LanguageUtil.getText(lang, "face.requesting") %></p>
                         <video id="faceVideo" autoplay playsinline style="inline-size:100%;border-radius:6px;background:#000"></video>
                         <canvas id="faceCanvas" style="display:none"></canvas>
                         <div style="margin-block-start:8px;display:flex;gap:8px;justify-content:flex-end;">
-                            <button id="faceCancel" class="btn">Cancel</button>
-                            <button id="faceScan" class="btn btn-primary">Scan Face</button>
+                            <button id="faceCancel" class="btn"><%= LanguageUtil.getText(lang, "common.cancel") %></button>
+                            <button id="faceScan" class="btn btn-primary"><%= LanguageUtil.getText(lang, "face.scan") %></button>
                         </div>
                     </div>
                 </div>`;
@@ -404,7 +353,7 @@
                     try { return <%= (new Boolean(true ? (com.smartcalendar.dao.UserFaceDao.hasFace(user.getUserId())) : false)).toString() %>; } catch(e){ return false; }
                 })();
                 if (!hasFace) {
-                    const go = confirm('You need to add your Face ID first. Go to enrollment now?');
+                    const go = confirm(I18N_FACE.needEnroll);
                     if (go) { window.location.href = 'face-id.jsp'; }
                     return;
                 }
@@ -423,10 +372,10 @@
                 try {
                     mediaStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' }, audio: false });
                     faceVideo.srcObject = mediaStream;
-                    faceStatus.textContent = 'Position your face in front of the camera and click Scan Face.';
+                    faceStatus.textContent = I18N_FACE.positionFace;
                     faceModal.style.display = 'flex';
                 } catch (err) {
-                    alert('Unable to access camera. Please allow camera permission and try again.');
+                    alert(I18N_FACE.cameraDenied);
                     return;
                 }
 
@@ -448,15 +397,15 @@
                         const res = await fetch('face-recognize', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ image: dataUrl }) });
                         const data = await res.json();
                         if (data && data.ok) {
-                            alert('Face recognized successfully.');
+                            alert(I18N_FACE.recognized);
                         } else if (data && data.reason === 'no_enrollment') {
-                            alert('No Face ID enrolled. Please add your Face ID first.');
+                            alert(I18N_FACE.noEnrollment);
                             window.location.href = 'face-id.jsp';
                         } else {
-                            alert('Face not recognized.');
+                            alert(I18N_FACE.notRecognized);
                         }
                     } catch(err) {
-                        alert('Error contacting recognition service.');
+                        alert(I18N_FACE.serviceError);
                     }
                 };
             });

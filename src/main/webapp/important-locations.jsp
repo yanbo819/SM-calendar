@@ -2,17 +2,14 @@
 <%@ page import="com.smartcalendar.models.User" %>
 <%
     User user = (User) session.getAttribute("user");
-    if (user == null) {
-        response.sendRedirect("login.jsp");
-        return;
-    }
 %>
 <!DOCTYPE html>
-<html lang="en">
+<%@ include file="/WEB-INF/jspf/lang-init.jspf" %>
+<html lang="<%= lang %>" dir="<%= textDir %>">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Important Locations</title>
+    <title><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "important.locations.title") %></title>
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/locations.css">
     <style>
@@ -30,9 +27,9 @@
 <body>
     <nav class="main-nav">
         <div class="nav-container">
-            <h1 class="nav-title"><a href="dashboard.jsp">Smart Calendar</a></h1>
+            <h1 class="nav-title"><a href="dashboard"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "app.title") %></a></h1>
             <div class="nav-actions">
-                <span class="user-welcome">Welcome, <%= user.getFullName() %>!</span>
+                <span class="user-welcome"><%= user != null ? com.smartcalendar.utils.LanguageUtil.getText(lang, "dashboard.welcome")+", "+ user.getFullName()+"!" : com.smartcalendar.utils.LanguageUtil.getText(lang, "dashboard.welcome") %></span>
             </div>
         </div>
     </nav>
@@ -40,8 +37,8 @@
     <div class="form-container">
         <div class="form-header" style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
             <div>
-                <h2 class="page-title">Important Locations</h2>
-                <div class="page-sub">Quick access to essential places and information around you.</div>
+                <h2 class="page-title"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "important.locations.title") %></h2>
+                <div class="page-sub"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "important.locations.subtitle") %></div>
             </div>
         </div>
 
@@ -54,46 +51,46 @@
                 <a class="location-card" href="colleges-info.jsp">
                     <span class="location-icon">🏫</span>
                     <div class="location-text">
-                        <h3>Colleges Info</h3>
-                        <p>Universities, departments, and contacts.</p>
+                        <h3><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "locations.colleges") %></h3>
+                        <p><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "locations.colleges.desc") %></p>
                     </div>
                 </a>
 
                 <a class="location-card" href="hospitals-info.jsp">
                     <span class="location-icon">🏥</span>
                     <div class="location-text">
-                        <h3>Hospitals Info <span class="badge" style="margin-inline-start:6px"><%= countHosp %></span></h3>
-                        <p>Nearby hospitals, clinics, and emergency numbers.</p>
+                        <h3><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "locations.hospitals") %> <span class="badge" style="margin-inline-start:6px"><%= countHosp %></span></h3>
+                        <p><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "locations.hospitals.desc") %></p>
                     </div>
                 </a>
 
                 <a class="location-card" href="police-immigration.jsp">
                     <span class="location-icon">🛂</span>
                     <div class="location-text">
-                        <h3>Police & Immigration <span class="badge" style="margin-inline-start:6px"><%= countImm %></span></h3>
-                        <p>Police stations, immigration offices, and help lines.</p>
+                        <h3><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "locations.policeImmigration") %> <span class="badge" style="margin-inline-start:6px"><%= countImm %></span></h3>
+                        <p><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "locations.policeImmigration.desc") %></p>
                     </div>
                 </a>
 
                 <a class="location-card" href="school-buildings.jsp">
                     <span class="location-icon">🏢</span>
                     <div class="location-text">
-                        <h3>School location, Buildings &amp; gates <span class="badge" style="margin-inline-start:6px"><%= countGate %></span></h3>
-                        <p>Campus buildings, classrooms, and facilities.</p>
+                        <h3><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "locations.schoolBuildings") %> <span class="badge" style="margin-inline-start:6px"><%= countGate %></span></h3>
+                        <p><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "locations.schoolBuildings.desc") %></p>
                     </div>
                 </a>
 
                 <a class="location-card" href="restaurants-other.jsp">
                     <span class="location-icon">🍽️</span>
                     <div class="location-text">
-                        <h3>Restaurants & Others</h3>
-                        <p>Food places and other helpful locations nearby.</p>
+                        <h3><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "locations.restaurants") %></h3>
+                        <p><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "locations.restaurants.desc") %></p>
                     </div>
                 </a>
             </div>
         </div>
         <div style="display:grid;place-items:center;margin-top:24px">
-            <a href="dashboard.jsp" class="btn btn-outline" style="min-inline-size:160px">Go Back</a>
+            <a href="dashboard" class="btn btn-outline" style="min-inline-size:160px"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "common.back") %></a>
         </div>
     </div>
 </body>

@@ -1,130 +1,28 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="com.smartcalendar.models.User" %>
 <%@ page import="com.smartcalendar.models.Event" %>
+<%@ page import="com.smartcalendar.models.Category" %>
 <%@ page import="com.smartcalendar.utils.LanguageUtil" %>
-<%@ page import="com.smartcalendar.utils.DatabaseUtil" %>
-<%@ page import="java.sql.*" %>
 <%@ page import="java.util.*" %>
 <%@ page import="java.text.SimpleDateFormat" %>
 <%
-    // Check if user is logged in
     User user = (User) session.getAttribute("user");
-    if (user == null) {
-        response.sendRedirect("login.jsp");
-        return;
-    }
-    boolean isAdmin = user.getEmail() != null && user.getEmail().equals("admin@smartcalendar.com");
-    // UI locale defaults
-    String lang = "en";
-    String textDir = "ltr";
-    // Query params
-    String searchQuery = request.getParameter("search");
-    String categoryFilter = request.getParameter("category");
-    String dateFrom = request.getParameter("dateFrom");
-    String dateTo = request.getParameter("dateTo");
-    String sortBy = request.getParameter("sortBy");
-    StringBuilder sql = new StringBuilder();
-    sql.append("SELECT e.event_id, e.user_id, e.title, e.description, e.event_date, e.event_time, ");
-    sql.append("e.duration_minutes, e.location, e.notes, e.reminder_minutes_before, ");
-    sql.append("c.category_name, c.category_color, s.subject_name ");
-    sql.append("FROM events e ");
-    sql.append("LEFT JOIN categories c ON e.category_id = c.category_id ");
-    sql.append("LEFT JOIN subjects s ON e.subject_id = s.subject_id ");
-    // Build WHERE: users see their own + admin; admin sees ONLY admin-created events
-    if (isAdmin) {
-        sql.append("WHERE e.is_active = TRUE AND e.user_id = ? ");
-    } else {
-        sql.append("WHERE e.is_active = TRUE AND (e.user_id = ? OR e.user_id IN (SELECT user_id FROM users WHERE email = 'admin@smartcalendar.com')) ");
-    }
-    
-    List<Object> parameters = new ArrayList<Object>();
-    parameters.add(user.getUserId());
-    
-    // Add search filter
-    if (searchQuery != null && !searchQuery.trim().isEmpty()) {
-        sql.append("AND (e.title LIKE ? OR e.description LIKE ? OR e.location LIKE ? OR e.notes LIKE ?) ");
-        String searchPattern = "%" + searchQuery.trim() + "%";
-        parameters.add(searchPattern);
-        parameters.add(searchPattern);
-        parameters.add(searchPattern);
-        parameters.add(searchPattern);
-    }
-    
-    // Add category filter
-    if (categoryFilter != null && !categoryFilter.trim().isEmpty()) {
-        sql.append("AND e.category_id = ? ");
-        parameters.add(Integer.parseInt(categoryFilter));
-    }
-    
-    // Add date range filter
-    if (dateFrom != null && !dateFrom.trim().isEmpty()) {
-        sql.append("AND e.event_date >= ? ");
-        parameters.add(java.sql.Date.valueOf(dateFrom));
-    }
-    
-    if (dateTo != null && !dateTo.trim().isEmpty()) {
-        sql.append("AND e.event_date <= ? ");
-        parameters.add(java.sql.Date.valueOf(dateTo));
-    }
-    
-    // Add sorting
-    if ("date_desc".equals(sortBy)) {
-        sql.append("ORDER BY e.event_date DESC, e.event_time DESC");
-    } else if ("title_asc".equals(sortBy)) {
-        sql.append("ORDER BY e.title ASC");
-    } else if ("title_desc".equals(sortBy)) {
-        sql.append("ORDER BY e.title DESC");
-    } else if ("category".equals(sortBy)) {
-        sql.append("ORDER BY c.category_name ASC, e.event_date ASC");
-    } else { // date_asc
-        sql.append("ORDER BY e.event_date ASC, e.event_time ASC");
-    }
-    
-    // Get events
-    List<Event> events = new ArrayList<Event>();
-    Connection conn = null;
-    try {
-        conn = DatabaseUtil.getConnection();
-        PreparedStatement stmt = conn.prepareStatement(sql.toString());
-        
-        for (int i = 0; i < parameters.size(); i++) {
-            Object param = parameters.get(i);
-            if (param instanceof Integer) {
-                stmt.setInt(i + 1, (Integer) param);
-            } else if (param instanceof java.sql.Date) {
-                stmt.setDate(i + 1, (java.sql.Date) param);
-            } else {
-                stmt.setString(i + 1, param.toString());
-            }
-        }
-        
-        ResultSet rs = stmt.executeQuery();
-        
-        while (rs.next()) {
-            Event event = new Event();
-            event.setEventId(rs.getInt("event_id"));
-            event.setUserId(rs.getInt("user_id"));
-            event.setTitle(rs.getString("title"));
-            event.setDescription(rs.getString("description"));
-            event.setEventDate(rs.getDate("event_date"));
-            event.setEventTime(rs.getTime("event_time"));
-            event.setDurationMinutes(rs.getInt("duration_minutes"));
-            event.setLocation(rs.getString("location"));
-            event.setNotes(rs.getString("notes"));
-            event.setReminderMinutesBefore(rs.getInt("reminder_minutes_before"));
-            event.setCategoryName(rs.getString("category_name"));
-            event.setCategoryColor(rs.getString("category_color"));
-            event.setSubjectName(rs.getString("subject_name"));
-            events.add(event);
-        }
-    } catch (SQLException e) {
-        // Error fetching events: " + e.getMessage()
-    } finally {
-        if (conn != null) {
-            try { conn.close(); } catch (SQLException e) {}
-        }
-    }
-    
+    if (user == null) { response.sendRedirect("login.jsp"); return; }
+    String lang = (String) request.getAttribute("lang");
+    if (lang == null) lang = (String) session.getAttribute("lang");
+    if (lang == null) lang = "en";
+    String textDir = (String) request.getAttribute("textDir");
+    if (textDir == null) textDir = LanguageUtil.getTextDirection(lang);
+    @SuppressWarnings("unchecked") List<Event> events = (List<Event>) request.getAttribute("events");
+    if (events == null) events = Collections.emptyList();
+    @SuppressWarnings("unchecked") List<Category> categories = (List<Category>) request.getAttribute("categories");
+    if (categories == null) categories = Collections.emptyList();
+    String searchQuery = (String) request.getAttribute("search");
+    String categoryFilter = (String) request.getAttribute("category");
+    String dateFrom = (String) request.getAttribute("dateFrom");
+    String dateTo = (String) request.getAttribute("dateTo");
+    String sortBy = (String) request.getAttribute("sortBy");
+    String loadError = (String) request.getAttribute("loadError");
     SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy");
     SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
 %>
@@ -133,15 +31,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= LanguageUtil.getText(lang, "app.title") %> - Events</title>
+    <title><%= LanguageUtil.getText(lang, "app.title") %> - <%= LanguageUtil.getText(lang, "events.title") %></title>
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/events.css">
 </head>
 <body data-user-id="<%= user.getUserId() %>">
+    <%@ include file="/WEB-INF/jspf/flash-messages.jspf" %>
     <nav class="main-nav">
         <div class="nav-container">
             <h1 class="nav-title">
-                <a href="dashboard.jsp"><%= LanguageUtil.getText(lang, "app.title") %></a>
+                <a href="dashboard"><%= LanguageUtil.getText(lang, "app.title") %></a>
             </h1>
             <div class="nav-actions">
                 <span class="user-welcome">
@@ -154,21 +53,21 @@
 
     <div class="events-container">
         <div class="events-header">
-            <h2>My Events</h2>
+            <h2><%= LanguageUtil.getText(lang, "events.myEvents") %></h2>
             <div class="header-actions">
                 <a href="create-event.jsp" class="btn btn-primary">
                     <i class="icon-plus"></i>
-                    Create New Event
+                    <%= LanguageUtil.getText(lang, "events.createNew") %>
                 </a>
-                <a href="dashboard.jsp" class="btn btn-outline">
-                    ← Back to Dashboard
+                <a href="dashboard" class="btn btn-outline">
+                    ← <%= LanguageUtil.getText(lang, "events.backDashboard") %>
                 </a>
             </div>
         </div>
 
         <!-- Search and Filter Form -->
         <div class="search-filters">
-            <form method="get" action="events.jsp" class="filter-form">
+            <form method="get" action="events" class="filter-form">
                 <div class="filter-row">
                     <div class="filter-group">
                         <input type="text" name="search" placeholder="<%= LanguageUtil.getText(lang, "dashboard.search_events") %>" 
@@ -177,55 +76,38 @@
                     
                     <div class="filter-group">
                         <select name="category" class="form-control">
-                            <option value="">All Categories</option>
-                            <%
-                                Connection conn2 = null;
-                                try {
-                                    conn2 = DatabaseUtil.getConnection();
-                                    PreparedStatement stmt = conn2.prepareStatement("SELECT category_id, category_name FROM categories ORDER BY category_name");
-                                    ResultSet rs = stmt.executeQuery();
-                                    while (rs.next()) {
-                                        String selected = String.valueOf(rs.getInt("category_id")).equals(categoryFilter) ? "selected" : "";
-                            %>
-                                <option value="<%= rs.getInt("category_id") %>" <%= selected %>>
-                                    <%= rs.getString("category_name") %>
+                            <option value=""><%= LanguageUtil.getText(lang, "events.allCategories") %></option>
+                            <% for (Category c : categories) { %>
+                                <option value="<%= c.getCategoryId() %>" <%= String.valueOf(c.getCategoryId()).equals(categoryFilter) ? "selected" : "" %>>
+                                    <%= c.getCategoryName() %>
                                 </option>
-                            <%
-                                    }
-                                } catch (SQLException e) {
-                                    // Error fetching categories: " + e.getMessage()
-                                } finally {
-                                    if (conn2 != null) {
-                                        try { conn2.close(); } catch (SQLException e) {}
-                                    }
-                                }
-                            %>
+                            <% } %>
                         </select>
                     </div>
                     
                     <div class="filter-group">
-                        <input type="date" name="dateFrom" placeholder="From Date" 
+                        <input type="date" name="dateFrom" placeholder="<%= LanguageUtil.getText(lang, "events.fromDate") %>" 
                                value="<%= dateFrom != null ? dateFrom : "" %>" class="form-control">
                     </div>
                     
                     <div class="filter-group">
-                        <input type="date" name="dateTo" placeholder="To Date" 
+                        <input type="date" name="dateTo" placeholder="<%= LanguageUtil.getText(lang, "events.toDate") %>" 
                                value="<%= dateTo != null ? dateTo : "" %>" class="form-control">
                     </div>
                     
                     <div class="filter-group">
                         <select name="sortBy" class="form-control">
-                            <option value="date_asc" <%= "date_asc".equals(sortBy) ? "selected" : "" %>>Date (Oldest First)</option>
-                            <option value="date_desc" <%= "date_desc".equals(sortBy) ? "selected" : "" %>>Date (Newest First)</option>
-                            <option value="title_asc" <%= "title_asc".equals(sortBy) ? "selected" : "" %>>Title (A-Z)</option>
-                            <option value="title_desc" <%= "title_desc".equals(sortBy) ? "selected" : "" %>>Title (Z-A)</option>
-                            <option value="category" <%= "category".equals(sortBy) ? "selected" : "" %>>Category</option>
+                            <option value="date_asc" <%= "date_asc".equals(sortBy) ? "selected" : "" %>><%= LanguageUtil.getText(lang, "events.sort.dateAsc") %></option>
+                            <option value="date_desc" <%= "date_desc".equals(sortBy) ? "selected" : "" %>><%= LanguageUtil.getText(lang, "events.sort.dateDesc") %></option>
+                            <option value="title_asc" <%= "title_asc".equals(sortBy) ? "selected" : "" %>><%= LanguageUtil.getText(lang, "events.sort.titleAsc") %></option>
+                            <option value="title_desc" <%= "title_desc".equals(sortBy) ? "selected" : "" %>><%= LanguageUtil.getText(lang, "events.sort.titleDesc") %></option>
+                            <option value="category" <%= "category".equals(sortBy) ? "selected" : "" %>><%= LanguageUtil.getText(lang, "events.sort.category") %></option>
                         </select>
                     </div>
                     
                     <div class="filter-actions">
-                        <button type="submit" class="btn btn-primary">Search</button>
-                        <a href="events.jsp" class="btn btn-secondary">Clear</a>
+                        <button type="submit" class="btn btn-primary"><%= LanguageUtil.getText(lang, "events.search") %></button>
+                        <a href="events" class="btn btn-secondary"><%= LanguageUtil.getText(lang, "events.clear") %></a>
                     </div>
                 </div>
             </form>
@@ -233,25 +115,30 @@
 
         <!-- Events List -->
         <div class="events-list">
+            <% if (loadError != null) { %>
+                <div class="error-box" style="background:#fee2e2;color:#b91c1c;padding:12px;border-radius:6px;margin-bottom:12px;">
+                    <strong><%= LanguageUtil.getText(lang, "common.error") %>:</strong> <%= loadError %>
+                </div>
+            <% } %>
             <% if (events.isEmpty()) { %>
                 <div class="no-events">
-                    <h3>No events found</h3>
+                    <h3><%= LanguageUtil.getText(lang, "events.noneFound") %></h3>
                     <p>
                         <% if (searchQuery != null || categoryFilter != null || dateFrom != null || dateTo != null) { %>
-                            Try adjusting your search filters or
+                            <%= LanguageUtil.getText(lang, "events.adjustFilters") %>
                         <% } %>
-                        <a href="create-event.jsp">create your first event</a>.
+                        <a href="create-event.jsp"><%= LanguageUtil.getText(lang, "events.createFirst") %></a>.
                     </p>
                 </div>
             <% } else { %>
                 <div class="events-stats">
-                    Found <%= events.size() %> event<%= events.size() != 1 ? "s" : "" %>
+                    <%= LanguageUtil.getText(lang, "events.foundPrefix") %> <%= events.size() %> <%= events.size() == 1 ? LanguageUtil.getText(lang, "events.countSingular") : LanguageUtil.getText(lang, "events.countPlural") %>
                 </div>
                 
                 <% 
-                    java.sql.Date currentDate = null;
-                    for (Event event : events) { 
-                        // Group by date
+                    java.util.Date currentDate = null;
+                    for (int i = 0; i < events.size(); i++) { 
+                        Event event = events.get(i);
                         if (currentDate == null || !currentDate.equals(event.getEventDate())) {
                             currentDate = event.getEventDate();
                 %>
@@ -280,7 +167,7 @@
                                 <% if (event.getSubjectName() != null) { %>
                                 <div class="event-subject">
                                     <i class="icon-book"></i>
-                                    Subject: <%= event.getSubjectName() %>
+                                    <%= LanguageUtil.getText(lang, "events.subject") %>: <%= event.getSubjectName() %>
                                 </div>
                                 <% } %>
                                 
@@ -299,21 +186,21 @@
                                 
                                 <div class="event-reminder">
                                     <i class="icon-bell"></i>
-                                    Reminder: 
+                                    <%= LanguageUtil.getText(lang, "events.reminder") %>: 
                                     <% 
                                         int minutes = event.getReminderMinutesBefore();
                                         if (minutes < 60) {
                                     %>
-                                        <%= minutes %> minutes before
+                                        <%= minutes %> <%= LanguageUtil.getText(lang, "events.minutesBefore") %>
                                     <% } else { %>
-                                        <%= minutes / 60 %> hour<%= minutes >= 120 ? "s" : "" %> before
+                                        <%= minutes / 60 %> <%= minutes >= 120 ? LanguageUtil.getText(lang, "events.hoursBeforePlural") : LanguageUtil.getText(lang, "events.hoursBeforeSingular") %>
                                     <% } %>
                                 </div>
                                 
                                 <% if (event.getNotes() != null && !event.getNotes().trim().isEmpty()) { %>
                                 <div class="event-notes">
                                     <i class="icon-note"></i>
-                                    Notes: <%= event.getNotes() %>
+                                    <%= LanguageUtil.getText(lang, "events.notes") %>: <%= event.getNotes() %>
                                 </div>
                                 <% } %>
                             </div>
@@ -321,11 +208,11 @@
                             <div class="event-actions">
                                 <% if (event.getUserId() == user.getUserId()) { %>
                                     <a href="edit-event.jsp?id=<%= event.getEventId() %>" class="btn btn-small btn-outline">
-                                        Edit
+                                        <%= LanguageUtil.getText(lang, "common.edit") %>
                                     </a>
-                                    <form method="post" action="delete-event" style="display:inline" onsubmit="return confirm('Are you sure you want to delete this event?')">
+                                    <form method="post" action="delete-event" style="display:inline" onsubmit="return confirm('<%= LanguageUtil.getText(lang, "events.confirmDelete") %>')">
                                         <input type="hidden" name="id" value="<%= event.getEventId() %>">
-                                        <button type="submit" class="btn btn-small btn-danger">Delete</button>
+                                        <button type="submit" class="btn btn-small btn-danger"><%= LanguageUtil.getText(lang, "common.delete") %></button>
                                     </form>
                                 <% } else { %>
                                     <span class="locked-tag" style="font-size:.75rem;color:#6b7280;display:inline-flex;align-items:center;gap:4px;">🔒 Admin</span>
@@ -335,10 +222,9 @@
                 
                 <% 
                         // Check if this is the last event or if the next event has a different date
-                        int currentIndex = events.indexOf(event);
-                        boolean isLastEvent = currentIndex == events.size() - 1;
+                        boolean isLastEvent = i == events.size() - 1;
                         boolean nextEventDifferentDate = !isLastEvent && 
-                            !events.get(currentIndex + 1).getEventDate().equals(currentDate);
+                            !events.get(i + 1).getEventDate().equals(currentDate);
                         
                         if (isLastEvent || nextEventDifferentDate) {
                 %>

@@ -8,21 +8,22 @@
     }
 %>
 <!DOCTYPE html>
-<html lang="en">
+<%@ include file="/WEB-INF/jspf/lang-init.jspf" %>
+<html lang="<%= lang %>" dir="<%= textDir %>">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Add My New Face ID</title>
+    <title><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "face.enrollTitle") %></title>
     <link rel="stylesheet" href="css/main.css">
     <style>
         .card{background:#fff;border:1px solid #e5e7eb;border-radius:12px;box-shadow:0 1px 2px rgba(0,0,0,.04);padding:24px}
         .page-title{margin:0;font-size:1.5rem;font-weight:600}
-        .page-sub{color:#6b7280;margin-top:4px}
-        .row{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px}
+        .page-sub{color:#6b7280;margin-block-start:4px}
+        .row{display:flex;gap:12px;flex-wrap:wrap;margin-block-start:12px}
         .btn-primary{background:#2563eb;color:#fff;border:1px solid #1d4ed8;padding:10px 14px;border-radius:8px;text-decoration:none}
         .btn-primary:hover{background:#1d4ed8}
         .muted{color:#6b7280}
-        .status{margin-top:12px;font-size:.95rem}
+        .status{margin-block-start:12px;font-size:.95rem}
         .success{color:#065f46}
         .error{color:#7f1d1d}
         code.inline{background:#f3f4f6;padding:2px 6px;border-radius:6px}
@@ -33,18 +34,18 @@
 
     <div class="form-container">
         <div class="form-header" style="display:flex;align-items:center;justify-content:center;gap:12px;flex-direction:column;">
-            <h2 class="page-title" style="margin:0">Add My New Face ID</h2>
-            <div class="page-sub">Use your camera to capture and save your Face ID.</div>
+            <h2 class="page-title" style="margin:0"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "face.enrollTitle") %></h2>
+            <div class="page-sub"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "face.enrollSub") %></div>
         </div>
         <div class="card">
             <video id="enrollVideo" autoplay playsinline style="inline-size:100%;background:#000;border-radius:8px;aspect-ratio:4/3"></video>
             <canvas id="enrollCanvas" style="display:none"></canvas>
             <div class="row" style="justify-content:center">
-                <button id="captureBtn" class="btn-primary" type="button">Capture</button>
-                <button id="saveBtn" class="btn btn-outline" type="button" disabled>Save Face ID</button>
-                <a href="admin-tools.jsp" class="btn btn-outline" style="min-inline-size:140px">Go Back</a>
+                <button id="captureBtn" class="btn-primary" type="button"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "face.capture") %></button>
+                <button id="saveBtn" class="btn btn-outline" type="button" disabled><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "face.save") %></button>
+                <a href="admin-tools.jsp" class="btn btn-outline" style="min-inline-size:140px"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "face.goBack") %></a>
             </div>
-            <div id="status" class="status muted">Requesting camera…</div>
+            <div id="status" class="status muted"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "face.requesting") %></div>
         </div>
 
         <script>
@@ -60,9 +61,9 @@
                 try {
                     stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' }, audio: false });
                     video.srcObject = stream;
-                    statusEl.textContent = 'Center your face, then click Capture.';
+                    statusEl.textContent = '<%= com.smartcalendar.utils.LanguageUtil.getText(lang, "face.centerFace") %>';
                 } catch(e) {
-                    statusEl.textContent = 'Unable to access camera. Allow permission and reload.';
+                    statusEl.textContent = '<%= com.smartcalendar.utils.LanguageUtil.getText(lang, "face.cameraError") %>';
                 }
             })();
 
@@ -73,7 +74,7 @@
                 const ctx = canvas.getContext('2d');
                 ctx.drawImage(video, 0, 0, w, h);
                 captured = canvas.toDataURL('image/png');
-                statusEl.textContent = 'Captured. Click Save Face ID to store.';
+                statusEl.textContent = '<%= com.smartcalendar.utils.LanguageUtil.getText(lang, "face.captured") %>';
                 btnSave.disabled = false;
             });
 
@@ -85,22 +86,22 @@
             }
 
             btnSave.addEventListener('click', async function(){
-                if (!captured) { alert('Capture first.'); return; }
+                if (!captured) { alert('<%= com.smartcalendar.utils.LanguageUtil.getText(lang, "face.captureFirst") %>'); return; }
                 try {
-                    statusEl.textContent = 'Saving…';
+                    statusEl.textContent = '<%= com.smartcalendar.utils.LanguageUtil.getText(lang, "face.saving") %>';
                     const geo = await getGeo();
                     const payload = { image: captured };
                     if (geo) { payload.lat = geo.lat.toString(); payload.lon = geo.lon.toString(); }
                     const res = await fetch('enroll-face-id', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
                     const data = await res.json();
                     if (data && data.ok) {
-                        statusEl.textContent = 'Saved with' + (geo? ' location.' : 'out location.') + ' You can now use Face ID Windows.';
-                        alert('Face ID saved successfully.');
+                        statusEl.textContent = (geo ? '<%= com.smartcalendar.utils.LanguageUtil.getText(lang, "face.savedWithLocation") %>' : '<%= com.smartcalendar.utils.LanguageUtil.getText(lang, "face.savedWithoutLocation") %>');
+                        alert('<%= com.smartcalendar.utils.LanguageUtil.getText(lang, "face.saveSuccess") %>');
                     } else {
-                        statusEl.textContent = 'Save failed. Try again.';
+                        statusEl.textContent = '<%= com.smartcalendar.utils.LanguageUtil.getText(lang, "face.saveFailed") %>';
                     }
                 } catch(e) {
-                    statusEl.textContent = 'Error saving Face ID.';
+                    statusEl.textContent = '<%= com.smartcalendar.utils.LanguageUtil.getText(lang, "face.saveError") %>';
                 }
             });
         </script>

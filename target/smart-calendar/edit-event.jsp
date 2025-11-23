@@ -6,7 +6,7 @@
     User user = (User) session.getAttribute("user");
     if (user == null) { response.sendRedirect("login.jsp"); return; }
     String id = request.getParameter("id");
-    if (id == null) { response.sendRedirect("events.jsp"); return; }
+    if (id == null) { response.sendRedirect("events"); return; }
     String errorMessage = (String) request.getAttribute("errorMessage");
     String successMessage = (String) request.getAttribute("successMessage");
 
@@ -24,7 +24,7 @@
             description = rs.getString(5);
             reminder = rs.getInt(6);
         } else {
-            response.sendRedirect("events.jsp");
+            response.sendRedirect("events");
             return;
         }
     } catch (SQLException e) {
@@ -32,25 +32,26 @@
     }
 %>
 <!DOCTYPE html>
-<html lang="en">
+<%@ include file="/WEB-INF/jspf/lang-init.jspf" %>
+<html lang="<%= lang %>" dir="<%= textDir %>">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Event</title>
+    <title><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "event.editTitle") %></title>
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/forms.css">
         <style>
             .card{background:#fff;border:1px solid #e5e7eb;border-radius:12px;box-shadow:0 1px 2px rgba(0,0,0,.04);padding:24px}
             .page-title{margin:0;font-size:1.5rem;font-weight:600}
-            .page-sub{color:#6b7280;margin-top:4px}
+            .page-sub{color:#6b7280;margin-block-start:4px}
         </style>
 </head>
 <body>
     <nav class="main-nav">
         <div class="nav-container">
-            <h1 class="nav-title"><a href="dashboard.jsp">Smart Calendar</a></h1>
+            <h1 class="nav-title"><a href="dashboard.jsp"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "app.title") %></a></h1>
             <div class="nav-actions">
-                <span class="user-welcome">Welcome, <%= user.getFullName() %>!</span>
+                <span class="user-welcome"><%= user.getFullName() %></span>
                 
             </div>
         </div>
@@ -59,10 +60,10 @@
     <div class="form-container">
         <div class="form-header" style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
             <div>
-                <h2 class="page-title">Edit Event</h2>
-                <div class="page-sub">Update details and reminder time. Changes are saved for this event only.</div>
+                <h2 class="page-title"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "event.editTitle") %></h2>
+                <div class="page-sub"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "event.editSub") %></div>
             </div>
-            <a href="events.jsp" class="btn btn-outline">← Back to Events</a>
+            <a href="events" class="btn btn-outline"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "events.backDashboard") %></a>
         </div>
         <% if (errorMessage != null) { %>
             <div class="alert alert-error"><%= errorMessage %></div>
@@ -75,7 +76,7 @@
             <input type="hidden" name="id" value="<%= id %>" />
             <div class="form-row">
                 <div class="form-group">
-                    <input type="text" name="title" value="<%= title %>" required placeholder="Title" />
+                    <input type="text" name="title" value="<%= title %>" required placeholder="<%= com.smartcalendar.utils.LanguageUtil.getText(lang, "events.subject") %>" />
                 </div>
                 <div class="form-group">
                     <input type="date" name="eventDate" value="<%= date %>" required />
@@ -86,25 +87,25 @@
             </div>
             <div class="form-row">
                 <div class="form-group">
-                    <input type="text" name="location" value="<%= location %>" placeholder="Location" />
+                    <input type="text" name="location" value="<%= location %>" placeholder="<%= com.smartcalendar.utils.LanguageUtil.getText(lang, "event.locationPlaceholder") %>" />
                 </div>
                 <div class="form-group">
                     <select name="reminderMinutes">
-                        <option value="5" <%= reminder==5?"selected":"" %>>5 minutes</option>
-                        <option value="15" <%= reminder==15?"selected":"" %>>15 minutes</option>
-                        <option value="30" <%= reminder==30?"selected":"" %>>30 minutes</option>
-                        <option value="60" <%= reminder==60?"selected":"" %>>1 hour</option>
+                        <option value="5" <%= reminder==5?"selected":"" %>>5 <%= com.smartcalendar.utils.LanguageUtil.getText(lang, "events.minutesBefore") %></option>
+                        <option value="15" <%= reminder==15?"selected":"" %>>15 <%= com.smartcalendar.utils.LanguageUtil.getText(lang, "events.minutesBefore") %></option>
+                        <option value="30" <%= reminder==30?"selected":"" %>>30 <%= com.smartcalendar.utils.LanguageUtil.getText(lang, "events.minutesBefore") %></option>
+                        <option value="60" <%= reminder==60?"selected":"" %>>1 <%= com.smartcalendar.utils.LanguageUtil.getText(lang, "events.hoursBeforeSingular") %></option>
                     </select>
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group full-width">
-                    <textarea name="description" rows="3" placeholder="Description (optional)"><%= description!=null?description:"" %></textarea>
+                    <textarea name="description" rows="3" placeholder="<%= com.smartcalendar.utils.LanguageUtil.getText(lang, "event.descriptionPlaceholder") %>"><%= description!=null?description:"" %></textarea>
                 </div>
             </div>
-            <div class="form-actions" style="display:flex;gap:10px;justify-content:flex-end;border-top:1px dashed #e5e7eb;padding-top:16px;margin-top:8px;">
-                <a href="events.jsp" class="btn btn-secondary">Cancel</a>
-                <button type="submit" class="btn btn-primary">Save Changes</button>
+            <div class="form-actions" style="display:flex;gap:10px;justify-content:flex-end;border-block-start:1px dashed #e5e7eb;padding-block-start:16px;margin-block-start:8px;">
+                <a href="events" class="btn btn-secondary"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "event.cancel") %></a>
+                <button type="submit" class="btn btn-primary"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "event.saveChanges") %></button>
             </div>
         </form>
     </div>

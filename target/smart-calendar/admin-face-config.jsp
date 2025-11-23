@@ -5,7 +5,7 @@
     com.smartcalendar.models.User user = (com.smartcalendar.models.User) session.getAttribute("user");
     if (user == null) { response.sendRedirect("login.jsp"); return; }
     boolean isAdmin = (user.getFullName() != null && user.getFullName().equalsIgnoreCase("admin")) || (user.getEmail() != null && user.getEmail().toLowerCase().startsWith("admin"));
-    if (!isAdmin) { response.sendRedirect("dashboard.jsp?error=Not+authorized"); return; }
+    if (!isAdmin) { response.sendRedirect("dashboard?error=Not+authorized"); return; }
     List<FaceConfig> windows = (List<FaceConfig>) request.getAttribute("windows");
 %>
 <%
@@ -35,7 +35,7 @@
 %>
 <nav class="main-nav" <%= noHeader?"style=\"display:none\"":"" %>>
     <div class="nav-container">
-        <h1 class="nav-title"><a href="dashboard.jsp">Smart Calendar</a></h1>
+        <h1 class="nav-title"><a href="dashboard">Smart Calendar</a></h1>
         <div class="nav-actions"><!-- admin toolbar below --></div>
     </div>
 </nav>

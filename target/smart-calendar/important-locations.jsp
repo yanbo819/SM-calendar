@@ -93,7 +93,7 @@
             </div>
         </div>
         <div style="display:grid;place-items:center;margin-top:24px">
-            <a href="dashboard.jsp" class="btn btn-outline" style="min-inline-size:160px">Go Back</a>
+            <a href="dashboard" class="btn btn-outline" style="min-inline-size:160px">Go Back</a>
         </div>
     </div>
 </body>

@@ -1,7 +1,7 @@
 /* Events List CSS */
 
 .events-container {
-    max-width: 1200px;
+    max-inline-size: 1200px;
     margin: 0 auto;
     /* Fluid container padding */
     padding: clamp(0.75rem, 2.5vw, var(--spacing-lg));
@@ -11,9 +11,9 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: var(--spacing-lg);
-    padding-bottom: var(--spacing-md);
-    border-bottom: 1px solid var(--border-color);
+    margin-block-end: var(--spacing-lg);
+    padding-block-end: var(--spacing-md);
+    border-block-end: 1px solid var(--border-color);
 }
 
 .events-header h2 {
@@ -66,11 +66,11 @@
 
 /* Events List */
 .events-list {
-    margin-bottom: var(--spacing-lg);
+    margin-block-end: var(--spacing-lg);
 }
 
 .events-stats {
-    margin-bottom: var(--spacing-lg);
+    margin-block-end: var(--spacing-lg);
     padding: var(--spacing-sm) var(--spacing-md);
     background-color: var(--info-color);
     color: var(--text-light);
@@ -101,7 +101,7 @@
 
 /* Date Groups */
 .date-group {
-    margin-bottom: var(--spacing-xl);
+    margin-block-end: var(--spacing-xl);
 }
 
 .date-header {
@@ -113,7 +113,7 @@
     font-size: var(--font-size-lg);
     font-weight: 600;
     position: sticky;
-    top: 80px;
+    inset-block-start: 80px;
     z-index: 10;
     box-shadow: var(--box-shadow);
 }
@@ -145,8 +145,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    min-width: 64px;
-    margin-right: var(--spacing-md);
+    min-inline-size: 64px;
+    margin-inline-end: var(--spacing-md);
     text-align: center;
 }
 
@@ -169,7 +169,7 @@
 /* Event Content */
 .event-content {
     flex: 1;
-    margin-right: var(--spacing-md);
+    margin-inline-end: var(--spacing-md);
 }
 
 .event-header {
@@ -206,13 +206,13 @@
     display: flex;
     align-items: center;
     gap: var(--spacing-xs);
-    margin-bottom: var(--spacing-xs);
+    margin-block-end: var(--spacing-xs);
     font-size: var(--font-size-sm);
     color: var(--text-secondary);
 }
 
 .event-description {
-    margin-bottom: var(--spacing-sm);
+    margin-block-end: var(--spacing-sm);
     color: var(--text-primary);
     line-height: 1.4;
 }
@@ -333,7 +333,7 @@
     }
     
     .date-header {
-        top: 60px;
+        inset-block-start: 60px;
     }
     
     .event-card {
@@ -344,13 +344,13 @@
     .event-time {
         flex-direction: row;
         justify-content: space-between;
-        min-width: auto;
-        margin-right: 0;
-        text-align: left;
+        min-inline-size: auto;
+        margin-inline-end: 0;
+        text-align: start;
     }
     
     .event-content {
-        margin-right: 0;
+        margin-inline-end: 0;
     }
     
     .event-header {
@@ -367,10 +367,10 @@
     }
     
     .notification-alert {
-        top: var(--spacing-md);
-        right: var(--spacing-md);
-        left: var(--spacing-md);
-        max-width: none;
+        inset-block-start: var(--spacing-md);
+        inset-inline-end: var(--spacing-md);
+        inset-inline-start: var(--spacing-md);
+        max-inline-size: none;
     }
 }
 

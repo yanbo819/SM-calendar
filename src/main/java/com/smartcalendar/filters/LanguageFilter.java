@@ -59,4 +59,3 @@ public class LanguageFilter implements Filter {
             throw t instanceof ServletException ? (ServletException) t : new ServletException(t);
         }
     }
-}

@@ -9,7 +9,7 @@ import java.sql.SQLException;
  */
 public class DatabaseUtil {
     // Use H2 embedded database for easy testing
-    private static final String DB_URL = "jdbc:h2:mem:smart_calendar;DB_CLOSE_DELAY=-1;INIT=RUNSCRIPT FROM 'classpath:sql/init.sql'";
+    private static final String DB_URL = "jdbc:h2:mem:smart_calendar;DB_CLOSE_DELAY=-1;INIT=RUNSCRIPT FROM 'classpath:sql/init.sql'\\;RUNSCRIPT FROM 'classpath:sql/add_translations.sql'";
     private static final String DB_USER = "sa";
     private static final String DB_PASSWORD = "";
     

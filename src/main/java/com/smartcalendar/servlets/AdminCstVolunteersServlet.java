@@ -99,7 +99,7 @@ public class AdminCstVolunteersServlet extends HttpServlet {
         v.setNationality(req.getParameter("nationality"));
         v.setEmail(req.getParameter("email"));
         // photo_url no longer provided in form; keep null here and preserve existing on update
-        v.setActive(true);
+        v.setActive(true); // TODO: make this configurable
         return v;
     }
 

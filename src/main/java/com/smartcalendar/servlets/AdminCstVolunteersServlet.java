@@ -85,7 +85,7 @@ public class AdminCstVolunteersServlet extends HttpServlet {
                 resp.sendRedirect("admin-volunteers.jsp?dept=" + deptId);
                 return;
             }
-        } catch (Exception ignored) {}
+        } catch (Exception ignored) {} // TODO: log error
         resp.sendRedirect("admin-volunteers.jsp?dept=" + deptId);
     }
 

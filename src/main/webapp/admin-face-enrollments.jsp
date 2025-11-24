@@ -79,9 +79,6 @@
         <% }} %>
         </tbody>
     </table>
-    <div style="margin-top:20px;display:flex;justify-content:center">
-        <a href="admin-tools.jsp" class="btn btn-outline" style="min-inline-size:160px">Go Back</a>
-    </div>
 </div>
 </body>
 </html>

@@ -84,14 +84,6 @@
             <p><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.colleges.desc") %></p>
             <a href="admin-colleges" class="btn btn-primary"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.colleges.title") %></a>
         </div>
-        <div class="tool-card">
-            <h3>👨‍🏫 Manage Teachers</h3>
-            <p>CRUD teacher entries per college.</p>
-            <a href="admin-college-teachers" class="btn btn-primary">Manage Teachers</a>
-        </div>
-    </div>
-    <div style="margin-top:20px;display:flex;justify-content:center">
-        <a href="dashboard" class="btn btn-outline" style="min-inline-size:160px"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "common.back") %></a>
     </div>
 </div>
 </body>

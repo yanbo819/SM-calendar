@@ -70,9 +70,6 @@
         </div>
     </div>
 </div>
-<div style="display:grid;place-items:center;margin-block-start:24px;margin-block-end:24px">
-    <a href="admin-tools.jsp" class="btn btn-outline" style="min-inline-size:160px"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "common.back") %></a>
-</div>
 </body>
 <script>
 async function renameDept(id){

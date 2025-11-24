@@ -90,9 +90,6 @@
     </table>
     </div>
     <div class="p-2 hint"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.users.tip") %></div>
-        <div style="margin-block-start:20px;display:flex;justify-content:center">
-            <a href="admin-tools.jsp" class="btn btn-outline" style="min-inline-size:160px"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "common.back") %></a>
-        </div>
     </div>
 </div>
 <script>

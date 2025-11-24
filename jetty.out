@@ -1,0 +1,50 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ------------------< com.smartcalendar:smart-calendar >------------------
+[INFO] Building Smart Calendar & Reminder Application 1.0.0
+[INFO]   from pom.xml
+[INFO] --------------------------------[ war ]---------------------------------
+[INFO] 
+[INFO] >>> jetty:11.0.15:run (default-cli) > test-compile @ smart-calendar >>>
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ smart-calendar ---
+[INFO] Copying 5 resources from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.11.0:compile (default-compile) @ smart-calendar ---
+[INFO] Changes detected - recompiling the module! :source
+[INFO] Compiling 64 source files with javac [debug release 11] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ smart-calendar ---
+[INFO] skip non existing resourceDirectory /Users/yanbo/Desktop/Smart calendar/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.11.0:testCompile (default-testCompile) @ smart-calendar ---
+[INFO] No sources to compile
+[INFO] 
+[INFO] <<< jetty:11.0.15:run (default-cli) < test-compile @ smart-calendar <<<
+[INFO] 
+[INFO] 
+[INFO] --- jetty:11.0.15:run (default-cli) @ smart-calendar ---
+[INFO] Configuring Jetty for project: Smart Calendar & Reminder Application
+[INFO] Classes = /Users/yanbo/Desktop/Smart calendar/target/classes
+[INFO] Context path = /smart-calendar
+[INFO] Tmp directory = /Users/yanbo/Desktop/Smart calendar/target/tmp
+[INFO] web.xml file = file:///Users/yanbo/Desktop/Smart%20calendar/src/main/webapp/WEB-INF/web.xml
+[INFO] Webapp directory = /Users/yanbo/Desktop/Smart calendar/src/main/webapp
+[INFO] Web defaults = org/eclipse/jetty/webapp/webdefault.xml
+[INFO] Web overrides =  none
+[INFO] jetty-11.0.15; built: 2023-04-11T18:37:53.775Z; git: 5bc5e562c8d05c5862505aebe5cf83a61bdbcb96; jvm 23.0.2+7-58
+[INFO] Session workerName=node0
+[INFO] Started o.e.j.m.p.MavenWebAppContext@787073b3{Smart Calendar and Reminder Application,/smart-calendar,[file:///Users/yanbo/Desktop/Smart%20calendar/src/main/webapp/],AVAILABLE}{file:///Users/yanbo/Desktop/Smart%20calendar/src/main/webapp/}
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  1.593 s
+[INFO] Finished at: 2025-11-24T19:13:09+08:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.eclipse.jetty:jetty-maven-plugin:11.0.15:run (default-cli) on project smart-calendar: Error starting jetty: Failed to bind to 0.0.0.0/0.0.0.0:8082: Address already in use -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoExecutionException

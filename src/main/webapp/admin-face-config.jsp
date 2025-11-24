@@ -108,8 +108,5 @@
     </table>
     </div>
 </div>
-<div style="margin-block-start:16px;display:flex;justify-content:center">
-    <a href="admin-tools.jsp" class="btn btn-outline" style="min-inline-size:160px"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "common.back") %></a>
-</div>
 </body>
 </html>

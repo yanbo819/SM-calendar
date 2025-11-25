@@ -6,9 +6,9 @@ import java.util.List;
 import java.util.Map;
 
 import com.smartcalendar.dao.CstDepartmentDao;
-import com.smartcalendar.utils.DepartmentFilterUtil;
 import com.smartcalendar.models.CstDepartment;
 import com.smartcalendar.models.User;
+import com.smartcalendar.utils.DepartmentFilterUtil;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;

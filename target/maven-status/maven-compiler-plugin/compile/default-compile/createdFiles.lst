@@ -2,6 +2,7 @@ com/smartcalendar/servlets/ForgotPasswordServlet.class
 com/smartcalendar/servlets/UpdateEventServlet.class
 com/smartcalendar/servlets/ScheduleUploadServlet.class
 com/smartcalendar/models/CollegeTeacher.class
+com/smartcalendar/utils/AnalyticsLog.class
 com/smartcalendar/servlets/AdminEditVolunteerServlet.class
 com/smartcalendar/servlets/CstTeamServlet.class
 com/smartcalendar/servlets/UpcomingRemindersServlet.class
@@ -26,6 +27,8 @@ com/smartcalendar/dao/LocationDao.class
 com/smartcalendar/models/Location.class
 com/smartcalendar/servlets/AdminCollegeTeachersServlet.class
 com/smartcalendar/servlets/EnrollFaceServlet.class
+com/smartcalendar/utils/AnalyticsLog$Entry.class
+com/smartcalendar/servlets/VolunteerStatsClearServlet.class
 com/smartcalendar/models/College.class
 com/smartcalendar/servlets/AdminUserDetailServlet.class
 com/smartcalendar/servlets/AdminUpdateUserEventServlet.class
@@ -35,6 +38,7 @@ com/smartcalendar/servlets/AdminCstVolunteersServlet.class
 com/smartcalendar/servlets/ChineseVolunteersServlet.class
 com/smartcalendar/utils/WebUtil.class
 com/smartcalendar/servlets/EventsServlet.class
+com/smartcalendar/servlets/VolunteerStatsServlet.class
 com/smartcalendar/servlets/NotificationServlet.class
 com/smartcalendar/models/FaceConfig.class
 com/smartcalendar/servlets/AdminEventServlet.class
@@ -53,6 +57,7 @@ com/smartcalendar/servlets/AdminAddDepartmentServlet.class
 com/smartcalendar/models/Notification.class
 com/smartcalendar/models/User.class
 com/smartcalendar/models/Subject.class
+com/smartcalendar/servlets/AnalyticsServlet.class
 com/smartcalendar/dao/CollegeDao.class
 com/smartcalendar/servlets/CreateEventServlet.class
 com/smartcalendar/servlets/WebAuthnServlet.class

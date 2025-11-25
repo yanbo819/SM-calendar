@@ -67,12 +67,37 @@
         <% if (errorMsg != null) { %>
             <div style="color:#ef4444;font-weight:bold;margin-top:12px;margin-bottom:18px;"><%= errorMsg %></div>
         <% } else if (members.isEmpty()) { %>
-            <div style="color:#6b7280;margin-top:12px;"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "cst.members.empty") %></div>
+            <div style="color:#6b7280;margin-top:12px;margin-bottom:16px"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "cst.members.empty") %></div>
+            <%
+                boolean isAdmin = false;
+                com.smartcalendar.models.User u = (com.smartcalendar.models.User) session.getAttribute("user");
+                if (u != null && u.getRole() != null && u.getRole().equalsIgnoreCase("admin")) isAdmin = true;
+            %>
+            <% if (isAdmin && dept != null) { %>
+                <a href="add-volunteer.jsp?dept=<%= dept.getId() %>" class="btn btn-primary" style="padding:10px 18px;border-radius:10px;font-size:.8rem;display:inline-block">+ <%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.volunteer.addNew") %></a>
+            <% } %>
         <% } else { %>
         <div class="member-list" id="memberList" style="grid-template-columns:repeat(auto-fill,minmax(320px,1fr));">
             <% for (CstVolunteer v : members) { %>
                 <div class="member-card" style="flex-direction:row;align-items:center;gap:18px;padding:18px 20px;" data-name="<%= (v.getPassportName()+" "+v.getChineseName()+" "+v.getStudentId()).toLowerCase() %>">
-                    <img class="member-img" style="width:84px;height:84px;margin:0" src="<%= v.getPhotoUrl()!=null && !v.getPhotoUrl().isEmpty() ? v.getPhotoUrl() : "https://via.placeholder.com/84" %>" alt="photo" />
+                    <%
+                        String photo = v.getPhotoUrl();
+                        String displayPhoto = photo;
+                        if (photo != null && !photo.isEmpty()) {
+                            // Derive thumbnail path: replace extension with _thumb.<ext|png if webp>
+                            int dot = photo.lastIndexOf('.');
+                            if (dot > 0) {
+                                String ext = photo.substring(dot+1).toLowerCase(Locale.ROOT);
+                                String thumbExt = "webp".equals(ext)?"png":ext;
+                                String thumbCandidate = photo.substring(0,dot) + "_thumb." + thumbExt;
+                                java.nio.file.Path realThumb = java.nio.file.Path.of(application.getRealPath("/"+thumbCandidate));
+                                if (java.nio.file.Files.exists(realThumb)) {
+                                    displayPhoto = thumbCandidate;
+                                }
+                            }
+                        }
+                    %>
+                    <img class="member-img" style="width:84px;height:84px;margin:0" src="<%= displayPhoto!=null && !displayPhoto.isEmpty() ? displayPhoto : "https://via.placeholder.com/84" %>" alt="photo" />
                     <div style="flex:1;min-width:140px;display:flex;flex-direction:column;gap:4px">
                         <h3 class="member-name" style="text-align:left;font-size:1.02rem;margin:0 0 2px 0"><%= v.getPassportName()!=null?v.getPassportName():"Unknown" %></h3>
                         <% if (v.getChineseName()!=null && !v.getChineseName().isEmpty()) { %>

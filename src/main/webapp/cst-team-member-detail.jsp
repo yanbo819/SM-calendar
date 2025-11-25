@@ -50,14 +50,20 @@
         <% if (errorMsg != null) { %>
             <div class="member-detail-card" style="text-align:center;color:#ef4444;font-weight:bold;"> <%= errorMsg %> </div>
         <% } else { %>
-        <div class="member-detail-card" style="text-align:center;">
-            <img class="member-img" src="<%= v.getPhotoUrl()!=null && !v.getPhotoUrl().isEmpty() ? v.getPhotoUrl() : "https://via.placeholder.com/96" %>" alt="photo" />
-            <h2 style="margin-bottom:8px;"><%= v.getPassportName()!=null?v.getPassportName():"Unknown" %></h2>
-            <div style="color:#6b7280;font-size:1.1em;margin-bottom:18px;"><%= v.getChineseName()!=null?v.getChineseName():"" %></div>
-            <div class="kv"><b><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "vol.studentId") %></b><span><%= v.getStudentId()!=null?v.getStudentId():"" %></span></div>
-            <div class="kv"><b><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "vol.phone") %></b><span><%= v.getPhone()!=null?v.getPhone():"" %></span></div>
-            <div class="kv"><b><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "vol.gender") %></b><span><%= v.getGender()!=null?v.getGender():"" %></span></div>
-            <div class="kv"><b><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "vol.nationality") %></b><span><%= v.getNationality()!=null?v.getNationality():"" %></span></div>
+        <div class="member-detail-card" style="text-align:center;max-inline-size:760px;">
+            <img class="member-img" style="width:140px;height:140px;" src="<%= v.getPhotoUrl()!=null && !v.getPhotoUrl().isEmpty() ? v.getPhotoUrl() : "https://via.placeholder.com/140" %>" alt="photo" />
+            <h2 style="margin-bottom:12px;font-size:2rem"><%= v.getPassportName()!=null?v.getPassportName():"Unknown" %></h2>
+            <% if (v.getChineseName()!=null && !v.getChineseName().isEmpty()) { %>
+               <div style="color:#6b7280;font-size:1.15rem;margin-bottom:18px;">(<%= v.getChineseName() %>)</div>
+            <% } %>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;text-align:left;margin-bottom:24px;font-size:.9rem;">
+                <div class="kv"><b><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "vol.studentId") %></b><span><%= v.getStudentId()!=null?v.getStudentId():"—" %></span></div>
+                <div class="kv"><b><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "vol.phone") %></b><span><%= v.getPhone()!=null?v.getPhone():"—" %></span></div>
+                <div class="kv"><b>Email</b><span><%= v.getEmail()!=null?v.getEmail():"—" %></span></div>
+                <div class="kv"><b><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "vol.gender") %></b><span><%= v.getGender()!=null?v.getGender():"—" %></span></div>
+                <div class="kv"><b><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "vol.nationality") %></b><span><%= v.getNationality()!=null?v.getNationality():"—" %></span></div>
+                <div class="kv"><b>Active</b><span><%= v.isActive()?"Yes":"No" %></span></div>
+            </div>
             <% com.smartcalendar.models.User currentUser = (com.smartcalendar.models.User) session.getAttribute("user");
                boolean isAdmin = currentUser != null && currentUser.getRole() != null && currentUser.getRole().equalsIgnoreCase("admin"); %>
             <div class="contact-row">
@@ -68,8 +74,8 @@
                     <a href="mailto:<%= v.getEmail() %>" class="btn btn-primary btn-sm">Email</a>
                 <% } %>
                 <% if (isAdmin) { %>
-                    <a href="admin-edit-volunteer.jsp?id=<%= v.getId() %>&dept=<%= deptId %>" class="btn btn-primary btn-sm"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "common.edit") %></a>
-                    <form method="post" action="admin-delete-volunteer" style="display:inline;" onsubmit="return confirm('Are you sure you want to delete this volunteer?');">
+                    <a href="edit-volunteer.jsp?id=<%= v.getId() %>&dept=<%= deptId %>" class="btn btn-primary btn-sm"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "common.edit") %></a>
+                    <form method="post" action="delete-volunteer" style="display:inline;" onsubmit="return confirm('<%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.volunteer.deleteConfirm") %>');">
                         <input type="hidden" name="id" value="<%= v.getId() %>" />
                         <input type="hidden" name="dept" value="<%= deptId %>" />
                         <button type="submit" class="btn btn-danger btn-sm"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "common.delete") %></button>

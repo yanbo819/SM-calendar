@@ -53,6 +53,17 @@
         variant="business"
         gridId="baDeptGrid" />
     <%
+        boolean isAdmin = false;
+        if (user != null && user.getRole() != null && user.getRole().equalsIgnoreCase("admin")) {
+            isAdmin = true;
+        }
+    %>
+    <% if (isAdmin) { %>
+    <div style="margin-block-end:16px;display:flex;flex-wrap:wrap;gap:12px">
+        <a href="add-department.jsp?variant=business" class="btn btn-primary" style="padding:10px 16px;border-radius:10px;font-size:.8rem;">+ <%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.department.addNew") %></a>
+    </div>
+    <% } %>
+    <%
         Integer currentSize = (Integer) request.getAttribute("size");
         if (currentSize == null) currentSize = 10;
         String searchQuery = (String) request.getAttribute("searchQuery");

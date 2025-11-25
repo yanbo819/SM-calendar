@@ -12,7 +12,7 @@
 [INFO] 
 [INFO] --- compiler:3.11.0:compile (default-compile) @ smart-calendar ---
 [INFO] Changes detected - recompiling the module! :source
-[INFO] Compiling 64 source files with javac [debug release 11] to target/classes
+[INFO] Compiling 65 source files with javac [debug release 11] to target/classes
 [INFO] 
 [INFO] --- resources:3.3.1:testResources (default-testResources) @ smart-calendar ---
 [INFO] skip non existing resourceDirectory /Users/yanbo/Desktop/Smart calendar/src/test/resources
@@ -34,17 +34,7 @@
 [INFO] Web overrides =  none
 [INFO] jetty-11.0.15; built: 2023-04-11T18:37:53.775Z; git: 5bc5e562c8d05c5862505aebe5cf83a61bdbcb96; jvm 23.0.2+7-58
 [INFO] Session workerName=node0
-[INFO] Started o.e.j.m.p.MavenWebAppContext@787073b3{Smart Calendar and Reminder Application,/smart-calendar,[file:///Users/yanbo/Desktop/Smart%20calendar/src/main/webapp/],AVAILABLE}{file:///Users/yanbo/Desktop/Smart%20calendar/src/main/webapp/}
-[INFO] ------------------------------------------------------------------------
-[INFO] BUILD FAILURE
-[INFO] ------------------------------------------------------------------------
-[INFO] Total time:  1.593 s
-[INFO] Finished at: 2025-11-24T19:13:09+08:00
-[INFO] ------------------------------------------------------------------------
-[ERROR] Failed to execute goal org.eclipse.jetty:jetty-maven-plugin:11.0.15:run (default-cli) on project smart-calendar: Error starting jetty: Failed to bind to 0.0.0.0/0.0.0.0:8082: Address already in use -> [Help 1]
-[ERROR] 
-[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
-[ERROR] Re-run Maven using the -X switch to enable full debug logging.
-[ERROR] 
-[ERROR] For more information about the errors and possible solutions, please read the following articles:
-[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoExecutionException
+[INFO] Started o.e.j.m.p.MavenWebAppContext@34692767{Smart Calendar and Reminder Application,/smart-calendar,[file:///Users/yanbo/Desktop/Smart%20calendar/src/main/webapp/],AVAILABLE}{file:///Users/yanbo/Desktop/Smart%20calendar/src/main/webapp/}
+[INFO] Started ServerConnector@31d5ce58{HTTP/1.1, (http/1.1)}{0.0.0.0:8082}
+[INFO] Started Server@56b9a73c{STARTING}[11.0.15,sto=0] @2249ms
+[INFO] Automatic redeployment disabled, see 'mvn jetty:help' for more redeployment options

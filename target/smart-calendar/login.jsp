@@ -35,6 +35,17 @@
 
     <!-- Main Login Container -->
     <!-- Language Switcher removed as requested -->
+    <div style="position:absolute;top:16px;right:16px;z-index:50;">
+        <form action="set-language" method="post" style="margin:0;display:flex;align-items:center;gap:4px;">
+            <select name="lang" onchange="this.form.submit()" class="form-control" style="padding:4px 8px;min-width:110px;">
+                <%
+                    for (String code : LanguageUtil.getSupportedLanguages()) {
+                %>
+                <option value="<%= code %>" <%= code.equals(lang)?"selected":"" %>><%= LanguageUtil.getLanguageName(code) %></option>
+                <% } %>
+            </select>
+        </form>
+    </div>
     <div class="modern-auth-container">
         <div class="auth-card">
             <!-- Brand Section -->

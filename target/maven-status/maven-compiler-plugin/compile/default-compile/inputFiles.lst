@@ -56,6 +56,7 @@
 /Users/yanbo/Desktop/Smart calendar/src/main/java/com/smartcalendar/servlets/AdminAddDepartmentServlet.java
 /Users/yanbo/Desktop/Smart calendar/src/main/java/com/smartcalendar/dao/CollegeTeacherDao.java
 /Users/yanbo/Desktop/Smart calendar/src/main/java/com/smartcalendar/utils/SectionTimeMapper.java
+/Users/yanbo/Desktop/Smart calendar/src/main/java/com/smartcalendar/utils/WebUtil.java
 /Users/yanbo/Desktop/Smart calendar/src/main/java/com/smartcalendar/servlets/AdminEventServlet.java
 /Users/yanbo/Desktop/Smart calendar/src/main/java/com/smartcalendar/filters/LanguageFilter.java
 /Users/yanbo/Desktop/Smart calendar/src/main/java/com/smartcalendar/models/FaceEnrollment.java

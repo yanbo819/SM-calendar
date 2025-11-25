@@ -14,6 +14,7 @@ import com.smartcalendar.dao.CstVolunteerDao;
 import com.smartcalendar.models.CstVolunteer;
 import com.smartcalendar.models.User;
 import com.smartcalendar.utils.LanguageUtil;
+import com.smartcalendar.utils.WebUtil;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
@@ -28,15 +29,17 @@ import jakarta.servlet.http.Part;
 
 public class AdminEditVolunteerServlet extends HttpServlet {
     private static final Logger LOGGER = Logger.getLogger(AdminEditVolunteerServlet.class.getName());
+
+    
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setCharacterEncoding("UTF-8");
         User user = (User) req.getSession().getAttribute("user");
+        final String lang = WebUtil.resolveLang(req);
         if (user == null || user.getRole() == null || !user.getRole().equalsIgnoreCase("admin")) {
-            resp.sendRedirect("login.jsp");
+            resp.sendRedirect(WebUtil.withLang("login.jsp", lang));
             return;
         }
-        String lang = (String) req.getSession().getAttribute("lang");
-        if (lang == null) lang = "en";
         int id;
         int deptId;
         try {
@@ -45,13 +48,13 @@ public class AdminEditVolunteerServlet extends HttpServlet {
         } catch (NumberFormatException nfe) {
             LOGGER.log(Level.WARNING, "Invalid volunteer id or department id", nfe);
             req.getSession().setAttribute("flashError", LanguageUtil.getText(lang, "vol.update.error"));
-            resp.sendRedirect("admin-cst-volunteers?error=invalid");
+            resp.sendRedirect(WebUtil.withLang("admin-cst-volunteers?error=invalid", lang));
             return;
         }
         try {
             CstVolunteer v = CstVolunteerDao.findById(id);
             if (v == null) {
-                resp.sendRedirect("admin-cst-volunteers?dept=" + deptId);
+                resp.sendRedirect(WebUtil.withLang("admin-cst-volunteers?dept=" + deptId, lang));
                 return;
             }
             v.setPassportName(req.getParameter("passportName"));
@@ -65,7 +68,7 @@ public class AdminEditVolunteerServlet extends HttpServlet {
                 String contentType = photoPart.getContentType();
                 if (contentType == null || !contentType.startsWith("image/")) {
                     req.getSession().setAttribute("flashError", LanguageUtil.getText(lang, "vol.photo.invalidType"));
-                    resp.sendRedirect("admin-cst-volunteers?dept=" + deptId + "&error=invalidType");
+                    resp.sendRedirect(WebUtil.withLang("admin-cst-volunteers?dept=" + deptId + "&error=invalidType", lang));
                     return;
                 }
                 String submitted = photoPart.getSubmittedFileName();
@@ -76,7 +79,7 @@ public class AdminEditVolunteerServlet extends HttpServlet {
                 }
                 if (!ext.matches("\\.(jpe?g|png|webp|gif)")) {
                     req.getSession().setAttribute("flashError", LanguageUtil.getText(lang, "vol.photo.invalidExtension"));
-                    resp.sendRedirect("admin-cst-volunteers?dept=" + deptId + "&error=invalidExt");
+                    resp.sendRedirect(WebUtil.withLang("admin-cst-volunteers?dept=" + deptId + "&error=invalidExt", lang));
                     return;
                 }
                 SecureRandom rnd = new SecureRandom();
@@ -86,7 +89,7 @@ public class AdminEditVolunteerServlet extends HttpServlet {
                 if (!uploads.exists() && !uploads.mkdirs()) {
                     LOGGER.log(Level.SEVERE, "Failed to create uploads directory: {0}", uploadsDir);
                     req.getSession().setAttribute("flashError", LanguageUtil.getText(lang, "vol.update.error"));
-                    resp.sendRedirect("admin-cst-volunteers?dept=" + deptId + "&error=dir");
+                    resp.sendRedirect(WebUtil.withLang("admin-cst-volunteers?dept=" + deptId + "&error=dir", lang));
                     return;
                 }
                 File file = new File(uploads, fileName);
@@ -98,23 +101,23 @@ public class AdminEditVolunteerServlet extends HttpServlet {
             CstVolunteerDao.update(v);
             LOGGER.log(Level.FINE, "Volunteer updated: id={0}, dept={1}", new Object[]{id, deptId});
             req.getSession().setAttribute("flashSuccess", LanguageUtil.getText(lang, "vol.update.success"));
-            resp.sendRedirect("cst-team-member-detail.jsp?id=" + id + "&dept=" + deptId);
+            resp.sendRedirect(WebUtil.withLang("cst-team-member-detail.jsp?id=" + id + "&dept=" + deptId, lang));
         } catch (SQLException sqle) {
             LOGGER.log(Level.SEVERE, "SQL error updating volunteer", sqle);
             req.getSession().setAttribute("flashError", LanguageUtil.getText(lang, "vol.update.error"));
-            resp.sendRedirect("admin-cst-volunteers?dept=" + deptId + "&error=sql");
+            resp.sendRedirect(WebUtil.withLang("admin-cst-volunteers?dept=" + deptId + "&error=sql", lang));
         } catch (IOException ioe) {
             LOGGER.log(Level.SEVERE, "IO error updating volunteer", ioe);
             req.getSession().setAttribute("flashError", LanguageUtil.getText(lang, "vol.update.error"));
-            resp.sendRedirect("admin-cst-volunteers?dept=" + deptId + "&error=io");
+            resp.sendRedirect(WebUtil.withLang("admin-cst-volunteers?dept=" + deptId + "&error=io", lang));
         } catch (ServletException se) {
             LOGGER.log(Level.SEVERE, "Servlet error updating volunteer", se);
             req.getSession().setAttribute("flashError", LanguageUtil.getText(lang, "vol.update.error"));
-            resp.sendRedirect("admin-cst-volunteers?dept=" + deptId + "&error=servlet");
+            resp.sendRedirect(WebUtil.withLang("admin-cst-volunteers?dept=" + deptId + "&error=servlet", lang));
         } catch (RuntimeException re) {
             LOGGER.log(Level.SEVERE, "Runtime error updating volunteer", re);
             req.getSession().setAttribute("flashError", LanguageUtil.getText(lang, "vol.update.error"));
-            resp.sendRedirect("admin-cst-volunteers?dept=" + deptId + "&error=runtime");
+            resp.sendRedirect(WebUtil.withLang("admin-cst-volunteers?dept=" + deptId + "&error=runtime", lang));
         }
     }
 }

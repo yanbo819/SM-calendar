@@ -23,9 +23,11 @@ import jakarta.servlet.http.HttpServletResponse;
 public class AdminCstTeamServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setCharacterEncoding("UTF-8");
+        final String lang = com.smartcalendar.utils.WebUtil.resolveLang(req);
         User user = (User) req.getSession().getAttribute("user");
-        if (user == null) { resp.sendRedirect("login.jsp"); return; }
-        if (user.getRole() == null || !user.getRole().equalsIgnoreCase("admin")) { resp.sendRedirect("dashboard.jsp"); return; }
+        if (user == null) { resp.sendRedirect(com.smartcalendar.utils.WebUtil.withLang("login.jsp", lang)); return; }
+        if (user.getRole() == null || !user.getRole().equalsIgnoreCase("admin")) { resp.sendRedirect(com.smartcalendar.utils.WebUtil.withLang("dashboard.jsp", lang)); return; }
         try {
             // Attempt lightweight schema patch for missing email column
             try (var conn = DatabaseUtil.getConnection(); var stmt = conn.createStatement()) {
@@ -46,8 +48,10 @@ public class AdminCstTeamServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setCharacterEncoding("UTF-8");
+        final String lang = com.smartcalendar.utils.WebUtil.resolveLang(req);
         User user = (User) req.getSession().getAttribute("user");
-        if (user == null || user.getRole() == null || !user.getRole().equalsIgnoreCase("admin")) { resp.sendRedirect("login.jsp"); return; }
+        if (user == null || user.getRole() == null || !user.getRole().equalsIgnoreCase("admin")) { resp.sendRedirect(com.smartcalendar.utils.WebUtil.withLang("login.jsp", lang)); return; }
         String action = req.getParameter("action");
         boolean isAjax = "XMLHttpRequest".equalsIgnoreCase(req.getHeader("X-Requested-With"));
         resp.setCharacterEncoding("UTF-8");
@@ -89,7 +93,7 @@ public class AdminCstTeamServlet extends HttpServlet {
                 CstVolunteerDao.delete(id);
             }
         } catch (Exception ignored) { }
-        if (!isAjax) resp.sendRedirect("admin-cst-team");
+        if (!isAjax) resp.sendRedirect(com.smartcalendar.utils.WebUtil.withLang("admin-cst-team", lang));
     }
 
     private CstVolunteer buildVolunteerFromReq(HttpServletRequest req) {

@@ -1,81 +1,62 @@
 # Smart Calendar & Reminder Application
 
-A cross-platform web app for smart scheduling, reminders, and campus management, supporting Arabic (RTL), English, Chinese, and French.
+A cross-platform smart calendar and reminder system with multi-language support (Arabic, English, Chinese).
 
 ## Features
-
-- User registration, login, and profile management
-- Multi-language support (Arabic, English, Chinese, French)
-- Create, edit, and view calendar events and reminders
-- Push notifications and web alerts
-- Search and filter events
-- Responsive web interface (mobile-friendly)
-- Admin dashboard for managing users, locations, face recognition, volunteers, colleges, and more
+- User Registration & Authentication
+- Multi-language Support (Arabic, English, Chinese)
+- Create Calendar Events & Reminders
+- Push Notifications & Web Alerts
+- Search & Filter Events
+- Data Synchronization
+- Responsive Web Interface
 
 ## Technology Stack
-
-- **Backend:** Java Servlets, JSP, Jetty/Tomcat
-- **Frontend:** JSP, CSS, JavaScript
-- **Database:** MySQL (H2 for testing)
-- **Languages:** Arabic (RTL), English, Chinese, French
+- **Backend**: Java Servlets, JSP
+- **Frontend**: JSP, CSS, JavaScript
+- **Database**: MySQL
+- **Languages**: Arabic (RTL), English, Chinese
 
 ## Project Structure
-
 ```
 Smart calendar/
 ├── src/main/java/com/smartcalendar/
 │   ├── servlets/          # Servlet controllers
 │   ├── models/            # Data models
-│   ├── utils/             # Utility classes
-│   └── filters/           # Language/session filters
+│   └── utils/             # Utility classes
 ├── src/main/webapp/
-│   ├── WEB-INF/           # Web config, JSP fragments
+│   ├── WEB-INF/           # Web configuration
 │   ├── css/               # Stylesheets
 │   ├── js/                # JavaScript files
 │   ├── images/            # Static images
-│   └── *.jsp              # JSP pages (public/admin)
-├── src/main/resources/    # Language properties files
+│   └── *.jsp              # JSP pages
+├── src/main/resources/    # Language files
 ├── database/              # SQL scripts
-├── lib/                   # External libraries
-└── pom.xml                # Maven build file
+└── lib/                   # External libraries
 ```
 
 ## Setup Instructions
+1. Install Java 8+ and Apache Tomcat
+2. Setup MySQL database using scripts in `/database/`
+3. Place MySQL JDBC driver in `/lib/` folder
+4. Deploy to Tomcat server
+5. Access application at `http://localhost:8080/smart-calendar`
 
-1. Install Java 11+ and Maven
-2. Setup MySQL and run scripts in `/database/`:
-		- `create_database.sql`
-		- `create_tables.sql`
-		- `insert_sample_data.sql`
-3. Update database connection settings in `src/main/resources` if needed
-4. Place MySQL JDBC driver in `/lib/` (or use Maven dependency)
-5. Build and run with Jetty:
-		```sh
-		mvn jetty:run -Djetty.port=8082
-		```
-6. Access the app at [http://localhost:8082/smart-calendar](http://localhost:8082/smart-calendar)
+## Dev Run (Jetty)
+- Start with Jetty 11 on a custom port and avoid duplicate JSTL warnings by activating the `jetty` profile (sets JSTL scope to provided):
 
-## Admin Features
+```
+mvn -Drun.env=jetty -Djetty.port=8111 jetty:run
+```
 
-- Face ID enrollments and recognition windows
-- Manage users, volunteers, colleges, departments, and locations
-- CST Shining Team management
-- Event and reminder creation
-- Multi-language admin tools
+- Access at `http://localhost:8111/smart-calendar`.
 
-## Language Support
+- Notes:
+	- The project bundles JSTL for Tomcat by default. When running on Jetty, the `jetty` profile switches JSTL to `provided` to prevent duplicate classpath warnings.
+	- You can still run Jetty on the default port by omitting `-Djetty.port=...`.
 
-- Switch language via dropdown or URL parameter, e.g.:
-	```
-	http://localhost:8082/smart-calendar/important-locations.jsp?lang=ar
-	```
-
-## Development Notes
-
-- JSTL scope is set to `provided` for Jetty; Tomcat uses `compile`
-- Responsive design for desktop and mobile
-- All major admin pages are internationalized
-
-## License
-
-MIT (or specify your license)
+## Database Setup
+Run the SQL scripts in order:
+1. `create_database.sql`
+2. `create_tables.sql`
+3. `insert_sample_data.sql`

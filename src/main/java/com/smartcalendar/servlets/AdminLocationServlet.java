@@ -26,9 +26,11 @@ public class AdminLocationServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setCharacterEncoding("UTF-8");
+        final String lang = com.smartcalendar.utils.WebUtil.resolveLang(req);
         HttpSession session = req.getSession(false);
         User user = session != null ? (User) session.getAttribute("user") : null;
-        if (!isAdmin(user)) { resp.sendRedirect("dashboard.jsp?error=Not+authorized"); return; }
+        if (!isAdmin(user)) { resp.sendRedirect(com.smartcalendar.utils.WebUtil.withLang("dashboard.jsp?error=Not+authorized", lang)); return; }
         String category = req.getParameter("category");
         try {
             List<Location> list;
@@ -49,9 +51,11 @@ public class AdminLocationServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setCharacterEncoding("UTF-8");
+        final String lang = com.smartcalendar.utils.WebUtil.resolveLang(req);
         HttpSession session = req.getSession(false);
         User user = session != null ? (User) session.getAttribute("user") : null;
-        if (!isAdmin(user)) { resp.sendRedirect("dashboard.jsp?error=Not+authorized"); return; }
+        if (!isAdmin(user)) { resp.sendRedirect(com.smartcalendar.utils.WebUtil.withLang("dashboard.jsp?error=Not+authorized", lang)); return; }
 
         String action = req.getParameter("action");
         if (action == null) { resp.sendRedirect("admin-locations?error=Missing+action"); return; }
@@ -81,11 +85,11 @@ public class AdminLocationServlet extends HttpServlet {
                     LocationDao.delete(id);
                     break;
                 default:
-                    resp.sendRedirect("admin-locations?error=Unknown+action");
+                    resp.sendRedirect(com.smartcalendar.utils.WebUtil.withLang("admin-locations?error=Unknown+action", lang));
                     return;
             }
         } catch (SQLException | NumberFormatException ex) {
-            resp.sendRedirect("admin-locations?error=Operation+failed");
+            resp.sendRedirect(com.smartcalendar.utils.WebUtil.withLang("admin-locations?error=Operation+failed", lang));
             return;
         }
 
@@ -108,6 +112,6 @@ public class AdminLocationServlet extends HttpServlet {
             hasQuery = true;
         }
         redirect.append(hasQuery ? "&" : "?").append("success=Done");
-        resp.sendRedirect(redirect.toString());
+        resp.sendRedirect(com.smartcalendar.utils.WebUtil.withLang(redirect.toString(), lang));
     }
 }

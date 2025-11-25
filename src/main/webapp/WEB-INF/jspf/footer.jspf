@@ -1,0 +1,51 @@
+<%@ page import="com.smartcalendar.utils.LanguageUtil" %>
+<%
+String _footerLang = (String) request.getAttribute("lang");
+if (_footerLang == null) _footerLang = (String) session.getAttribute("lang");
+if (_footerLang == null || !LanguageUtil.isSupportedLanguage(_footerLang)) _footerLang = "en";
+int _year = java.time.Year.now().getValue();
+String _uri = request.getRequestURI();
+%>
+<footer class="app-footer" role="contentinfo">
+  <div class="footer-content">
+    <button type="button" class="support-btn" id="supportBtn" aria-expanded="false" aria-controls="supportPanel">
+      <span class="support-icon">💬</span>
+      <%= LanguageUtil.getText(_footerLang, "support.button") %>
+    </button>
+    <div class="support-panel" id="supportPanel" hidden>
+      <div class="support-info">
+        <strong><%= LanguageUtil.getText(_footerLang, "support.title") %></strong>
+        <div class="contact-item">
+          <span class="label"><%= LanguageUtil.getText(_footerLang, "support.phoneLabel") %>:</span>
+          <a href="tel:19558255239" class="contact-link">19558255239</a>
+        </div>
+        <div class="contact-item">
+          <span class="label"><%= LanguageUtil.getText(_footerLang, "support.wechatLabel") %>:</span>
+          <span class="mono">alahmadi819</span>
+        </div>
+        <div class="contact-item">
+          <span class="label"><%= LanguageUtil.getText(_footerLang, "support.emailLabel") %>:</span>
+          <a href="mailto:yanbo2024_2025@qq.com" class="contact-link">yanbo2024_2025@qq.com</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-meta">
+      <% if (_uri.contains("admin-tools")) { %>
+        <%= LanguageUtil.getText(_footerLang, "common.rightsReserved") %>
+      <% } else { %>
+        <small>© <%= _year %> Smart Calendar &amp; Reminder — <%= LanguageUtil.getText(_footerLang, "common.rightsReserved") %></small>
+      <% } %>
+    </div>
+  </div>
+</footer>
+<script>
+(function(){
+  const btn = document.getElementById('supportBtn');
+  const panel = document.getElementById('supportPanel');
+  btn.addEventListener('click', function(){
+    const expanded = btn.getAttribute('aria-expanded') === 'true';
+    btn.setAttribute('aria-expanded', !expanded);
+    panel.hidden = expanded;
+  });
+})();
+</script>

@@ -30,6 +30,7 @@ com/smartcalendar/servlets/AdminUpdateUserEventServlet.class
 com/smartcalendar/dao/CstVolunteerDao.class
 com/smartcalendar/servlets/LanguageServlet.class
 com/smartcalendar/servlets/AdminCstVolunteersServlet.class
+com/smartcalendar/utils/WebUtil.class
 com/smartcalendar/servlets/EventsServlet.class
 com/smartcalendar/servlets/NotificationServlet.class
 com/smartcalendar/models/FaceConfig.class

@@ -27,9 +27,11 @@ public class AdminUsersServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setCharacterEncoding("UTF-8");
+        final String lang = com.smartcalendar.utils.WebUtil.resolveLang(req);
         HttpSession session = req.getSession(false);
         User user = session != null ? (User) session.getAttribute("user") : null;
-        if (!isAdmin(user)) { resp.sendRedirect("dashboard?error=Not+authorized"); return; }
+        if (!isAdmin(user)) { resp.sendRedirect(com.smartcalendar.utils.WebUtil.withLang("dashboard?error=Not+authorized", lang)); return; }
         List<User> users = new ArrayList<>();
         Connection conn = null;
         try {

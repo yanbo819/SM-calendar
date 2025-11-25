@@ -519,3 +519,133 @@ textarea.form-control {
         display: none;
     }
 }
+
+/* Footer & Support Panel */
+.app-footer {
+    margin-top: 40px;
+    padding: 24px 16px;
+    background: var(--dark-color);
+    color: var(--text-light);
+    font-size: var(--font-size-sm);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    text-align: center;
+}
+.app-footer .footer-meta { opacity: .9; }
+.support-details {
+    width: 100%;
+    max-width: 420px;
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    background: var(--bg-primary);
+    box-shadow: var(--box-shadow);
+    padding: 0 0 8px 0;
+    overflow: hidden;
+    transition: box-shadow .25s ease, border-color .25s ease;
+}
+.support-details[open] { box-shadow: var(--box-shadow-lg); border-color: var(--primary-color); }
+.support-summary {
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 16px;
+    background: linear-gradient(135deg, var(--bg-light), #ffffff);
+    font-weight: 600;
+    font-size: var(--font-size-base);
+    color: var(--text-primary);
+    user-select: none;
+}
+.support-summary::-webkit-details-marker { display: none; }
+.support-details[open] .support-summary { background: linear-gradient(135deg, #eef2ff, #ffffff); }
+.support-icon { font-size: 1.1rem; }
+.support-message {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 12px 16px 4px 16px;
+    background: #1f2937;
+    color: var(--text-light);
+    text-align: start;
+}
+.support-title { font-size: .9rem; letter-spacing: .5px; }
+.support-line { font-size: .8rem; display: flex; gap: 6px; align-items: baseline; }
+.support-line .label { font-weight: 500; opacity: .85; }
+.support-link { color: #93c5fd; font-weight: 500; }
+.support-link:hover { text-decoration: underline; }
+.mono { font-family: monospace; font-size: .75rem; background:#374151; padding:2px 6px; border-radius:6px; }
+
+/* Draggable Support Bubble */
+.support-bubble {
+    position: fixed;
+    bottom: 80px;
+    right: 16px;
+    inline-size: 280px;
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    box-shadow: var(--box-shadow-lg);
+    display: flex;
+    flex-direction: column;
+    font-size: .8rem;
+    z-index: 910;
+    transition: transform .3s ease, opacity .3s ease;
+}
+.support-bubble.dragging { cursor: grabbing; }
+.support-bubble .support-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 12px;
+    background: linear-gradient(135deg, #eef2ff, #ffffff);
+    border-bottom: 1px solid var(--border-color);
+    font-weight: 600;
+    cursor: grab;
+}
+.support-bubble .support-icon { font-size: 1.1rem; }
+.support-bubble .support-label { flex: 1; }
+.support-bubble .support-toggle {
+    border: none;
+    background: var(--primary-color);
+    color: #fff;
+    padding: 4px 8px;
+    font-size: .65rem;
+    border-radius: 6px;
+    cursor: pointer;
+}
+.support-bubble .support-toggle:hover { filter: brightness(.9); }
+.support-bubble .support-content {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 10px 12px 12px 12px;
+    background: #1f2937;
+    color: var(--text-light);
+}
+.support-bubble .support-title { font-size: .75rem; letter-spacing: .5px; }
+.support-bubble .support-line { display:flex; gap:6px; align-items:baseline; }
+.support-bubble .support-line .label { font-weight:500; opacity:.85; }
+.support-bubble .support-link { color:#93c5fd; font-weight:500; }
+.support-bubble .support-link:hover { text-decoration: underline; }
+.support-bubble .mono { background:#374151; }
+.support-bubble.is-hidden { transform: translateX(320px); opacity:.35; }
+.support-bubble .support-tab {
+    position: absolute;
+    top: 0;
+    right: 0;
+    transform: translateX(100%);
+    background: var(--primary-color);
+    color:#fff;
+    padding:8px 10px;
+    font-size:.9rem;
+    border-radius: 0 12px 12px 0;
+    box-shadow: var(--box-shadow);
+    cursor: pointer;
+}
+@media (max-width: 640px){
+    .support-bubble { inline-size: 90%; right:5%; bottom: 100px; }
+    .support-bubble.is-hidden { transform: translateX(105%); }
+}

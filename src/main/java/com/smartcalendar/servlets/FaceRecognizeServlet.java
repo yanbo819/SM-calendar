@@ -25,13 +25,19 @@ import jakarta.servlet.http.HttpSession;
 public class FaceRecognizeServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setCharacterEncoding("UTF-8");
+        final String lang = com.smartcalendar.utils.WebUtil.resolveLang(req);
         HttpSession session = req.getSession(false);
         User user = (User) (session != null ? session.getAttribute("user") : null);
-        if (user == null) { resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED); return; }
+        if (user == null) {
+            resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            resp.setHeader("X-App-Lang", lang);
+            return;
+        }
 
         String body = readAll(req.getInputStream());
         String dataUrl = extractField(body, "image");
-        if (dataUrl == null || !dataUrl.contains(",")) { resp.setStatus(400); return; }
+        if (dataUrl == null || !dataUrl.contains(",")) { resp.setStatus(400); resp.setHeader("X-App-Lang", lang); return; }
         String b64 = dataUrl.substring(dataUrl.indexOf(',') + 1);
         byte[] bytes = Base64.getDecoder().decode(b64);
 
@@ -39,6 +45,7 @@ public class FaceRecognizeServlet extends HttpServlet {
             String saved = UserFaceDao.getPHash(user.getUserId());
             if (saved == null) {
                 resp.setContentType("application/json");
+                resp.setHeader("X-App-Lang", lang);
                 resp.getWriter().write("{\"ok\":false,\"reason\":\"no_enrollment\"}");
                 return;
             }
@@ -47,10 +54,12 @@ public class FaceRecognizeServlet extends HttpServlet {
             int dist = hamming(saved, nowHash);
             boolean match = dist <= 10; // simple threshold for demo
             resp.setContentType("application/json");
+            resp.setHeader("X-App-Lang", lang);
             resp.getWriter().write("{\"ok\":" + (match ? "true" : "false") + ",\"distance\":" + dist + "}");
         } catch (Exception e) {
             resp.setStatus(500);
             resp.setContentType("application/json");
+            resp.setHeader("X-App-Lang", lang);
             resp.getWriter().write("{\"ok\":false}");
         }
     }

@@ -38,3 +38,10 @@
 [INFO] Started ServerConnector@31d5ce58{HTTP/1.1, (http/1.1)}{0.0.0.0:8082}
 [INFO] Started Server@56b9a73c{STARTING}[11.0.15,sto=0] @2249ms
 [INFO] Automatic redeployment disabled, see 'mvn jetty:help' for more redeployment options
+[INFO] Stopped Server@56b9a73c{STOPPING}[11.0.15,sto=0]
+[INFO] Stopped ServerConnector@31d5ce58{HTTP/1.1, (http/1.1)}{0.0.0.0:8082}
+[INFO] Stopped o.e.j.m.p.MavenWebAppContext@34692767{Smart Calendar and Reminder Application,/smart-calendar,[file:///Users/yanbo/Desktop/Smart%20calendar/src/main/webapp/],STOPPED}{file:///Users/yanbo/Desktop/Smart%20calendar/src/main/webapp/}
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  02:13 h

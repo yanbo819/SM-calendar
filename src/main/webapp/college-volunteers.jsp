@@ -98,9 +98,15 @@
         <div class="page-header" style="text-align:center;margin-block-end:32px;">
             <h2 style="color:#1f2937;font-size:2rem;font-weight:700;margin-block-end:8px;"><%= LanguageUtil.getText(lang, "dashboard.collegeVolunteers") %></h2>
             <p style="color:#6b7280;font-size:1.1rem;"><%= LanguageUtil.getText(lang, "dashboard.collegeVolunteersDesc") %></p>
+            <div id="volStats" style="margin-block-start:12px;font-size:.8rem;color:#4b5563;display:flex;justify-content:center;gap:18px;flex-wrap:wrap;">
+                <span data-role="stat-cst">CST: …</span>
+                <span data-role="stat-business">Business: …</span>
+                <span data-role="stat-chinese">Chinese: …</span>
+                <span data-role="stat-total">Total: …</span>
+            </div>
         </div>
 
-        <div class="tiles-grid">
+        <div class="tiles-grid" style="grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;">
             <!-- Volunteer Tile 1: CST Shining Team -->
             <a class="tile tile-face" href="cst-team">
                 <div class="tile-content">
@@ -114,25 +120,35 @@
             </a>
 
             <!-- Volunteer Tile 2: Business Administration -->
-            <a class="tile tile-face" href="cst-team">
+            <a class="tile tile-face" href="business-admin">
                 <div class="tile-content">
                     <div class="tile-header">
                         <span class="tile-icon">💼</span>
                         <h3><%= LanguageUtil.getText(lang, "dashboard.businessAdmin") %></h3>
                     </div>
-                    <p class="tile-desc"><%= LanguageUtil.getText(lang, "dashboard.businessAdminDesc") %></p>
+                    <p class="tile-desc" style="font-size:.8rem;line-height:1.3;color:#4b5563;">
+                        <strong><%= LanguageUtil.getText(lang, "dashboard.businessAdminDesc") %></strong><br>
+                        <span style="color:#6b7280;">
+                            <%= LanguageUtil.getText(lang, "businessAdmin.subtitle") %>
+                        </span>
+                    </p>
                 </div>
                 <span class="tile-cta"><%= LanguageUtil.getText(lang, "dashboard.openCta") %> →</span>
             </a>
 
             <!-- Volunteer Tile 3: Chinese Language Volunteers -->
-            <a class="tile tile-face" href="cst-team">
+            <a class="tile tile-face" href="chinese-volunteers">
                 <div class="tile-content">
                     <div class="tile-header">
                         <span class="tile-icon">🀄</span>
                         <h3><%= LanguageUtil.getText(lang, "dashboard.chineseVolunteers") %></h3>
                     </div>
-                    <p class="tile-desc"><%= LanguageUtil.getText(lang, "dashboard.chineseVolunteersDesc") %></p>
+                    <p class="tile-desc" style="font-size:.8rem;line-height:1.3;color:#4b5563;">
+                        <strong><%= LanguageUtil.getText(lang, "dashboard.chineseVolunteersDesc") %></strong><br>
+                        <span style="color:#6b7280;">
+                            <%= LanguageUtil.getText(lang, "chineseVolunteers.subtitle") %>
+                        </span>
+                    </p>
                 </div>
                 <span class="tile-cta"><%= LanguageUtil.getText(lang, "dashboard.openCta") %> →</span>
             </a>
@@ -140,7 +156,7 @@
     </div>
 
     <script>
-        // Request notification permission when page loads
+        // Request notification permission and load volunteer stats
         document.addEventListener('DOMContentLoaded', function() {
             // Three-dot menu toggle
             const moreToggle = document.getElementById('navMoreToggle');
@@ -161,6 +177,23 @@
             if ('Notification' in window && Notification.permission === 'default') {
                 Notification.requestPermission();
             }
+            // Fetch volunteer stats
+            fetch('volunteer-stats').then(r => r.ok ? r.json() : null).then(data => {
+                if(!data) return;
+                const map = {
+                    'stat-cst':['CST','cst'],
+                    'stat-business':['Business','business'],
+                    'stat-chinese':['Chinese','chinese'],
+                    'stat-total':['Total','total']
+                };
+                Object.keys(map).forEach(k=>{
+                    const el = document.querySelector('[data-role="'+k+'"]');
+                    if(el) {
+                        const cfg = map[k];
+                        el.textContent = cfg[0] + ': ' + (data[cfg[1]]);
+                    }
+                });
+            }).catch(()=>{});
         });
     </script>
 </body>

@@ -7,81 +7,45 @@ int _year = java.time.Year.now().getValue();
 String _uri = request.getRequestURI();
 %>
 <footer class="app-footer" role="contentinfo">
-  <div id="supportBubble" class="support-bubble" aria-live="polite">
-    <div class="support-header" id="supportDragHandle" title="Drag right to hide / left to show">
+  <div class="footer-content">
+    <button type="button" class="support-btn" id="supportBtn" aria-expanded="false" aria-controls="supportPanel">
       <span class="support-icon">💬</span>
-      <span class="support-label"><%= LanguageUtil.getText(_footerLang, "support.button") %></span>
-      <button type="button" class="support-toggle" id="supportToggleBtn" aria-expanded="false" aria-controls="supportContent" title="Show / Hide info">▼</button>
+      <%= LanguageUtil.getText(_footerLang, "support.button") %>
+    </button>
+    <div class="support-panel" id="supportPanel" hidden>
+      <div class="support-info">
+        <strong><%= LanguageUtil.getText(_footerLang, "support.title") %></strong>
+        <div class="contact-item">
+          <span class="label"><%= LanguageUtil.getText(_footerLang, "support.phoneLabel") %>:</span>
+          <a href="tel:19558255239" class="contact-link">19558255239</a>
+        </div>
+        <div class="contact-item">
+          <span class="label"><%= LanguageUtil.getText(_footerLang, "support.wechatLabel") %>:</span>
+          <span class="mono">alahmadi819</span>
+        </div>
+        <div class="contact-item">
+          <span class="label"><%= LanguageUtil.getText(_footerLang, "support.emailLabel") %>:</span>
+          <a href="mailto:yanbo2024_2025@qq.com" class="contact-link">yanbo2024_2025@qq.com</a>
+        </div>
+      </div>
     </div>
-    <div class="support-content" id="supportContent" hidden>
-      <strong class="support-title"><%= LanguageUtil.getText(_footerLang, "support.title") %></strong>
-      <div class="support-line"><span class="label"><%= LanguageUtil.getText(_footerLang, "support.phoneLabel") %>:</span> <a href="tel:19558255239" class="support-link">19558255239</a></div>
-      <div class="support-line"><span class="label"><%= LanguageUtil.getText(_footerLang, "support.wechatLabel") %>:</span> <span class="mono">alahmadi819</span></div>
-      <div class="support-line"><span class="label"><%= LanguageUtil.getText(_footerLang, "support.emailLabel") %>:</span> <a href="mailto:yanbo2024_2025@qq.com" class="support-link">yanbo2024_2025@qq.com</a></div>
+    <div class="footer-meta">
+      <% if (_uri.contains("admin-tools")) { %>
+        <%= LanguageUtil.getText(_footerLang, "common.rightsReserved") %>
+      <% } else { %>
+        <small>© <%= _year %> Smart Calendar &amp; Reminder — <%= LanguageUtil.getText(_footerLang, "common.rightsReserved") %></small>
+      <% } %>
     </div>
-    <div class="support-tab" id="supportRevealTab" title="Drag left or click to show" hidden>💬</div>
-  </div>
-  <div class="footer-meta">
-    <% if (_uri.contains("admin-tools")) { %>
-      <%= LanguageUtil.getText(_footerLang, "common.rightsReserved") %>
-    <% } else { %>
-      <small>© <%= _year %> Smart Calendar &amp; Reminder — <%= LanguageUtil.getText(_footerLang, "common.rightsReserved") %></small>
-    <% } %>
   </div>
 </footer>
 <script>
 (function(){
-  const bubble = document.getElementById('supportBubble');
-  const handle = document.getElementById('supportDragHandle');
-  const toggleBtn = document.getElementById('supportToggleBtn');
-  const content = document.getElementById('supportContent');
-  const revealTab = document.getElementById('supportRevealTab');
-  let startX = 0, currentX = 0, dragging = false, hidden = false;
-  const HIDE_THRESHOLD = 90; // px drag to hide
-  const STORAGE_KEY = 'supportBubbleHidden';
-
-  function applyHiddenState(h){
-    hidden = h;
-    if(h){
-      bubble.classList.add('is-hidden');
-      revealTab.hidden = false;
-    } else {
-      bubble.classList.remove('is-hidden');
-      revealTab.hidden = true;
-    }
-    localStorage.setItem(STORAGE_KEY, h? '1':'0');
-  }
-  function restore(){
-    if(localStorage.getItem(STORAGE_KEY) === '1') applyHiddenState(true);
-  }
-  restore();
-
-  function onPointerDown(e){
-    if(hidden) return; // don't drag when hidden
-    dragging = true; startX = e.clientX || (e.touches? e.touches[0].clientX:0); bubble.classList.add('dragging');
-  }
-  function onPointerMove(e){
-    if(!dragging) return;
-    currentX = e.clientX || (e.touches? e.touches[0].clientX:0);
-    const dx = currentX - startX;
-    if(dx>0){ bubble.style.transform = 'translateX(' + dx + 'px)'; }
-  }
-  function onPointerUp(){
-    if(!dragging) return;
-    dragging = false; bubble.classList.remove('dragging');
-    const dx = currentX - startX;
-    bubble.style.transform='';
-    if(dx > HIDE_THRESHOLD){ applyHiddenState(true); }
-  }
-  handle.addEventListener('mousedown', onPointerDown); document.addEventListener('mousemove', onPointerMove); document.addEventListener('mouseup', onPointerUp);
-  handle.addEventListener('touchstart', onPointerDown,{passive:true}); document.addEventListener('touchmove', onPointerMove,{passive:true}); document.addEventListener('touchend', onPointerUp);
-
-  toggleBtn.addEventListener('click', function(){
-    const expanded = toggleBtn.getAttribute('aria-expanded') === 'true';
-    if(expanded){ content.hidden = true; toggleBtn.setAttribute('aria-expanded','false'); toggleBtn.textContent='▼'; }
-    else { content.hidden = false; toggleBtn.setAttribute('aria-expanded','true'); toggleBtn.textContent='▲'; }
+  const btn = document.getElementById('supportBtn');
+  const panel = document.getElementById('supportPanel');
+  btn.addEventListener('click', function(){
+    const expanded = btn.getAttribute('aria-expanded') === 'true';
+    btn.setAttribute('aria-expanded', !expanded);
+    panel.hidden = expanded;
   });
-  revealTab.addEventListener('click', function(){ applyHiddenState(false); });
-  revealTab.addEventListener('mousedown', function(e){ applyHiddenState(false); e.preventDefault(); });
 })();
 </script>

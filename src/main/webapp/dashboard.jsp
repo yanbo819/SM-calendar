@@ -221,17 +221,19 @@
                 <span class="tile-cta"><%= LanguageUtil.getText(lang, "dashboard.scanCta") %> →</span>
             </button>
 
-            <!-- Tile 6: CST Shining Team (user view) -->
-            <a class="tile tile-face" href="cst-team">
+            <!-- Tile 6: College Volunteers -->
+            <a class="tile tile-face" href="college-volunteers.jsp">
                 <div class="tile-content">
                     <div class="tile-header">
                         <span class="tile-icon">🤝</span>
-                        <h3><%= LanguageUtil.getText(lang, "dashboard.cstTeam") %></h3>
+                        <h3><%= LanguageUtil.getText(lang, "dashboard.collegeVolunteers") %></h3>
                     </div>
-                    <p class="tile-desc"><%= LanguageUtil.getText(lang, "dashboard.cstTeamDesc") %></p>
+                    <p class="tile-desc"><%= LanguageUtil.getText(lang, "dashboard.collegeVolunteersDesc") %></p>
                 </div>
                 <span class="tile-cta"><%= LanguageUtil.getText(lang, "dashboard.openCta") %> →</span>
             </a>
+
+
         </div>
     </div>
 

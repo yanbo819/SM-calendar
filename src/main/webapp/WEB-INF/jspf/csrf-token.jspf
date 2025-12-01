@@ -1,1 +1,1 @@
-<% String csrf = (String) session.getAttribute("csrfToken"); if (csrf != null) { %><input type="hidden" name="csrfToken" value="<%= csrf %>" /> <% } %>
+<% if (session.getAttribute("csrfToken") != null) { %><input type="hidden" name="csrfToken" value="<%= (String) session.getAttribute("csrfToken") %>" /> <% } %>

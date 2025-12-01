@@ -1,0 +1,18 @@
+.member-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:18px;margin-top:14px}
+.member-card{position:relative;background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:15px 14px 16px 14px;box-shadow:0 2px 4px rgba(0,0,0,.05);display:flex;flex-direction:column;align-items:center;transition:box-shadow .25s,transform .25s}
+.member-card:hover{box-shadow:0 8px 24px rgba(0,0,0,.08);transform:translateY(-4px)}
+.member-card.row-layout{flex-direction:row;align-items:center;gap:18px;padding:18px 20px}
+.member-img{width:72px;height:72px;border-radius:50%;object-fit:cover;border:2px solid #f1f5f9;margin-bottom:10px}
+.member-img.large{width:84px;height:84px;margin:0}
+.member-content{flex:1;min-width:140px;display:flex;flex-direction:column;gap:4px}
+.member-name{font-size:.95rem;margin:0 0 4px 0;font-weight:600;color:#1f2937;text-align:center}
+.member-name.left{text-align:left;font-size:1.02rem;margin:0 0 2px 0}
+.member-extra{font-size:.65rem;color:#475569;line-height:1.15;margin-bottom:3px;text-align:center}
+.member-extra.left{text-align:left}
+.member-view-btn{align-self:flex-start;margin-top:4px;font-size:.7rem;padding:6px 10px}
+.contact-row{display:flex;justify-content:center;margin-top:8px}
+.badge{position:absolute;top:8px;right:8px;background:#2563eb;color:#fff;font-size:.6rem;padding:3px 6px;border-radius:6px;letter-spacing:.5px}
+.toolbar{display:flex;justify-content:space-between;align-items:center;gap:18px;margin-top:8px;flex-wrap:wrap}
+.search-box input{padding:8px 14px;font-size:.8rem;border:1px solid #e2e8f0;border-radius:8px;min-width:240px}
+.back-btn{margin:28px auto 0 auto;display:block}
+@media (max-width:640px){.member-list{grid-template-columns:repeat(auto-fill,minmax(160px,1fr))}}

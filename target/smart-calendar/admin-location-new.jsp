@@ -39,6 +39,7 @@
     <div class="card">
         <div class="card-body">
             <form method="post" action="admin-locations">
+                <%@ include file="/WEB-INF/jspf/csrf-token.jspf" %>
                 <input type="hidden" name="action" value="create" />
                 <input type="hidden" name="returnCategory" value="<%= currentCategory %>" />
                 <div class="create-grid">

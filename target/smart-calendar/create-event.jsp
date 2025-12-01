@@ -112,6 +112,7 @@
         <% } %>
 
         <form method="post" action="create-event" class="event-form card">
+            <%@ include file="/WEB-INF/jspf/csrf-token.jspf" %>
             <div class="sections">
                 <!-- Type -->
                 <div class="section">

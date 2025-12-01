@@ -73,6 +73,7 @@
         <% } %>
 
     <form method="post" action="update-event" class="event-form card">
+        <%@ include file="/WEB-INF/jspf/csrf-token.jspf" %>
             <input type="hidden" name="id" value="<%= id %>" />
             <div class="form-row">
                 <div class="form-group">

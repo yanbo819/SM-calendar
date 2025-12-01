@@ -32,6 +32,8 @@ public class CreateDepartmentServlet extends HttpServlet {
         try {
             CstDepartmentDao.insert(name.trim(), leaderName!=null?leaderName.trim():null, leaderPhone!=null?leaderPhone.trim():null);
             req.getSession().setAttribute("flashSuccess", "Department created successfully.");
+            // Analytics logging for department create
+            com.smartcalendar.utils.AnalyticsLog.log(user.getUsername(), "/create-department", "name=" + name.trim());
         } catch (SQLException e) {
             req.getSession().setAttribute("flashError", "Failed to create department.");
             resp.sendRedirect("add-department.jsp?variant=" + (variant!=null?variant:"generic") + "&error=db");

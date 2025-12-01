@@ -43,6 +43,7 @@
         <div style="background:#fee2e2;color:#7f1d1d;padding:10px 14px;border-radius:8px;margin-block-end:16px"><%= error %></div>
     <% } %>
     <form method="post" action="admin-location">
+        <%@ include file="/WEB-INF/jspf/csrf-token.jspf" %>
         <input type="hidden" name="action" value="save" />
         <input type="hidden" name="locationId" value="<%= loc.getLocationId() %>" />
         <div class="field-grid">
@@ -75,7 +76,8 @@
         <div class="actions">
             <button type="submit" class="btn btn-primary" style="min-inline-size:120px">Save</button>
             <a class="btn btn-outline" style="min-inline-size:120px" href="<%= loc.getMapUrl() %>" target="_blank" rel="noopener">Open Map</a>
-            <form method="post" action="admin-location" onsubmit="return confirm('Delete this location?');" style="display:inline">
+            <form method="post" action="admin-location" onsubmit="return confirm('<%= com.smartcalendar.utils.LanguageUtil.getText(lang, "confirm.delete.location") %>');" style="display:inline">
+                <%@ include file="/WEB-INF/jspf/csrf-token.jspf" %>
                 <input type="hidden" name="action" value="delete" />
                 <input type="hidden" name="locationId" value="<%= loc.getLocationId() %>" />
                 <button type="submit" class="btn btn-danger" style="min-inline-size:120px">Delete</button>

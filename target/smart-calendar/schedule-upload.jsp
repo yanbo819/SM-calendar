@@ -51,6 +51,7 @@
         <% } %>
 
         <form method="post" action="upload-schedule" enctype="multipart/form-data" class="event-form card">
+            <%@ include file="/WEB-INF/jspf/csrf-token.jspf" %>
             <div class="form-row">
                 <div class="form-group full-width">
                     <input type="file" name="file" accept=".csv,.ics,.pdf" required />

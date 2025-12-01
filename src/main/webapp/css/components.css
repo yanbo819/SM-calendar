@@ -1,0 +1,24 @@
+.page{max-inline-size:1100px;margin:16px auto;padding:0 16px}
+.header-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-block:8px 16px}
+.header-row h2{margin:0}
+.subtext{color:#6b7280;font-size:.95rem}
+.flex-wrap-gap{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.min-240{min-inline-size:240px}
+.filters{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.card{background:#fff;border:1px solid #e5e7eb;border-radius:14px;box-shadow:0 4px 12px rgba(0,0,0,.05);padding:0}
+.card-pad{padding:28px}
+.card-section{background:#f9fafb;padding:14px 16px;border-radius:10px;border:1px solid #e5e7eb}
+.card-section-label{font-size:.7rem;text-transform:uppercase;letter-spacing:.5px;color:#374151;font-weight:600;margin:0 0 4px 0}
+.inline-form{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.grid-2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.grid-form-2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-bottom:24px}
+.badge-cat{display:inline-block;padding:2px 6px;border-radius:6px;font-size:.65rem;background:#eef2ff;color:#3730a3;border:1px solid #c7d2fe;font-weight:600}
+.table-full{width:100%;border-collapse:collapse}
+.table-head-row{background:#f3f4f6;text-align:left;font-size:.8rem;letter-spacing:.5px;text-transform:uppercase}
+.cell-pad{padding:10px 14px}
+.flex-row-wrap{display:flex;gap:8px;flex-wrap:wrap}
+.actions-row{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-bottom:24px}
+.min-140{min-inline-size:140px}
+.mt-4{margin-top:4px}
+.mb-24{margin-bottom:24px}
+.grid-span-all{grid-column:1/-1}

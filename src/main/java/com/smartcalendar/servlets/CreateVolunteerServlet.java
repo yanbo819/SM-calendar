@@ -1,7 +1,6 @@
 package com.smartcalendar.servlets;
 
 import java.io.IOException;
-// Removed unused imports after refactor
 import java.sql.SQLException;
 import java.util.Locale;
 
@@ -74,6 +73,8 @@ public class CreateVolunteerServlet extends HttpServlet {
             if (lang == null) lang = "en";
             String msg = com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.volunteer.createSuccess");
             req.getSession().setAttribute("flashSuccess", msg);
+            // Analytics logging for create
+            com.smartcalendar.utils.AnalyticsLog.log(user.getUsername(), "/create-volunteer", "deptId=" + deptId);
         } catch (SQLException e) {
             String lang = (String) req.getSession().getAttribute("lang");
             if (lang == null) lang = "en";

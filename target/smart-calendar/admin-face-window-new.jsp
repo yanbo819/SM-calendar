@@ -52,6 +52,7 @@
         </div>
 
         <form class="card" method="post" action="admin-face-config" onsubmit="return validateAndSubmit(this)">
+            <%@ include file="/WEB-INF/jspf/csrf-token.jspf" %>
             <input type="hidden" name="action" value="create" />
             <div class="form-grid">
                 <div class="form-group">

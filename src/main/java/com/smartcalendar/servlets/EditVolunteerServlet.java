@@ -1,7 +1,6 @@
 package com.smartcalendar.servlets;
 
 import java.io.IOException;
-// Removed unused IO/NIO imports after refactor to ImageUploadUtil
 import java.sql.SQLException;
 import java.util.Locale;
 
@@ -69,6 +68,8 @@ public class EditVolunteerServlet extends HttpServlet {
             CstVolunteerDao.update(existing);
             String lang = (String) req.getSession().getAttribute("lang"); if (lang == null) lang = "en";
             req.getSession().setAttribute("flashSuccess", com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.volunteer.editSuccess"));
+            // Analytics logging for edit
+            com.smartcalendar.utils.AnalyticsLog.log(user.getUsername(), "/edit-volunteer", "id=" + id + "&deptId=" + deptId);
         } catch (SQLException e) {
             String lang = (String) req.getSession().getAttribute("lang"); if (lang == null) lang = "en";
             req.getSession().setAttribute("flashError", com.smartcalendar.utils.LanguageUtil.getText(lang, "vol.update.error"));

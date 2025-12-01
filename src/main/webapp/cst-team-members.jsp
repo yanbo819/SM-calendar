@@ -1,24 +1,38 @@
 <%@ page import="java.util.*, com.smartcalendar.models.CstDepartment, com.smartcalendar.models.CstVolunteer, com.smartcalendar.dao.CstVolunteerDao, com.smartcalendar.dao.CstDepartmentDao" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     String deptIdStr = request.getParameter("dept");
     int deptId = -1;
-    if (deptIdStr != null) {
-        try { deptId = Integer.parseInt(deptIdStr); } catch (Exception e) { deptId = -1; }
+    if (deptIdStr != null && !deptIdStr.isBlank()) {
+        try { deptId = Integer.parseInt(deptIdStr.trim()); } catch (Exception e) { deptId = -1; }
     }
     CstDepartment dept = null;
     List<CstVolunteer> members = Collections.emptyList();
     String errorMsg = null;
-    try {
-        dept = com.smartcalendar.dao.CstDepartmentDao.findById(deptId);
-        if (dept != null) {
-            members = com.smartcalendar.dao.CstVolunteerDao.listByDepartment(deptId);
-        } else {
-            errorMsg = "Department not found.";
+    if (deptId <= 0) {
+        errorMsg = "Invalid department parameter.";
+    } else {
+        try {
+            dept = com.smartcalendar.dao.CstDepartmentDao.findById(deptId);
+            if (dept != null) {
+                members = com.smartcalendar.dao.CstVolunteerDao.listByDepartment(deptId);
+            } else {
+                errorMsg = "Department not found.";
+            }
+        } catch (Exception e) {
+            errorMsg = "Error loading department or volunteers.";
         }
-    } catch (Exception e) {
-        errorMsg = "Error loading department or volunteers.";
     }
+    boolean isAdmin = false;
+    com.smartcalendar.models.User u = (com.smartcalendar.models.User) session.getAttribute("user");
+    if (u != null && u.getRole() != null && u.getRole().equalsIgnoreCase("admin")) isAdmin = true;
+    request.setAttribute("deptId", deptId);
+    request.setAttribute("dept", dept);
+    request.setAttribute("members", members);
+    request.setAttribute("errorMsg", errorMsg);
+    request.setAttribute("isAdmin", isAdmin);
 %>
 <!DOCTYPE html>
 <%@ include file="/WEB-INF/jspf/lang-init.jspf" %>
@@ -26,98 +40,50 @@
 <head>
     <title><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "cst.team.members.title") %></title>
     <link rel="stylesheet" href="css/main.css">
-    <style>
-        .member-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:18px;margin-top:14px}
-        .member-card{position:relative;background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:15px 14px 16px 14px;box-shadow:0 2px 4px rgba(0,0,0,.05);display:flex;flex-direction:column;align-items:center;transition:box-shadow .25s,transform .25s}
-        .member-card:hover{box-shadow:0 8px 24px rgba(0,0,0,.08);transform:translateY(-4px)}
-        .member-img{width:72px;height:72px;border-radius:50%;object-fit:cover;border:2px solid #f1f5f9;margin-bottom:10px}
-        .member-name{font-size:.95rem;margin:0 0 4px 0;font-weight:600;color:#1f2937;text-align:center}
-        .member-extra{font-size:.65rem;color:#475569;line-height:1.15;margin-bottom:3px;text-align:center}
-        .contact-row{display:flex;justify-content:center;margin-top:8px}
-        .badge{position:absolute;top:8px;right:8px;background:#2563eb;color:#fff;font-size:.6rem;padding:3px 6px;border-radius:6px;letter-spacing:.5px}
-        .toolbar{display:flex;justify-content:space-between;align-items:center;gap:18px;margin-top:8px;flex-wrap:wrap}
-        .search-box input{padding:8px 14px;font-size:.8rem;border:1px solid #e2e8f0;border-radius:8px;min-width:240px}
-        .back-btn{margin:28px auto 0 auto;display:block}
-        @media (max-width:640px){.member-list{grid-template-columns:repeat(auto-fill,minmax(160px,1fr))}}
-    </style>
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/team-members.css">
 </head>
 <body>
     <div class="container">
         <!-- Unified header -->
-        <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;margin-bottom:14px;gap:16px">
-            <div style="flex:1;min-width:240px">
-                <h1 style="margin:0 0 4px 0;font-size:1.85rem;font-weight:700;letter-spacing:.5px;color:#1f2937;">
+        <div class="page-header-flex">
+            <div class="page-header-block">
+                <h1 class="page-header-title">
                     <%= com.smartcalendar.utils.LanguageUtil.getText(lang, "cst.team.title") %>
                 </h1>
-                <h2 style="margin:0;font-size:1.15rem;font-weight:600;color:#2563eb;">
+                <h2 class="page-header-sub">
                     <%= dept != null ? dept.getName() : com.smartcalendar.utils.LanguageUtil.getText(lang, "cst.department.unknown") %>
                 </h2>
-                <div style="margin-top:6px;font-size:.70rem;color:#555;">
+                <div class="page-header-meta">
                     <%= com.smartcalendar.utils.LanguageUtil.getText(lang, "cst.department.label") %>:
                     <strong><%= dept != null ? dept.getName() : com.smartcalendar.utils.LanguageUtil.getText(lang, "cst.department.unknown") %></strong>
                     · <span id="countSpan"><%= members.size() %></span>
                     <%= com.smartcalendar.utils.LanguageUtil.getText(lang, "cst.members.count.label") %>
                 </div>
             </div>
-            <div style="display:flex;gap:8px;align-items:center;">
+            <div class="back-link-wrap">
                 <a href="cst-team" class="btn btn-secondary" style="white-space:nowrap">&larr; <%= com.smartcalendar.utils.LanguageUtil.getText(lang, "cst.back.departments") %></a>
             </div>
         </div>
         <!-- Removed search/filter per user request -->
-        <% if (errorMsg != null) { %>
-            <div style="color:#ef4444;font-weight:bold;margin-top:12px;margin-bottom:18px;"><%= errorMsg %></div>
-        <% } else if (members.isEmpty()) { %>
-            <div style="color:#6b7280;margin-top:12px;margin-bottom:16px"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "cst.members.empty") %></div>
-            <%
-                boolean isAdmin = false;
-                com.smartcalendar.models.User u = (com.smartcalendar.models.User) session.getAttribute("user");
-                if (u != null && u.getRole() != null && u.getRole().equalsIgnoreCase("admin")) isAdmin = true;
-            %>
-            <% if (isAdmin && dept != null) { %>
-                <a href="add-volunteer.jsp?dept=<%= dept.getId() %>" class="btn btn-primary" style="padding:10px 18px;border-radius:10px;font-size:.8rem;display:inline-block">+ <%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.volunteer.addNew") %></a>
-            <% } %>
-        <% } else { %>
-        <div class="member-list" id="memberList" style="grid-template-columns:repeat(auto-fill,minmax(320px,1fr));">
-            <% for (CstVolunteer v : members) { %>
-                <div class="member-card" style="flex-direction:row;align-items:center;gap:18px;padding:18px 20px;" data-name="<%= (v.getPassportName()+" "+v.getChineseName()+" "+v.getStudentId()).toLowerCase() %>">
-                    <%
-                        String photo = v.getPhotoUrl();
-                        String displayPhoto = photo;
-                        if (photo != null && !photo.isEmpty()) {
-                            // Derive thumbnail path: replace extension with _thumb.<ext|png if webp>
-                            int dot = photo.lastIndexOf('.');
-                            if (dot > 0) {
-                                String ext = photo.substring(dot+1).toLowerCase(Locale.ROOT);
-                                String thumbExt = "webp".equals(ext)?"png":ext;
-                                String thumbCandidate = photo.substring(0,dot) + "_thumb." + thumbExt;
-                                java.nio.file.Path realThumb = java.nio.file.Path.of(application.getRealPath("/"+thumbCandidate));
-                                if (java.nio.file.Files.exists(realThumb)) {
-                                    displayPhoto = thumbCandidate;
-                                }
-                            }
-                        }
-                    %>
-                    <img class="member-img" style="width:84px;height:84px;margin:0" src="<%= displayPhoto!=null && !displayPhoto.isEmpty() ? displayPhoto : "https://via.placeholder.com/84" %>" alt="photo" />
-                    <div style="flex:1;min-width:140px;display:flex;flex-direction:column;gap:4px">
-                        <h3 class="member-name" style="text-align:left;font-size:1.02rem;margin:0 0 2px 0"><%= v.getPassportName()!=null?v.getPassportName():"Unknown" %></h3>
-                        <% if (v.getChineseName()!=null && !v.getChineseName().isEmpty()) { %>
-                           <div class="member-extra" style="text-align:left"><%= v.getChineseName() %></div>
-                        <% } %>
-                        <% if (v.getStudentId()!=null && !v.getStudentId().isEmpty()) { %>
-                           <div class="member-extra" style="text-align:left"><strong>ID:</strong> <%= v.getStudentId() %></div>
-                        <% } %>
-                        <% try { if (v.getEmail()!=null && !v.getEmail().isEmpty()) { %>
-                            <div class="member-extra" style="text-align:left"><strong>Email:</strong> <%= v.getEmail() %></div>
-                        <% } } catch (Exception ignore) { } %>
-                        <% if (v.getPhone()!=null && !v.getPhone().isEmpty()) { %>
-                           <div class="member-extra" style="text-align:left"><strong><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "cst.call") %>:</strong> <a href="tel:<%= v.getPhone() %>"><%= v.getPhone() %></a></div>
-                        <% } %>
-                        <a href="cst-team-member-detail.jsp?id=<%= v.getId() %>&dept=<%= deptId %>" class="btn btn-primary" style="align-self:flex-start;margin-top:4px;font-size:.7rem;padding:6px 10px;">&rarr; <%= com.smartcalendar.utils.LanguageUtil.getText(lang, "cst.view.members") %></a>
-                    </div>
+        <c:choose>
+            <c:when test="${not empty errorMsg}">
+                <div class="error-msg">${errorMsg}</div>
+            </c:when>
+            <c:when test="${empty members}">
+                <div class="empty-msg"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "cst.members.empty") %></div>
+                <c:if test="${isAdmin and not empty dept}">
+                    <a href="add-volunteer.jsp?dept=<%= dept != null ? dept.getId() : -1 %>" class="btn btn-primary add-volunteer-btn">+ <%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.volunteer.addNew") %></a>
+                </c:if>
+            </c:when>
+            <c:otherwise>
+                <div class="member-list" id="memberList">
+                    <c:forEach var="v" items="${members}">
+                        <t:volunteerCard id="${v.id}" passportName="${empty v.passportName ? 'Unknown' : v.passportName}" chineseName="${v.chineseName}" studentId="${v.studentId}" email="${v.email}" phone="${v.phone}" photoUrl="${v.photoUrl}" deptId="${deptId}" />
+                    </c:forEach>
                 </div>
-            <% } %>
-        </div>
-        <% } %>
+            </c:otherwise>
+        </c:choose>
         <!-- Bottom back button removed (single back in header retained) -->
     </div>
         <!-- Filtering script removed -->

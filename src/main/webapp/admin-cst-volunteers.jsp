@@ -105,6 +105,7 @@
         if (!v) return;
         let html = `<div class='card' style='margin-block-start:8px;'>
             <form method='post' action='admin-cst-volunteers' enctype='multipart/form-data' style='display:grid;gap:12px;'>
+                <%@ include file="/WEB-INF/jspf/csrf-token.jspf" %>
                 <input type='hidden' name='action' value='update' />
                 <input type='hidden' name='id' value='${v.id}' />
                 <input type='hidden' name='department_id' value='${departmentId}' />

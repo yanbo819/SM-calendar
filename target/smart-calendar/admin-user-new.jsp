@@ -39,6 +39,7 @@
         <div class="page-sub">Fill out details below. All required fields are marked.</div>
     </div>
     <form class="card" method="post" action="admin-user-crud">
+        <%@ include file="/WEB-INF/jspf/csrf-token.jspf" %>
         <input type="hidden" name="action" value="create" />
         <div class="form-grid">
             <div class="form-group">

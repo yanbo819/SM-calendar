@@ -102,6 +102,7 @@
                     </div>
                 </div>
                 <form action="set-language" method="post" style="margin:0;display:flex;align-items:center;gap:4px;">
+                    <%@ include file="/WEB-INF/jspf/csrf-token.jspf" %>
                     <select name="lang" onchange="this.form.submit()" class="form-control" style="padding:4px 8px;min-inline-size:110px;">
                         <%
                             for (String code : com.smartcalendar.utils.LanguageUtil.getSupportedLanguages()) {
@@ -163,6 +164,7 @@
                                 <div class="upcoming-title"><%= next.getTitle() %></div>
                                 <% if (next.getUserId() != user.getUserId()) { %>
                                     <form action="follow-admin-event" method="post" style="display:inline; margin-inline-start:6px;">
+                                        <%@ include file="/WEB-INF/jspf/csrf-token.jspf" %>
                                         <input type="hidden" name="id" value="<%= next.getEventId() %>" />
                                         <button type="submit" style="font-size:0.70em;" title="<%= LanguageUtil.getText(lang, "dashboard.addToMyEvents") %>"><%= LanguageUtil.getText(lang, "dashboard.follow") %></button>
                                     </form>

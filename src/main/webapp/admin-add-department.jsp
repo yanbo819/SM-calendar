@@ -66,6 +66,7 @@
 <div class="form-container">
     <h2><%= com.smartcalendar.utils.LanguageUtil.getText("en", "admin.department.addNewTitle") %></h2>
     <form method="post" action="admin-add-department">
+        <%@ include file="/WEB-INF/jspf/csrf-token.jspf" %>
         <div class="form-group">
             <label for="name"><%= com.smartcalendar.utils.LanguageUtil.getText("en", "admin.volunteer.departmentLabel") %> Name</label>
             <input type="text" id="name" name="name" required maxlength="150">

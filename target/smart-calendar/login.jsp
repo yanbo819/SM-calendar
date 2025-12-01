@@ -1,14 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ include file="/WEB-INF/jspf/lang-init.jspf" %>
 <%@ page import="com.smartcalendar.utils.LanguageUtil" %>
 <%
-    // LanguageFilter sets request attributes 'lang' and 'textDir'; fall back gracefully if absent
-    String lang = (String) request.getAttribute("lang");
-    if (lang == null) {
-        lang = (String) session.getAttribute("lang");
-        if (lang == null || !LanguageUtil.isSupportedLanguage(lang)) lang = "en";
-    }
-    String textDir = (String) request.getAttribute("textDir");
-    if (textDir == null) textDir = LanguageUtil.getTextDirection(lang);
     String errorMessage = (String) request.getAttribute("errorMessage");
 %>
 <!DOCTYPE html>
@@ -17,6 +10,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= LanguageUtil.getText(lang, "app.title") %> - <%= LanguageUtil.getText(lang, "login.title") %></title>
+    <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="css/modern-auth.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -37,6 +31,7 @@
     <!-- Language Switcher removed as requested -->
     <div style="position:absolute;top:16px;right:16px;z-index:50;">
         <form action="set-language" method="post" style="margin:0;display:flex;align-items:center;gap:4px;">
+            <%@ include file="/WEB-INF/jspf/csrf-token.jspf" %>
             <select name="lang" onchange="this.form.submit()" class="form-control" style="padding:4px 8px;min-width:110px;">
                 <%
                     for (String code : LanguageUtil.getSupportedLanguages()) {
@@ -50,13 +45,8 @@
         <div class="auth-card">
             <!-- Brand Section -->
             <div class="auth-brand">
-                <div class="brand-logo">
-                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                        <line x1="16" y1="2" x2="16" y2="6"></line>
-                        <line x1="8" y1="2" x2="8" y2="6"></line>
-                        <line x1="3" y1="10" x2="21" y2="10"></line>
-                    </svg>
+                <div class="brand-logo" style="display:flex;align-items:center;justify-content:center;">
+                    <img src="images/logo-mark.svg" alt="Smart Calendar" width="48" height="48" loading="eager" decoding="async" />
                 </div>
                 <h1 class="brand-title"><%= LanguageUtil.getText(lang, "app.title") %></h1>
                 <p class="brand-subtitle"><%= LanguageUtil.getText(lang, "login.subtitle") %></p>
@@ -82,6 +72,7 @@
 
             <!-- Login Form -->
             <form method="post" action="login" class="modern-auth-form">
+                <%@ include file="/WEB-INF/jspf/csrf-token.jspf" %>
                 <input type="hidden" id="portalField" name="portal" value="<%= request.getAttribute("portal") != null ? (String)request.getAttribute("portal") : (request.getParameter("portal") != null ? request.getParameter("portal") : "user") %>">
                 <div class="form-group">
                     <div class="input-container">

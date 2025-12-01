@@ -76,6 +76,7 @@
                 <% if (isAdmin) { %>
                     <a href="edit-volunteer.jsp?id=<%= v.getId() %>&dept=<%= deptId %>" class="btn btn-primary btn-sm"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "common.edit") %></a>
                     <form method="post" action="delete-volunteer" style="display:inline;" onsubmit="return confirm('<%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.volunteer.deleteConfirm") %>');">
+                        <%@ include file="/WEB-INF/jspf/csrf-token.jspf" %>
                         <input type="hidden" name="id" value="<%= v.getId() %>" />
                         <input type="hidden" name="dept" value="<%= deptId %>" />
                         <button type="submit" class="btn btn-danger btn-sm"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "common.delete") %></button>

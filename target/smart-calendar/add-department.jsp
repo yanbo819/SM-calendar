@@ -30,6 +30,7 @@
 <div class="form-wrap">
     <h1><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.department.addNew") %></h1>
     <form method="post" action="create-department">
+        <%@ include file="/WEB-INF/jspf/csrf-token.jspf" %>
         <input type="hidden" name="variant" value="<%= variant %>" />
         <div class="form-grid">
             <div class="field">

@@ -65,6 +65,7 @@
             <version>8.0.33</version>
         </dependency>
 
+
         <!-- Removed biweekly (not used) to keep the WAR slim -->
 
         <!-- PDF parsing for timetable PDFs -->
@@ -125,6 +126,8 @@
                     </httpConnector>
                     <webApp>
                         <contextPath>/smart-calendar</contextPath>
+                        <!-- Use temp directory without spaces to avoid potential JSP compilation path issues -->
+                        <tempDirectory>/tmp/smartcalendar-jettytmp</tempDirectory>
                     </webApp>
                 </configuration>
             </plugin>

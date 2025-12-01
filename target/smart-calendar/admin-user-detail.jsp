@@ -18,36 +18,35 @@
     <title>Admin: User Detail</title>
     <link rel="stylesheet" href="css/main.css" />
     <link rel="stylesheet" href="css/ui.css" />
-    <style>
-        .inline-form{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
-    </style>
+    <link rel="stylesheet" href="css/components.css" />
 </head>
 <body>
 <!-- Navigation and admin toolbar removed for streamlined profile view -->
 <div class="form-container" style="max-inline-size:1100px;margin:24px auto;">
-    <div class="card" style="padding:28px;border:1px solid #e5e7eb;border-radius:14px;box-shadow:0 4px 12px rgba(0,0,0,.05)">
+    <div class="card card-pad">
         <h2 style="margin:0 0 6px">User Profile</h2>
         <div style="color:#6b7280;font-size:.9rem;margin:0 0 18px">ID #<%= target.getUserId() %> · Username: <strong><%= target.getUsername() %></strong></div>
-        <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-bottom:24px">
-            <div style="background:#f9fafb;padding:14px 16px;border-radius:10px;border:1px solid #e5e7eb">
-                <div style="font-size:.7rem;text-transform:uppercase;letter-spacing:.5px;color:#374151;font-weight:600;margin-bottom:4px">Full Name</div>
+        <div class="grid-2 mb-24">
+            <div class="card-section">
+                <div class="card-section-label">Full Name</div>
                 <div style="font-weight:500"><%= target.getFullName() %></div>
             </div>
-            <div style="background:#f9fafb;padding:14px 16px;border-radius:10px;border:1px solid #e5e7eb">
-                <div style="font-size:.7rem;text-transform:uppercase;letter-spacing:.5px;color:#374151;font-weight:600;margin-bottom:4px">Role</div>
+            <div class="card-section">
+                <div class="card-section-label">Role</div>
                 <div><span class="badge <%= ("admin".equalsIgnoreCase(target.getRole())?"gray":"green") %>"><%= target.getRole() %></span></div>
             </div>
-            <div style="background:#f9fafb;padding:14px 16px;border-radius:10px;border:1px solid #e5e7eb">
-                <div style="font-size:.7rem;text-transform:uppercase;letter-spacing:.5px;color:#374151;font-weight:600;margin-bottom:4px">Status</div>
+            <div class="card-section">
+                <div class="card-section-label">Status</div>
                 <div><span class="badge <%= (target.isActive()?"green":"gray") %>"><%= target.isActive()?"Active":"Inactive" %></span></div>
             </div>
-            <div style="background:#f9fafb;padding:14px 16px;border-radius:10px;border:1px solid #e5e7eb">
-                <div style="font-size:.7rem;text-transform:uppercase;letter-spacing:.5px;color:#374151;font-weight:600;margin-bottom:4px">Preferred Language</div>
+            <div class="card-section">
+                <div class="card-section-label">Preferred Language</div>
                 <div><%= target.getPreferredLanguage()==null?"en":target.getPreferredLanguage() %></div>
             </div>
         </div>
         <h3 style="margin:0 0 12px">Edit User</h3>
-        <form method="post" action="admin-user-crud" style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-bottom:24px">
+        <form method="post" action="admin-user-crud" class="grid-form-2">
+            <%@ include file="/WEB-INF/jspf/csrf-token.jspf" %>
             <input type="hidden" name="action" value="update" />
             <input type="hidden" name="userId" value="<%= target.getUserId() %>" />
             <label style="display:flex;flex-direction:column;gap:6px">Full Name
@@ -68,17 +67,18 @@
             <label style="display:flex;flex-direction:column;gap:6px">Active
                 <input type="checkbox" name="active" <%= target.isActive() ? "checked" : "" %> <%= ("admin".equalsIgnoreCase(target.getRole()) ? "disabled" : "") %> />
             </label>
-            <label style="display:flex;flex-direction:column;gap:6px;grid-column:1/-1">Reset Password
+            <label class="grid-span-all" style="display:flex;flex-direction:column;gap:6px">Reset Password
                 <input class="form-control" type="password" name="password" placeholder="Leave blank to keep" />
             </label>
-            <div style="grid-column:1/-1;display:flex;gap:12px;flex-wrap:wrap;margin-top:4px">
-                <button type="submit" class="btn btn-primary" style="min-inline-size:140px"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.user.saveChanges") %></button>
-                <a href="admin-users" class="btn btn-outline" style="min-inline-size:140px"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "common.back") %></a>
+            <div class="grid-span-all actions-row mt-4">
+                <button type="submit" class="btn btn-primary min-140"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.user.saveChanges") %></button>
+                <a href="admin-users" class="btn btn-outline min-140"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "common.back") %></a>
             </div>
         </form>
         <% if (!"admin".equalsIgnoreCase(target.getRole())) { %>
-        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:24px;justify-content:center">
+        <div class="actions-row">
             <form method="post" action="admin-user-crud" style="display:inline">
+                <%@ include file="/WEB-INF/jspf/csrf-token.jspf" %>
                 <input type="hidden" name="action" value="update" />
                 <input type="hidden" name="userId" value="<%= target.getUserId() %>" />
                 <input type="hidden" name="fullName" value="<%= target.getFullName() %>" />
@@ -86,12 +86,13 @@
                 <input type="hidden" name="phone" value="<%= target.getPhoneNumber() %>" />
                 <input type="hidden" name="role" value="<%= target.getRole() %>" />
                 <input type="hidden" name="active" value="<%= !target.isActive() %>" />
-                <button type="submit" class="btn btn-outline" style="min-inline-size:140px"><%= target.isActive() ? "Deactivate" : "Activate" %></button>
+                <button type="submit" class="btn btn-outline min-140"><%= target.isActive() ? "Deactivate" : "Activate" %></button>
             </form>
             <form method="post" action="admin-user-crud" style="display:inline" onsubmit="return confirm('<%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.user.deleteConfirm") %>');">
+                <%@ include file="/WEB-INF/jspf/csrf-token.jspf" %>
                 <input type="hidden" name="action" value="delete" />
                 <input type="hidden" name="userId" value="<%= target.getUserId() %>" />
-                <button type="submit" class="btn btn-danger" style="min-inline-size:140px"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "common.delete") %></button>
+                <button type="submit" class="btn btn-danger min-140"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "common.delete") %></button>
             </form>
         </div>
         <% } %>

@@ -1,0 +1,9 @@
+.page-header-flex{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:16px;margin-bottom:14px}
+.page-header-block{flex:1;min-width:240px}
+.page-header-title{margin:0 0 4px 0;font-size:1.85rem;font-weight:700;letter-spacing:.5px;color:#1f2937}
+.page-header-sub{margin:0;font-size:1.15rem;font-weight:600;color:#2563eb}
+.page-header-meta{margin-top:6px;font-size:.70rem;color:#555}
+.back-link-wrap{display:flex;gap:8px;align-items:center}
+.error-msg{color:#ef4444;font-weight:bold;margin-top:12px;margin-bottom:18px}
+.empty-msg{color:#6b7280;margin-top:12px;margin-bottom:16px}
+.add-volunteer-btn{padding:10px 18px;border-radius:10px;font-size:.8rem;display:inline-block}

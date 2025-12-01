@@ -107,6 +107,7 @@
 
             <!-- Registration Form -->
             <form method="post" action="register" class="modern-auth-form" onsubmit="return validateRegistrationForm()">
+                <%@ include file="/WEB-INF/jspf/csrf-token.jspf" %>
                 <div class="register-form-container">
                     <!-- Full Name -->
                     <div class="form-group">

@@ -57,6 +57,7 @@
 /Users/yanbo/Desktop/Smart calendar/src/main/java/com/smartcalendar/servlets/CreateDepartmentServlet.java
 /Users/yanbo/Desktop/Smart calendar/src/main/java/com/smartcalendar/dao/CstVolunteerDao.java
 /Users/yanbo/Desktop/Smart calendar/src/main/java/com/smartcalendar/servlets/EnrollFaceServlet.java
+/Users/yanbo/Desktop/Smart calendar/src/main/java/com/smartcalendar/filters/CsrfFilter.java
 /Users/yanbo/Desktop/Smart calendar/src/main/java/com/smartcalendar/servlets/AnalyticsServlet.java
 /Users/yanbo/Desktop/Smart calendar/src/main/java/com/smartcalendar/models/Event.java
 /Users/yanbo/Desktop/Smart calendar/src/main/java/com/smartcalendar/dao/LocationDao.java

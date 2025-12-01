@@ -30,6 +30,7 @@
 <nav class="main-nav"><div class="nav-container"><h1 class="nav-title"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.volunteer.editTitle") %></h1></div></nav>
 <div class="wrap">
   <form method="post" action="edit-volunteer" enctype="multipart/form-data">
+    <%@ include file="/WEB-INF/jspf/csrf-token.jspf" %>
     <input type="hidden" name="id" value="<%= vol.getId() %>" />
     <input type="hidden" name="dept" value="<%= deptId %>" />
     <div class="grid">

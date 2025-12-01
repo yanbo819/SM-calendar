@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="64" viewBox="0 0 256 64" aria-labelledby="title desc" role="img">
+  <title>Smart Calendar Logo</title>
+  <desc>Logo for Smart Calendar: calendar mark with brand wordmark</desc>
+  <defs>
+    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6366F1"/>
+      <stop offset="100%" stop-color="#06B6D4"/>
+    </linearGradient>
+  </defs>
+  <g>
+    <!-- Mark -->
+    <g transform="translate(0,0)" fill="none" stroke="url(#g)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="8" y="12" width="48" height="44" rx="6"/>
+      <line x1="20" y1="10" x2="20" y2="20"/>
+      <line x1="44" y1="10" x2="44" y2="20"/>
+      <line x1="8" y1="24" x2="56" y2="24"/>
+      <path d="M22 38 l6 6 l14 -14"/>
+    </g>
+    <!-- Wordmark -->
+    <g transform="translate(72,42)" fill="#111827">
+      <path d="M2.4-6.6c1.1-1.1 2.7-1.8 4.5-1.8c2.7 0 4.9 1.4 6.1 3.5l-2.2 1.3c-.8-1.5-2.2-2.4-3.9-2.4c-2.6 0-4.5 2-4.5 4.8c0 2.8 1.9 4.8 4.5 4.8c1.7 0 3.1-.9 3.9-2.4l2.2 1.3c-1.2 2.1-3.4 3.5-6.1 3.5c-1.8 0-3.4-.7-4.5-1.8c-1.3-1.3-2.1-3.1-2.1-5.4c0-2.2 .8-4 2.1-5.4z"/>
+      <path d="M20.3-8h2.6v5.4h6.1V-8h2.6V4h-2.6V-0.6H22.9V4h-2.6V-8z"/>
+      <path d="M39.6-8h9.8v2.3h-7.2v2h6.4v2.2h-6.4V1.7h7.3V4h-9.9V-8z"/>
+      <path d="M55.6-8h2.9l7.1 8.6V-8h2.6V4h-2.6l-7.3-8.8V4h-2.6V-8z"/>
+      <path d="M76.1-8h2.6v10c0 1.8 1 2.9 2.8 2.9c1.8 0 2.8-1.1 2.8-2.9V-8h2.6v10.1c0 3.2-2.1 5.3-5.4 5.3c-3.2 0-5.4-2.1-5.4-5.3V-8z"/>
+      <path d="M98.4-8h2.9l7.1 8.6V-8h2.6V4h-2.6l-7.3-8.8V4h-2.6V-8z"/>
+      <path d="M118.8-8h9.8v2.3h-7.2v2h6.4v2.2h-6.4V1.7h7.3V4h-9.9V-8z"/>
+      <path d="M136.7-8h2.6v5.4h6.1V-8h2.6V4h-2.6V-0.6h-6.1V4h-2.6V-8z"/>
+    </g>
+  </g>
+</svg>

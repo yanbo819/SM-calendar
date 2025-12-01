@@ -49,6 +49,7 @@
 <body>
 <div class="container">
     <form class="form-section" method="post" action="admin-cst-volunteers" enctype="multipart/form-data">
+        <%@ include file="/WEB-INF/jspf/csrf-token.jspf" %>
         <input type="hidden" name="action" value="add" />
         <h2 class="form-title"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.volunteer.addNew") %><br><span style="font-size:.8em;font-weight:400;color:#666;"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.volunteer.departmentLabel") %> <%= dept.getName() %></span></h2>
         <div class="form-grid">

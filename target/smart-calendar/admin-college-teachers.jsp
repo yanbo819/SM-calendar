@@ -88,7 +88,8 @@
                                             <button type="submit" class="btn-small primary"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.teachers.manage.save") %></button>
                                         </div>
                                     </form>
-                                    <form method="post" action="admin-college-teachers" onsubmit="return confirm('Delete this teacher?')">
+                                    <form method="post" action="admin-college-teachers" onsubmit="return confirm('<%= com.smartcalendar.utils.LanguageUtil.getText(lang, "confirm.delete.teacher") %>')">
+                                        <%@ include file="/WEB-INF/jspf/csrf-token.jspf" %>
                                         <input type="hidden" name="action" value="delete-teacher" />
                                         <input type="hidden" name="id" value="<%= ct.getId() %>" />
                                         <button type="submit" class="btn-small danger"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.teachers.manage.delete") %></button>

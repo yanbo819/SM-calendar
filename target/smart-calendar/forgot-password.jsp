@@ -146,6 +146,7 @@
             <!-- Step 1: Account Verification -->
             <div class="form-step <%= "1".equals(step) ? "active" : "" %>" id="formStep1">
                 <form method="post" action="forgot-password" class="modern-auth-form">
+                    <%@ include file="/WEB-INF/jspf/csrf-token.jspf" %>
                     <input type="hidden" name="step" value="1">
                     
                     <div class="form-group">
@@ -185,6 +186,7 @@
             <!-- Step 2: Code Verification -->
             <div class="form-step <%= "2".equals(step) ? "active" : "" %>" id="formStep2">
                 <form method="post" action="forgot-password" class="modern-auth-form">
+                    <%@ include file="/WEB-INF/jspf/csrf-token.jspf" %>
                     <input type="hidden" name="step" value="2">
                     <input type="hidden" name="username" value="<%= request.getParameter("username") != null ? request.getParameter("username") : "" %>">
                     <input type="hidden" name="contact" value="<%= request.getParameter("contact") != null ? request.getParameter("contact") : "" %>">
@@ -223,6 +225,7 @@
             <!-- Step 3: New Password -->
             <div class="form-step <%= "3".equals(step) ? "active" : "" %>" id="formStep3">
                 <form method="post" action="forgot-password" class="modern-auth-form" onsubmit="return validateNewPassword()">
+                    <%@ include file="/WEB-INF/jspf/csrf-token.jspf" %>
                     <input type="hidden" name="step" value="3">
                     <input type="hidden" name="username" value="<%= request.getParameter("username") != null ? request.getParameter("username") : "" %>">
                     <input type="hidden" name="verificationCode" value="<%= request.getParameter("verificationCode") != null ? request.getParameter("verificationCode") : "" %>">

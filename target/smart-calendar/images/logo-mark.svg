@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" aria-labelledby="title desc" role="img">
+  <title>Smart Calendar Mark</title>
+  <desc>Minimal calendar icon with checkmark for Smart Calendar</desc>
+  <defs>
+    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6366F1"/>
+      <stop offset="100%" stop-color="#06B6D4"/>
+    </linearGradient>
+  </defs>
+  <g fill="none" stroke="url(#g)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="8" y="12" width="48" height="44" rx="6"/>
+    <line x1="20" y1="10" x2="20" y2="20"/>
+    <line x1="44" y1="10" x2="44" y2="20"/>
+    <line x1="8" y1="24" x2="56" y2="24"/>
+    <path d="M22 38 l6 6 l14 -14"/>
+  </g>
+</svg>

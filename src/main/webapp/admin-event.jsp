@@ -51,6 +51,7 @@
     </div>
     <div class="card">
       <form method="post" action="admin-event" class="admin-event-form">
+        <%@ include file="/WEB-INF/jspf/csrf-token.jspf" %>
         <div class="form-grid">
           <div class="full-span">
             <label><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "events.subject") %></label>

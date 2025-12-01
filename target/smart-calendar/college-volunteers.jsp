@@ -73,6 +73,7 @@
                     </div>
                 </div>
                 <form action="set-language" method="post" style="margin:0;display:flex;align-items:center;gap:4px;">
+                    <%@ include file="/WEB-INF/jspf/csrf-token.jspf" %>
                     <select name="lang" onchange="this.form.submit()" class="form-control" style="padding:4px 8px;min-inline-size:110px;">
                         <%
                             for (String code : com.smartcalendar.utils.LanguageUtil.getSupportedLanguages()) {

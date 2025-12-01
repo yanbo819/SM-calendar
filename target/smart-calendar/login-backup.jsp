@@ -73,6 +73,7 @@
             <% } %>
 
             <form method="post" action="login" class="auth-form">
+                <%@ include file="/WEB-INF/jspf/csrf-token.jspf" %>
                 <div class="form-group">
                     <label for="username">Username</label>
                     <input type="text" id="username" name="username" required 

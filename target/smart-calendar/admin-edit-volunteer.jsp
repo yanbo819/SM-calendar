@@ -44,6 +44,7 @@
             <div style="color:#ef4444;font-weight:bold;margin-bottom:18px;"><%= errorMsg %></div>
         <% } else { %>
         <form class="edit-form" method="post" action="admin-edit-volunteer" enctype="multipart/form-data">
+            <%@ include file="/WEB-INF/jspf/csrf-token.jspf" %>
             <input type="hidden" name="id" value="<%= v.getId() %>" />
             <input type="hidden" name="dept" value="<%= deptId %>" />
             <div class="form-group">

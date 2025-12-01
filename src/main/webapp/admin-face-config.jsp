@@ -75,6 +75,7 @@
                 <td><%= fc.getId() %></td>
                 <td>
                     <form method="post" action="admin-face-config" style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
+                        <%@ include file="/WEB-INF/jspf/csrf-token.jspf" %>
                         <input type="hidden" name="action" value="update" />
                         <input type="hidden" name="id" value="<%= fc.getId() %>" />
                         <select name="dayOfWeek" class="form-control" required style="inline-size:10rem">
@@ -97,6 +98,7 @@
                         <button type="submit" class="btn btn-primary btn-sm action-btn-sm"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "common.save") %></button>
                     </form>
                     <form method="post" action="admin-face-config" onsubmit="return confirm('<%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.face.deleteWindowConfirm") %>');" style="display:inline-block;margin-inline-start:6px">
+                        <%@ include file="/WEB-INF/jspf/csrf-token.jspf" %>
                         <input type="hidden" name="action" value="delete" />
                         <input type="hidden" name="id" value="<%= fc.getId() %>" />
                         <button type="submit" class="btn btn-danger btn-sm action-btn-sm"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "common.delete") %></button>

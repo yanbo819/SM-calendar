@@ -35,6 +35,7 @@
     <h1><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.volunteer.addNew") %></h1>
     <p class="sub">Department: <strong><%= dept.getName() %></strong></p>
     <form method="post" action="create-volunteer" enctype="multipart/form-data">
+        <%@ include file="/WEB-INF/jspf/csrf-token.jspf" %>
         <input type="hidden" name="deptId" value="<%= dept.getId() %>" />
         <div class="grid">
             <div>

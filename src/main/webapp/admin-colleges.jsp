@@ -34,6 +34,7 @@
         <% for (College c : colleges) { %>
         <div class="college-card">
             <form method="post" action="admin-colleges" enctype="multipart/form-data">
+                <%@ include file="/WEB-INF/jspf/csrf-token.jspf" %>
                 <input type="hidden" name="id" value="<%= c.getId() %>" />
                 <div class="form-group">
                     <label><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.colleges.name") %></label>

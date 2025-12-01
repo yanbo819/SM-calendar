@@ -59,6 +59,7 @@
                     </div>
                     <div style="display:flex;gap:6px;justify-content:space-between;margin-top:4px;">
                         <form method="post" action="admin-cst-team" onsubmit="return confirm('<%= com.smartcalendar.utils.LanguageUtil.getText(lang, "common.confirmDelete") %>');" style="margin:0;">
+                            <%@ include file="/WEB-INF/jspf/csrf-token.jspf" %>
                             <input type="hidden" name="action" value="delete-department" />
                             <input type="hidden" name="id" value="<%= d.getId() %>" />
                             <button class="btn btn-danger btn-sm" type="submit">Delete</button>

@@ -211,6 +211,7 @@
                                         <%= LanguageUtil.getText(lang, "common.edit") %>
                                     </a>
                                     <form method="post" action="delete-event" style="display:inline" onsubmit="return confirm('<%= LanguageUtil.getText(lang, "events.confirmDelete") %>')">
+                                        <%@ include file="/WEB-INF/jspf/csrf-token.jspf" %>
                                         <input type="hidden" name="id" value="<%= event.getEventId() %>">
                                         <button type="submit" class="btn btn-small btn-danger"><%= LanguageUtil.getText(lang, "common.delete") %></button>
                                     </form>

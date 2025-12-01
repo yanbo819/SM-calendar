@@ -36,6 +36,8 @@ public class DeleteVolunteerServlet extends HttpServlet {
         try {
             CstVolunteerDao.update(v);
             req.getSession().setAttribute("flashSuccess", com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.volunteer.deleteSuccess"));
+            // Analytics logging for delete (soft)
+            com.smartcalendar.utils.AnalyticsLog.log(user.getUsername(), "/delete-volunteer", "id=" + id + "&deptId=" + deptId);
         } catch(SQLException e){
             req.getSession().setAttribute("flashError", com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.volunteer.deleteError"));
         }

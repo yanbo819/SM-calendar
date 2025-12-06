@@ -10,6 +10,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= LanguageUtil.getText(lang, "app.title") %> - <%= LanguageUtil.getText(lang, "login.title") %></title>
+    <%@ include file="/WEB-INF/jspf/csrf-meta.jspf" %>
     <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="css/modern-auth.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -45,8 +46,8 @@
         <div class="auth-card">
             <!-- Brand Section -->
             <div class="auth-brand">
-                <div class="brand-logo" style="display:flex;align-items:center;justify-content:center;">
-                    <img src="images/logo-mark.svg" alt="Smart Calendar" width="48" height="48" loading="eager" decoding="async" />
+                <div class="brand-logo" style="display:flex;align-items:center;justify-content:center;background:transparent;box-shadow:none;width:auto;height:auto;margin-bottom:var(--space-2);">
+                    <img src="images/logo-animated-pro.svg" alt="Smart Calendar" width="320" height="96" loading="eager" decoding="async" />
                 </div>
                 <h1 class="brand-title"><%= LanguageUtil.getText(lang, "app.title") %></h1>
                 <p class="brand-subtitle"><%= LanguageUtil.getText(lang, "login.subtitle") %></p>
@@ -156,14 +157,14 @@
                 userPortalBtn.style.background = 'var(--gray-100)';
                 userPortalBtn.style.color = 'var(--gray-700)';
                 if (registerLink) registerLink.style.display = 'none';
-                submitText.textContent = 'Sign In (Admin)';
+                submitText.textContent = '<%= LanguageUtil.getText(lang, "login.signin.admin") %>';
             } else {
                 userPortalBtn.style.background = 'linear-gradient(135deg, var(--primary-color), var(--primary-hover))';
                 userPortalBtn.style.color = '#fff';
                 adminPortalBtn.style.background = 'var(--gray-100)';
                 adminPortalBtn.style.color = 'var(--gray-700)';
                 if (registerLink) registerLink.style.display = '';
-                submitText.textContent = 'Sign In';
+                submitText.textContent = '<%= LanguageUtil.getText(lang, "login.signin") %>';
             }
         }
 
@@ -194,5 +195,6 @@
         // Demo credentials auto-fill (optional)
         
     </script>
+    <%@ include file="/WEB-INF/jspf/footer.jspf" %>
 </body>
 </html>

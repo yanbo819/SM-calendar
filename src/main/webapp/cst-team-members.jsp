@@ -87,5 +87,6 @@
         <!-- Bottom back button removed (single back in header retained) -->
     </div>
         <!-- Filtering script removed -->
+<%@ include file="/WEB-INF/jspf/footer.jspf" %>
 </body>
 </html>

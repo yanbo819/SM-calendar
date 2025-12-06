@@ -11,6 +11,7 @@
 %>
 <!doctype html>
 <%@ include file="/WEB-INF/jspf/lang-init.jspf" %>
+<%@ include file="/WEB-INF/jspf/csrf-meta.jspf" %>
 <%@ include file="/WEB-INF/jspf/flash-messages.jspf" %>
 <html lang="<%= lang %>" dir="<%= textDir %>">
 <head>
@@ -109,5 +110,6 @@ function togglePw(id){
     if (el) el.style.display = (el.style.display === 'none' || el.style.display === '') ? 'block' : 'none';
 }
 </script>
+    <%@ include file="/WEB-INF/jspf/footer.jspf" %>
 </body>
 </html>

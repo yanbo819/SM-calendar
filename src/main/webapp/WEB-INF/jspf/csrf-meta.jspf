@@ -1,0 +1,33 @@
+<% String __csrf = (String) session.getAttribute("csrfToken"); %>
+<% if (__csrf != null) { %>
+<meta name="csrf-token" content="<%= __csrf %>">
+<script>
+(function(){
+  try {
+    var meta = document.querySelector('meta[name="csrf-token"]');
+    var token = meta ? meta.getAttribute('content') : null;
+    window.__csrfToken = token;
+    var _fetch = window.fetch;
+    window.fetch = function(url, opts){
+      opts = opts || {};
+      opts.headers = opts.headers || {};
+      if (token && (!opts.method || opts.method.toUpperCase() === 'POST')) {
+        if (opts.headers instanceof Headers) {
+          opts.headers.set('X-Requested-With','XMLHttpRequest');
+        } else {
+          opts.headers['X-Requested-With'] = 'XMLHttpRequest';
+        }
+        if (opts.body instanceof URLSearchParams) {
+          opts.body.append('csrfToken', token);
+        } else if (typeof opts.body === 'string' && opts.headers && (opts.headers['Content-Type']||'').includes('application/x-www-form-urlencoded')) {
+          opts.body = (opts.body ? opts.body + '&' : '') + 'csrfToken=' + encodeURIComponent(token);
+        } else if (opts.body instanceof FormData) {
+          if (!opts.body.has('csrfToken')) opts.body.append('csrfToken', token);
+        }
+      }
+      return _fetch(url, opts);
+    };
+  } catch(e) {}
+})();
+</script>
+<% } %>

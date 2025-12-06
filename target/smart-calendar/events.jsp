@@ -3,6 +3,7 @@
 <%@ page import="com.smartcalendar.models.Event" %>
 <%@ page import="com.smartcalendar.models.Category" %>
 <%@ page import="com.smartcalendar.utils.LanguageUtil" %>
+<%@ include file="/WEB-INF/jspf/csrf-meta.jspf" %>
 <%@ page import="java.util.*" %>
 <%@ page import="java.text.SimpleDateFormat" %>
 <%
@@ -240,6 +241,8 @@
 
     <!-- Include notification system -->
     <script src="js/notifications.js"></script>
+
+    <%@ include file="/WEB-INF/jspf/footer.jspf" %>
     
     <script>
         // Auto-submit form when filters change

@@ -100,13 +100,8 @@
         <div class="auth-card">
             <!-- Brand Section -->
             <div class="auth-brand">
-                <div class="brand-logo">
-                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M9 12l2 2 4-4"></path>
-                        <path d="M21 12c-1 0-3-1-3-3s2-3 3-3 3 1 3 3-2 3-3 3"></path>
-                        <path d="M3 12c1 0 3-1 3-3s-2-3-3-3-3 1-3 3 2 3 3 3"></path>
-                        <path d="M12 3v6m0 6v6"></path>
-                    </svg>
+                <div class="brand-logo" style="display:flex;align-items:center;justify-content:center;background:transparent;box-shadow:none;width:auto;height:auto;margin-bottom:var(--space-2);">
+                    <img src="images/logo-animated-pro.svg" alt="Smart Calendar" width="280" height="84" loading="eager" decoding="async" />
                 </div>
                 <h1 class="brand-title">Reset Password</h1>
                 <p class="brand-subtitle">Don't worry! We'll help you reset your password securely.</p>

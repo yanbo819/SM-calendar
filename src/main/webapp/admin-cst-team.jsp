@@ -82,6 +82,7 @@ async function renameDept(id){
         fd.append('action','update-department');
         fd.append('id',id);
         fd.append('name',name);
+        fd.append('csrfToken','<%= (String) session.getAttribute("csrfToken") %>');
         const res = await fetch('admin-cst-team',{method:'POST',headers:{'X-Requested-With':'XMLHttpRequest','Content-Type':'application/x-www-form-urlencoded'},body:fd.toString()});
         if(!res.ok){ alert('Update failed'); return; }
         const data = await res.json();

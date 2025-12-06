@@ -57,6 +57,7 @@
         <div class="global-add">
             <h2 style="margin:0;font-size:1.15rem"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.teachers.manage.addNew") %></h2>
             <form method="post" action="admin-college-teachers" style="display:flex;flex-wrap:wrap;gap:10px">
+                <%@ include file="/WEB-INF/jspf/csrf-token.jspf" %>
                 <input type="hidden" name="action" value="add-teacher" />
                 <input type="text" name="college_name" placeholder="<%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.teachers.manage.collegeName") %>" required />
                 <input type="text" name="teacher_name" placeholder="<%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.teachers.manage.teacherName") %>" required />
@@ -71,6 +72,7 @@
                         <div class="group-header">
                             <h3 style="margin:0;font-size:1.1rem"><%= e.getKey() %></h3>
                             <form method="post" action="admin-college-teachers" style="display:flex;gap:8px;flex-wrap:wrap">
+                                <%@ include file="/WEB-INF/jspf/csrf-token.jspf" %>
                                 <input type="hidden" name="action" value="add-teacher" />
                                 <input type="hidden" name="college_name" value="<%= e.getKey() %>" />
                                 <input type="text" name="teacher_name" placeholder="<%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.teachers.manage.newTeacher") %>" required />
@@ -81,6 +83,7 @@
                             <% for (CollegeTeacher ct : e.getValue()) { %>
                                 <div class="teacher-row">
                                     <form method="post" action="admin-college-teachers">
+                                        <%@ include file="/WEB-INF/jspf/csrf-token.jspf" %>
                                         <input type="hidden" name="action" value="update-teacher" />
                                         <input type="hidden" name="id" value="<%= ct.getId() %>" />
                                         <input type="text" name="teacher_name" value="<%= ct.getTeacherName() %>" />

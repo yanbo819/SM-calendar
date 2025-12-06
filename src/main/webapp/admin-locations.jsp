@@ -80,6 +80,7 @@
                             <a href="<%= l.getMapUrl() %>" target="_blank" rel="noopener" class="btn btn-outline btn-sm">Map</a>
                             <form method="post" action="admin-locations" onsubmit="return confirm('<%= com.smartcalendar.utils.LanguageUtil.getText(lang, "confirm.delete.location") %>');" style="display:inline">
                                 <%@ include file="/WEB-INF/jspf/csrf-token.jspf" %>
+<%@ include file="/WEB-INF/jspf/csrf-meta.jspf" %>
                                 <input type="hidden" name="action" value="delete" />
                                 <input type="hidden" name="locationId" value="<%= l.getLocationId() %>" />
                                 <input type="hidden" name="returnCategory" value="<%= currentCategory %>" />

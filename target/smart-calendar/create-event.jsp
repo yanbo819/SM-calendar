@@ -35,6 +35,7 @@
 %>
 <!DOCTYPE html>
 <%@ include file="/WEB-INF/jspf/lang-init.jspf" %>
+<%@ include file="/WEB-INF/jspf/csrf-meta.jspf" %>
 <html lang="<%= lang %>" dir="<%= textDir %>">
 <head>
     <meta charset="UTF-8">

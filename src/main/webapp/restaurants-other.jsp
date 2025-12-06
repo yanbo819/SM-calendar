@@ -43,6 +43,7 @@
         </div>
         <div style="display:grid;place-items:center;margin-top:24px">
             <a href="important-locations.jsp" class="btn btn-outline" style="min-inline-size:160px"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "common.back") %></a>
+            <%@ include file="/WEB-INF/jspf/footer.jspf" %>
         </div>
     </div>
 </body>

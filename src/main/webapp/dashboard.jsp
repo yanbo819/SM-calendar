@@ -51,6 +51,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= LanguageUtil.getText(lang, "app.title") %> - <%= LanguageUtil.getText(lang, "dashboard.title") %></title>
+    <%@ include file="/WEB-INF/jspf/csrf-meta.jspf" %>
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/dashboard.css">
     <style>
@@ -71,7 +72,10 @@
     </div>
     <nav class="main-nav">
         <div class="nav-container">
-            <h1 class="nav-title"><%= LanguageUtil.getText(lang, "app.title") %></h1>
+            <h1 class="nav-title" style="display:flex;align-items:center;gap:8px;">
+                <img src="images/logo-animated-pro.svg" alt="Smart Calendar" width="140" height="42" loading="eager" decoding="async" />
+                <span><%= LanguageUtil.getText(lang, "app.title") %></span>
+            </h1>
             <div class="nav-actions" style="display:flex;align-items:center;gap:8px;position:relative;">
                 <span class="user-welcome">
                     <%= LanguageUtil.getText(lang, "dashboard.welcome") %>, <%= user.getFullName() %>!

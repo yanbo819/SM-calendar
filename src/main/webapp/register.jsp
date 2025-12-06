@@ -71,13 +71,8 @@
         <div class="auth-card">
             <!-- Brand Section -->
             <div class="auth-brand">
-                <div class="brand-logo">
-                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
-                        <circle cx="9" cy="7" r="4"></circle>
-                        <path d="m19 8 2 2-2 2"></path>
-                        <path d="m21 10-7.5 0"></path>
-                    </svg>
+                <div class="brand-logo" style="display:flex;align-items:center;justify-content:center;background:transparent;box-shadow:none;width:auto;height:auto;margin-bottom:var(--space-2);">
+                    <img src="images/logo-animated-pro.svg" alt="Smart Calendar" width="280" height="84" loading="eager" decoding="async" />
                 </div>
                 <h1 class="brand-title">Create Account</h1>
                 <p class="brand-subtitle">Join us today! Fill in the details below to get started.</p>

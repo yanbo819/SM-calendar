@@ -93,5 +93,6 @@
             <a href="dashboard" class="btn btn-outline" style="min-inline-size:160px"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "common.back") %></a>
         </div>
     </div>
+    <%@ include file="/WEB-INF/jspf/footer.jspf" %>
 </body>
 </html>

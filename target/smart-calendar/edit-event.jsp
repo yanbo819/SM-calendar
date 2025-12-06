@@ -38,6 +38,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "event.editTitle") %></title>
+    <%@ include file="/WEB-INF/jspf/csrf-meta.jspf" %>
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/forms.css">
         <style>
@@ -49,7 +50,10 @@
 <body>
     <nav class="main-nav">
         <div class="nav-container">
-            <h1 class="nav-title"><a href="dashboard.jsp"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "app.title") %></a></h1>
+            <h1 class="nav-title" style="display:flex;align-items:center;gap:8px;">
+                <img src="images/logo-animated-pro.svg" alt="Smart Calendar" width="140" height="42" loading="eager" decoding="async" />
+                <a href="dashboard.jsp"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "app.title") %></a>
+            </h1>
             <div class="nav-actions">
                 <span class="user-welcome"><%= user.getFullName() %></span>
                 

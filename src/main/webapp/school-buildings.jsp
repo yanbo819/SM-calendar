@@ -19,7 +19,10 @@
 <body>
     <nav class="main-nav">
         <div class="nav-container">
-            <h1 class="nav-title"><a href="dashboard"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "app.title") %></a></h1>
+            <h1 class="nav-title" style="display:flex;align-items:center;gap:8px;">
+                <img src="images/logo-animated-pro.svg" alt="Smart Calendar" width="140" height="42" loading="eager" decoding="async" />
+                <a href="dashboard"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "app.title") %></a>
+            </h1>
             <div class="nav-actions">
                 <% if (user != null) { %>
                 <span class="user-welcome"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "dashboard.welcome") %> <%= user.getFullName() %>!</span>
@@ -98,5 +101,6 @@
             });
         })();
     </script>
+        <%@ include file="/WEB-INF/jspf/footer.jspf" %>
 </body>
 </html>

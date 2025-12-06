@@ -11,6 +11,7 @@
 <head>
 <meta charset="UTF-8" />
 <title><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.tools") %></title>
+<%@ include file="/WEB-INF/jspf/csrf-meta.jspf" %>
 <link rel="stylesheet" href="css/main.css" />
 <link rel="stylesheet" href="css/dashboard.css" />
 <style>
@@ -26,7 +27,10 @@
 <body dir="<%= textDir %>">
 <nav class="main-nav">
     <div class="nav-container">
-        <h1 class="nav-title"><a href="dashboard"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "app.title") %></a></h1>
+        <h1 class="nav-title" style="display:flex;align-items:center;gap:8px;">
+            <img src="images/logo-animated-pro.svg" alt="Smart Calendar" width="140" height="42" loading="eager" decoding="async" />
+            <a href="dashboard"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "app.title") %></a>
+        </h1>
         <div class="nav-actions" style="display:flex;gap:8px;align-items:center;">
             <form action="set-language" method="post" style="margin:0;display:flex;align-items:center;gap:4px;">
                 <%@ include file="/WEB-INF/jspf/csrf-token.jspf" %>
@@ -38,7 +42,7 @@
                     <% } %>
                 </select>
             </form>
-            <a href="events" class="btn btn-outline"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "dashboard.view_events") %></a>
+            <a href="events" class="btn btn-outline"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "events.title") %></a>
             <a href="logout" class="btn btn-outline"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "nav.logout") %></a>
         </div>
     </div>
@@ -68,12 +72,12 @@
         <div class="tool-card">
             <h3>🔔 <%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.reminders") %></h3>
             <p><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.reminders") %></p>
-            <a href="create-event.jsp?noheader=1" target="_blank" rel="noopener" class="btn btn-primary"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "dashboard.create_reminder") %></a>
+            <a href="create-event.jsp?noheader=1" target="_blank" rel="noopener" class="btn btn-primary"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "dashboard.createReminder") %></a>
         </div>
         <div class="tool-card">
-            <h3>➕ <%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.face.add") %></h3>
-            <p><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.face.add") %></p>
-            <a href="face-id.jsp?noheader=1" target="_blank" rel="noopener" class="btn btn-primary"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.face.add") %></a>
+            <h3>➕ <%= com.smartcalendar.utils.LanguageUtil.getText(lang, "nav.addFaceId") %></h3>
+            <p><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "nav.addFaceId") %></p>
+            <a href="face-id.jsp?noheader=1" target="_blank" rel="noopener" class="btn btn-primary"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "nav.addFaceId") %></a>
         </div>
         <div class="tool-card">
             <h3>🤝 <%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.cst.title") %></h3>

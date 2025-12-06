@@ -10,10 +10,11 @@
     String error = request.getParameter("error");
 %>
 <!DOCTYPE html>
-<html lang="en">
+<%@ include file="/WEB-INF/jspf/lang-init.jspf" %>
+<html lang="<%= lang %>" dir="<%= textDir %>">
 <head>
     <meta charset="UTF-8" />
-    <title>Admin: Location Detail</title>
+    <title><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.location.detail.title") %></title>
     <link rel="stylesheet" href="css/main.css" />
     <style>
         .card{background:#fff;border:1px solid #ddd;border-radius:12px;max-inline-size:900px;margin:28px auto;padding:28px;box-shadow:0 4px 12px rgba(0,0,0,.06)}
@@ -26,16 +27,16 @@
 <body>
 <nav class="main-nav">
     <div class="nav-container">
-        <h1 class="nav-title"><a href="dashboard.jsp">Smart Calendar</a></h1>
+        <h1 class="nav-title"><a href="dashboard.jsp"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "app.title") %></a></h1>
         <div class="nav-actions">
-            <a href="admin-locations" class="btn btn-outline">Manage Locations</a>
-            <a href="logout" class="btn btn-outline">Logout</a>
+            <a href="admin-locations" class="btn btn-outline"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.locations") %></a>
+            <a href="logout" class="btn btn-outline"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "nav.logout") %></a>
         </div>
     </div>
 </nav>
 <div class="card">
     <h2 style="margin-block-start:0;margin-block-end:4px"><%= loc.getName() %></h2>
-    <div style="color:#6b7280;font-size:.9rem;margin-block-end:16px">Editing location details. Adjust fields then Save.</div>
+    <div style="color:#6b7280;font-size:.9rem;margin-block-end:16px"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.location.detail.title") %></div>
     <% if (success != null) { %>
         <div style="background:#ecfdf5;color:#065f46;padding:10px 14px;border-radius:8px;margin-block-end:16px">Saved successfully.</div>
     <% } %>
@@ -48,11 +49,11 @@
         <input type="hidden" name="locationId" value="<%= loc.getLocationId() %>" />
         <div class="field-grid">
             <label style="display:flex;flex-direction:column;gap:6px">
-                <span>Name</span>
+                <span><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.location.name") %></span>
                 <input class="form-control" type="text" name="name" value="<%= loc.getName() %>" />
             </label>
             <label style="display:flex;flex-direction:column;gap:6px">
-                <span>Category</span>
+                <span><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.location.category") %></span>
                 <select class="form-control" name="category">
                     <option value="gate" <%= "gate".equals(loc.getCategory())?"selected":"" %>>Gate</option>
                     <option value="hospital" <%= "hospital".equals(loc.getCategory())?"selected":"" %>>Hospital</option>
@@ -61,28 +62,28 @@
                 </select>
             </label>
             <label style="display:flex;flex-direction:column;gap:6px;grid-column:1/-1">
-                <span>Description</span>
+                <span><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.location.description") %></span>
                 <textarea class="form-control" name="description" rows="2" placeholder="Short description"><%= loc.getDescription()==null?"":loc.getDescription() %></textarea>
             </label>
             <label style="display:flex;flex-direction:column;gap:6px;grid-column:1/-1">
-                <span>Map URL</span>
+                <span><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.location.mapUrl") %></span>
                 <input class="form-control" type="text" name="mapUrl" value="<%= loc.getMapUrl()==null?"":loc.getMapUrl() %>" placeholder="https://" />
             </label>
             <div style="grid-column:1/-1;display:flex;align-items:center;gap:8px;margin-top:4px">
                 <input type="checkbox" id="activeBox" name="active" <%= loc.isActive()?"checked":"" %> />
-                <label for="activeBox" style="font-size:.85rem;color:#374151">Active</label>
+                <label for="activeBox" style="font-size:.85rem;color:#374151"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.location.active") %></label>
             </div>
         </div>
         <div class="actions">
-            <button type="submit" class="btn btn-primary" style="min-inline-size:120px">Save</button>
-            <a class="btn btn-outline" style="min-inline-size:120px" href="<%= loc.getMapUrl() %>" target="_blank" rel="noopener">Open Map</a>
+            <button type="submit" class="btn btn-primary" style="min-inline-size:120px"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.location.save") %></button>
+            <a class="btn btn-outline" style="min-inline-size:120px" href="<%= loc.getMapUrl() %>" target="_blank" rel="noopener"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.location.openMap") %></a>
             <form method="post" action="admin-location" onsubmit="return confirm('<%= com.smartcalendar.utils.LanguageUtil.getText(lang, "confirm.delete.location") %>');" style="display:inline">
                 <%@ include file="/WEB-INF/jspf/csrf-token.jspf" %>
                 <input type="hidden" name="action" value="delete" />
                 <input type="hidden" name="locationId" value="<%= loc.getLocationId() %>" />
                 <button type="submit" class="btn btn-danger" style="min-inline-size:120px">Delete</button>
             </form>
-            <a class="btn" style="min-inline-size:120px" href="admin-locations">Go Back</a>
+            <a class="btn" style="min-inline-size:120px" href="admin-locations"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.location.goBack") %></a>
         </div>
     </form>
 </div>

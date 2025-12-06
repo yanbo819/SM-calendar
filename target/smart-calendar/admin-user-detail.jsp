@@ -111,6 +111,7 @@
                         <td><%= e.getLocation() %></td>
                         <td>
                             <form class="inline-form" method="post" action="admin-update-user-event">
+                                <%@ include file="/WEB-INF/jspf/csrf-token.jspf" %>
                                 <input type="hidden" name="eventId" value="<%= e.getEventId() %>" />
                                 <input type="hidden" name="userId" value="<%= target.getUserId() %>" />
                                 <label style="display:flex;flex-direction:column;gap:4px;font-size:.7rem">Date

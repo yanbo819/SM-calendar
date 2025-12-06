@@ -48,7 +48,15 @@
         </div>
     </div>
     <div class="dept-grid">
-        <% for (CstDepartment d : deps) { int cnt = 0; List<CstVolunteer> mv = members!=null?members.get(d.getId()):null; if(mv!=null) cnt = mv.size(); %>
+        <% if (deps == null || deps.isEmpty()) { %>
+            <div class="empty-state" style="grid-column:1/-1;text-align:center;background:#f9fafb;border:1px solid #e5e7eb;border-radius:12px;padding:24px">
+                <h2 style="margin:0 0 8px 0">🤝 <%= com.smartcalendar.utils.LanguageUtil.getText(lang, "cst.team.title") %></h2>
+                <p style="color:#6b7280"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "cst.empty") %></p>
+                <a href="college-volunteers.jsp" class="btn btn-secondary" style="margin-top:12px">&larr; <%= com.smartcalendar.utils.LanguageUtil.getText(lang, "common.back") %></a>
+            </div>
+        <% } else {
+            for (CstDepartment d : deps) {
+                int cnt = 0; List<CstVolunteer> mv = members!=null?members.get(d.getId()):null; if(mv!=null) cnt = mv.size(); %>
             <div class="dept-card">
                 <div>
                     <h2 class="dept-name"><%= d.getName() %></h2>
@@ -58,7 +66,7 @@
                     <a href="cst-team-members.jsp?dept=<%= d.getId() %>" class="btn btn-primary" style="font-size:.8rem;padding:10px 14px;"> <%= com.smartcalendar.utils.LanguageUtil.getText(lang, "cst.view.members") %> </a>
                 </div>
             </div>
-        <% } %>
+        <% } } %>
     </div>
 </div>
 <%@ include file="/WEB-INF/jspf/footer.jspf" %>

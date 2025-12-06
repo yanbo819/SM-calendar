@@ -17,9 +17,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
-</head>
+<!-- head tag was accidentally duplicated; ensure single head -->
 <body class="modern-auth-page">
     
+    <!-- CSRF meta already included in head; remove duplicate in body -->
 
     <!-- Background Animation -->
     <div class="animated-background">

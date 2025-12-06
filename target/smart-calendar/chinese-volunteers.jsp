@@ -118,5 +118,7 @@
     <v:pagination currentPage="<%= request.getAttribute("page") %>" totalPages="<%= request.getAttribute("totalPages") %>" basePath="chinese-volunteers" size="<%= request.getAttribute("size") %>" query="<%= request.getAttribute("searchQuery")!=null? (String)request.getAttribute("searchQuery") : "" %>" />
     
 </div>
+</div>
+<%@ include file="/WEB-INF/jspf/footer.jspf" %>
 </body>
 </html>

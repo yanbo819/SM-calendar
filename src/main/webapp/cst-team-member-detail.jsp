@@ -31,10 +31,10 @@
     <title><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "cst.member.detail.title") %></title>
     <link rel="stylesheet" href="css/main.css">
     <style>
-        .member-detail-card{background:#fff;border-radius:10px;box-shadow:0 2px 12px #e5e7eb;padding:32px;max-width:420px;margin:40px auto;}
+        .member-detail-card{background:#fff;border:1px solid #e5e7eb;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.08);padding:32px;max-inline-size:720px;margin:40px auto;}
         .member-img{width:96px;height:96px;border-radius:50%;object-fit:cover;border:1px solid #e5e7eb;margin-bottom:18px;}
         .kv{display:flex;justify-content:space-between;margin:8px 0;}
-        .kv b{color:#374151;}
+        .kv b{color:#1f2937;}
         .back-btn{margin:32px auto 0 auto;display:block;}
         .contact-row{margin-top:16px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center;}
         .btn-sm{padding:6px 12px;font-size:.7rem;border-radius:6px;}
@@ -50,7 +50,7 @@
         <% if (errorMsg != null) { %>
             <div class="member-detail-card" style="text-align:center;color:#ef4444;font-weight:bold;"> <%= errorMsg %> </div>
         <% } else { %>
-        <div class="member-detail-card" style="text-align:center;max-inline-size:760px;">
+        <div class="member-detail-card" style="text-align:center;">
             <img class="member-img" style="width:140px;height:140px;" src="<%= v.getPhotoUrl()!=null && !v.getPhotoUrl().isEmpty() ? v.getPhotoUrl() : "https://via.placeholder.com/140" %>" alt="photo" />
             <h2 style="margin-bottom:12px;font-size:2rem"><%= v.getPassportName()!=null?v.getPassportName():"Unknown" %></h2>
             <% if (v.getChineseName()!=null && !v.getChineseName().isEmpty()) { %>
@@ -93,5 +93,6 @@
         <% } %>
         </div>
     </div>
+<%@ include file="/WEB-INF/jspf/footer.jspf" %>
 </body>
 </html>

@@ -8,7 +8,10 @@
     </h1>
     <div class="nav-actions" style="display:flex;align-items:center;gap:var(--actions-gap);position:relative;margin-inline-start:auto;padding:var(--actions-padding);">
       <button id="navMoreToggle" class="btn btn-outline" title="Settings" aria-label="Settings" aria-haspopup="true" aria-expanded="false" style="display:flex;align-items:center;gap:var(--settings-gap);padding:var(--settings-padding);font-size:var(--settings-font-size);min-inline-size:var(--settings-min-width);">
-        <span>⚙️</span>
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9c0 .66.39 1.26 1 1.51.24.1.5.15.76.15H21a2 2 0 1 1 0 4h-.09c-.26 0-.52.05-.76.15-.61.25-1 .85-1 1.51z"/>
+        </svg>
         <span class="settings-label">Settings</span>
       </button>
       <div id="navMoreMenu" style="display:none;position:absolute;inset-block-start:100%;inset-inline-end:0;background:#fff;border:1px solid #ddd;border-radius:8px;padding:8px;min-inline-size:var(--menu-min-width);box-shadow:0 4px 12px rgba(0,0,0,.12);z-index:50">

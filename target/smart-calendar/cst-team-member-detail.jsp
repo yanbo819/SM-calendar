@@ -89,7 +89,7 @@
         <% if (deptId > 0) { %>
             <a href="cst-team-members.jsp?dept=<%= deptId %>" class="btn btn-primary back-btn">&larr; <%= com.smartcalendar.utils.LanguageUtil.getText(lang, "cst.back.department") %></a>
         <% } else { %>
-            <a href="cst-team.jsp" class="btn btn-primary back-btn">&larr; <%= com.smartcalendar.utils.LanguageUtil.getText(lang, "cst.back.departments") %></a>
+            <a href="cst-team" class="btn btn-primary back-btn">&larr; <%= com.smartcalendar.utils.LanguageUtil.getText(lang, "cst.back.departments") %></a>
         <% } %>
         </div>
     </div>

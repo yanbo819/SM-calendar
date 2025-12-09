@@ -27,12 +27,7 @@
         </style>
 </head>
 <body>
-    <nav class="main-nav">
-        <div class="nav-container">
-            <h1 class="nav-title"><a href="dashboard.jsp"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "app.title") %></a></h1>
-            <div class="nav-actions" style="display:none"></div>
-        </div>
-    </nav>
+    <%@ include file="/WEB-INF/jspf/topnav.jspf" %>
 
     <div class="form-container">
         <div class="form-header" style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
@@ -40,7 +35,11 @@
                 <h2 class="page-title"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "schedule.uploadTitle") %></h2>
                 <div class="page-sub"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "schedule.uploadSub") %></div>
             </div>
-            <a href="dashboard.jsp" class="btn btn-outline"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "schedule.backDashboard") %></a>
+            <!-- Back to dashboard button removed for consistency as requested -->
+            <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+                <a href="events" class="btn btn-outline"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "schedule.viewEvents") %></a>
+                <a href="https://webvpn.zjnu.edu.cn/http/77726476706e69737468656265737421f1e2559434357a467b1ac7b6925b367b621b2f49c7b0/authserver/login?service=https%3A%2F%2Fwebvpn.zjnu.edu.cn%2Flogin%3Fcas_login%3Dtrue" target="_blank" rel="noopener" class="btn btn-secondary">Add course timetable from school system directly</a>
+            </div>
         </div>
 
         <% if (errorMessage != null) { %>
@@ -63,7 +62,6 @@
                 </div>
             </div>
             <div class="form-actions" style="display:flex;gap:10px;justify-content:flex-end;border-block-start:1px dashed #e5e7eb;padding-block-start:16px;margin-block-start:8px;">
-                <a href="events" class="btn btn-secondary"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "schedule.viewEvents") %></a>
                 <button type="submit" class="btn btn-primary"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "schedule.uploadSubmit") %></button>
             </div>
         </form>

@@ -15,7 +15,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "cst.team.title") %></title>
+    <%@ include file="/WEB-INF/jspf/app-brand.jspf" %>
+    <title><%= (String)request.getAttribute("appName") %> - <%= com.smartcalendar.utils.LanguageUtil.getText(lang, "cst.team.title") %></title>
     <link rel="stylesheet" href="css/main.css">
     <style>
         .hero{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;margin:10px auto 28px auto;gap:18px}
@@ -32,11 +33,7 @@
     </style>
 </head>
 <body>
-<nav class="main-nav">
-    <div class="nav-container">
-        <h1 class="nav-title"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "cst.team.title") %></h1>
-    </div>
-</nav>
+<%@ include file="/WEB-INF/jspf/topnav.jspf" %>
 <div class="dashboard-container">
     <div class="hero">
         <div style="flex:1;min-width:260px">

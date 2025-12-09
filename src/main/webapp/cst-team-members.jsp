@@ -38,12 +38,15 @@
 <%@ include file="/WEB-INF/jspf/lang-init.jspf" %>
 <html lang="<%= lang %>" dir="<%= textDir %>">
 <head>
-    <title><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "cst.team.members.title") %></title>
+    <%@ include file="/WEB-INF/jspf/app-brand.jspf" %>
+    <title><%= (String)request.getAttribute("appName") %> - <%= com.smartcalendar.utils.LanguageUtil.getText(lang, "cst.team.members.title") %></title>
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/layout.css">
     <link rel="stylesheet" href="css/team-members.css">
 </head>
 <body>
+    <%@ include file="/WEB-INF/jspf/topnav.jspf" %>
+    <%@ include file="/WEB-INF/jspf/flash-messages.jspf" %>
     <div class="container">
         <!-- Unified header -->
         <div class="page-header-flex">

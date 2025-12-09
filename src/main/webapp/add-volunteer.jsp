@@ -17,7 +17,8 @@
 <html lang="<%= lang %>" dir="<%= textDir %>">
 <head>
     <meta charset="UTF-8" />
-    <title><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.volunteer.addPageTitle") %></title>
+    <%@ include file="/WEB-INF/jspf/app-brand.jspf" %>
+    <title><%= (String)request.getAttribute("appName") %> - <%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.volunteer.addPageTitle") %></title>
     <link rel="stylesheet" href="css/main.css" />
     <style>
         .form-wrap{max-inline-size:760px;margin:32px auto;padding:34px;background:#fff;border:1px solid #e5e7eb;border-radius:24px;box-shadow:0 8px 28px rgba(0,0,0,.07)}
@@ -28,9 +29,11 @@
         input{inline-size:100%;padding:11px 14px;border:1px solid #d1d5db;border-radius:12px;font-size:.85rem}
         .actions{display:flex;gap:14px;flex-wrap:wrap;margin-block-start:28px}
     </style>
+<%@ include file="/WEB-INF/jspf/csrf-meta.jspf" %>
 </head>
 <body>
-<nav class="main-nav"><div class="nav-container"><h1 class="nav-title">Add Volunteer</h1></div></nav>
+<%@ include file="/WEB-INF/jspf/topnav.jspf" %>
+<%@ include file="/WEB-INF/jspf/flash-messages.jspf" %>
 <div class="form-wrap">
     <h1><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.volunteer.addNew") %></h1>
     <p class="sub">Department: <strong><%= dept.getName() %></strong></p>

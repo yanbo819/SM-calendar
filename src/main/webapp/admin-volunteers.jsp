@@ -15,11 +15,13 @@
     java.util.List<CstVolunteer> volunteers = CstVolunteerDao.listByDepartment(deptId);
 %>
 <!DOCTYPE html>
-<html lang="en">
+<%@ include file="/WEB-INF/jspf/lang-init.jspf" %>
+<html lang="<%= lang %>" dir="<%= textDir %>">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Volunteers - <%= dept.getName() %></title>
+    <%@ include file="/WEB-INF/jspf/app-brand.jspf" %>
+    <title><%= (String)request.getAttribute("appName") %> - Volunteers - <%= dept.getName() %></title>
     <link rel="stylesheet" href="css/main.css">
     <style>
         .container{max-width:900px;margin:32px auto;padding:0 16px;}
@@ -55,8 +57,10 @@
     }
     window.onload = disableBack;
     </script>
+<%@ include file="/WEB-INF/jspf/csrf-meta.jspf" %>
 </head>
 <body>
+<%@ include file="/WEB-INF/jspf/topnav.jspf" %>
 <div class="container">
     <div class="header-row">
         <h2 style="margin:0">Volunteers — <%= dept.getName() %></h2>

@@ -15,7 +15,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "dashboard.businessAdmin") %> - <%= com.smartcalendar.utils.LanguageUtil.getText(lang, "app.title") %></title>
+    <%@ include file="/WEB-INF/jspf/app-brand.jspf" %>
+    <title><%= (String)request.getAttribute("appName") %> - <%= com.smartcalendar.utils.LanguageUtil.getText(lang, "dashboard.businessAdmin") %></title>
     <link rel="stylesheet" href="css/main.css">
     <style>
         .hero{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;margin:10px auto 28px auto;gap:18px;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:#fff;padding:24px;border-radius:16px}
@@ -33,14 +34,11 @@
         .btn-business:hover{background:#5a67d8;border-color:#5a67d8;transform:translateY(-1px)}
         @media (max-inline-size:640px){.hero h1{font-size:1.7rem}.dept-grid{grid-template-columns:repeat(auto-fill,minmax(200px,1fr))}.dept-card{padding:18px 16px 56px 16px}}
     </style>
+<%@ include file="/WEB-INF/jspf/csrf-meta.jspf" %>
 </head>
 <body>
 <%@ taglib prefix="v" tagdir="/WEB-INF/tags" %>
-<nav class="main-nav">
-    <div class="nav-container">
-        <h1 class="nav-title"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "dashboard.businessAdmin") %></h1>
-    </div>
-</nav>
+<%@ include file="/WEB-INF/jspf/topnav.jspf" %>
 <div class="dashboard-container">
     <v:volunteerLayout
         titleKey="dashboard.businessAdmin"

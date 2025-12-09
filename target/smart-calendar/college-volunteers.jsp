@@ -1,59 +1,35 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="com.smartcalendar.models.User" %>
 <%@ page import="com.smartcalendar.utils.LanguageUtil" %>
 <%
-    // Check if user is logged in
     User user = (User) session.getAttribute("user");
+    if (user == null) {
+        response.sendRedirect("login.jsp");
+        return;
+    }
+%>
+<!DOCTYPE html>
+<%@ include file="/WEB-INF/jspf/lang-init.jspf" %>
+<html lang="<%= lang %>" dir="<%= textDir %>">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <%@ include file="/WEB-INF/jspf/app-brand.jspf" %>
+    <title><%= (String)request.getAttribute("appName") %> - <%= LanguageUtil.getText(lang, "dashboard.collegeVolunteers") %></title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
     <%@ include file="/WEB-INF/jspf/topnav.jspf" %>
-                        <% } %>
-                    </button>
-                    <div id="notifDropdown" style="display:none;position:absolute;inset-block-start:110%;inset-inline-end:0;background:#fff;border:1px solid #ddd;border-radius:8px;min-inline-size:220px;box-shadow:0 4px 14px rgba(0,0,0,.15);padding:8px;z-index:60;">
-                        <div style="font-weight:600;margin-block-end:4px;display:flex;justify-content:space-between;align-items:center;">
-                            <span><%= LanguageUtil.getText(lang, "notif.title") %></span>
-                            <button type="button" class="btn btn-outline btn-sm" style="padding:2px 6px;font-size:.65rem" onclick="document.getElementById('notifDropdown').style.display='none'">✕</button>
-                        </div>
-                        <div style="font-size:.75rem;color:#374151;padding:2px 0">
-                            <% if (notifCount == 0) { %>
-                                <%= LanguageUtil.getText(lang, "notif.none") %>
-                            <% } else { %>
-                                <%= LanguageUtil.getText(lang, "notif.haveHidden") %>
-                            <% } %>
-                        </div>
-                    </div>
-                </div>
-                <form action="set-language" method="post" style="margin:0;display:flex;align-items:center;gap:4px;">
-                    <%@ include file="/WEB-INF/jspf/csrf-token.jspf" %>
-                    <select name="lang" onchange="this.form.submit()" class="form-control" style="padding:4px 8px;min-inline-size:110px;">
-                        <%
-                            for (String code : com.smartcalendar.utils.LanguageUtil.getSupportedLanguages()) {
-                        %>
-                        <option value="<%= code %>" <%= code.equals(lang)?"selected":"" %>><%= com.smartcalendar.utils.LanguageUtil.getLanguageName(code) %></option>
-                        <% } %>
-                    </select>
-                </form>
-                <button id="navMoreToggle" class="btn btn-outline" title="Menu" aria-haspopup="true" aria-expanded="false" style="padding-inline:12px">⋮</button>
-                <div id="navMoreMenu" style="display:none;position:absolute;inset-block-start:100%;inset-inline-end:0;background:#fff;border:1px solid #ddd;border-radius:8px;padding:8px;min-inline-size:180px;box-shadow:0 4px 12px rgba(0,0,0,.12);z-index:50">
-                    <% if (isAdmin) { %>
-                        <a href="admin-tools.jsp" class="btn btn-outline" style="inline-size:100%;margin-block:4px"><%= LanguageUtil.getText(lang, "nav.adminTools") %></a>
-                        <a href="face-id.jsp" class="btn btn-outline" style="inline-size:100%;margin-block:4px"><%= LanguageUtil.getText(lang, "nav.addFaceId") %></a>
-                    <% } %>
-                    <a href="dashboard.jsp" class="btn btn-outline" style="inline-size:100%;margin-block:4px"><%= LanguageUtil.getText(lang, "nav.dashboard") %></a>
-                    <a href="logout" class="btn btn-outline" style="inline-size:100%;margin-block:4px"><%= LanguageUtil.getText(lang, "nav.logout") %></a>
-                </div>
-            </div>
-        </div>
-    </nav>
 
     <div class="dashboard-container">
-        <div class="page-header" style="text-align:center;margin-block-end:32px;">
-            <h2 style="color:#1f2937;font-size:2rem;font-weight:700;margin-block-end:8px;"><%= LanguageUtil.getText(lang, "dashboard.collegeVolunteers") %></h2>
-            <p style="color:#6b7280;font-size:1.1rem;"><%= LanguageUtil.getText(lang, "dashboard.collegeVolunteersDesc") %></p>
-            <div id="volStats" style="margin-block-start:12px;font-size:.8rem;color:#4b5563;display:flex;justify-content:center;gap:18px;flex-wrap:wrap;">
-                <span data-role="stat-cst">CST: …</span>
-                <span data-role="stat-business">Business: …</span>
-                <span data-role="stat-chinese">Chinese: …</span>
-                <span data-role="stat-total">Total: …</span>
-            </div>
+        <div class="page-header" style="text-align:center;margin-block-end:24px;">
+            <h2 style="color:#1f2937;font-size:2rem;font-weight:700;margin:0 0 6px 0;">
+                <%= LanguageUtil.getText(lang, "dashboard.collegeVolunteers") %>
+            </h2>
+            <p style="color:#6b7280;font-size:1.05rem;margin:0;">
+                <%= LanguageUtil.getText(lang, "dashboard.collegeVolunteersDesc") %>
+            </p>
         </div>
 
         <div class="tiles-grid" style="grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;">
@@ -103,48 +79,12 @@
                 <span class="tile-cta"><%= LanguageUtil.getText(lang, "dashboard.openCta") %> →</span>
             </a>
         </div>
+
+        <div style="display:grid;place-items:center;margin-top:24px">
+            <a href="dashboard.jsp" class="btn btn-outline" style="min-inline-size:160px"><%= LanguageUtil.getText(lang, "nav.dashboard") %></a>
+        </div>
     </div>
 
-    <script>
-        // Request notification permission and load volunteer stats
-        document.addEventListener('DOMContentLoaded', function() {
-            // Three-dot menu toggle
-            const moreToggle = document.getElementById('navMoreToggle');
-            const moreMenu = document.getElementById('navMoreMenu');
-            if (moreToggle && moreMenu) {
-                moreToggle.addEventListener('click', function(){
-                    const open = moreMenu.style.display !== 'none';
-                    moreMenu.style.display = open ? 'none' : 'block';
-                    moreToggle.setAttribute('aria-expanded', open ? 'false' : 'true');
-                });
-                document.addEventListener('click', function(e){
-                    if (!moreMenu.contains(e.target) && e.target !== moreToggle) {
-                        moreMenu.style.display = 'none';
-                        moreToggle.setAttribute('aria-expanded','false');
-                    }
-                });
-            }
-            if ('Notification' in window && Notification.permission === 'default') {
-                Notification.requestPermission();
-            }
-            // Fetch volunteer stats
-            fetch('volunteer-stats').then(r => r.ok ? r.json() : null).then(data => {
-                if(!data) return;
-                const map = {
-                    'stat-cst':['CST','cst'],
-                    'stat-business':['Business','business'],
-                    'stat-chinese':['Chinese','chinese'],
-                    'stat-total':['Total','total']
-                };
-                Object.keys(map).forEach(k=>{
-                    const el = document.querySelector('[data-role="'+k+'"]');
-                    if(el) {
-                        const cfg = map[k];
-                        el.textContent = cfg[0] + ': ' + (data[cfg[1]]);
-                    }
-                });
-            }).catch(()=>{});
-        });
-    </script>
+    <%@ include file="/WEB-INF/jspf/footer.jspf" %>
 </body>
 </html>

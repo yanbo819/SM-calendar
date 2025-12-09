@@ -28,7 +28,8 @@
 <%@ include file="/WEB-INF/jspf/lang-init.jspf" %>
 <html lang="<%= lang %>" dir="<%= textDir %>">
 <head>
-    <title><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "cst.member.detail.title") %></title>
+    <%@ include file="/WEB-INF/jspf/app-brand.jspf" %>
+    <title><%= (String)request.getAttribute("appName") %> - <%= com.smartcalendar.utils.LanguageUtil.getText(lang, "cst.member.detail.title") %></title>
     <link rel="stylesheet" href="css/main.css">
     <style>
         .member-detail-card{background:#fff;border:1px solid #e5e7eb;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.08);padding:32px;max-inline-size:720px;margin:40px auto;}
@@ -41,6 +42,8 @@
     </style>
 </head>
 <body>
+    <%@ include file="/WEB-INF/jspf/topnav.jspf" %>
+    <%@ include file="/WEB-INF/jspf/flash-messages.jspf" %>
     <div class="container">
         <% if (dept != null) { %>
             <div style="text-align:left;margin-bottom:18px;">
@@ -89,7 +92,7 @@
         <% if (deptId > 0) { %>
             <a href="cst-team-members.jsp?dept=<%= deptId %>" class="btn btn-primary back-btn">&larr; <%= com.smartcalendar.utils.LanguageUtil.getText(lang, "cst.back.department") %></a>
         <% } else { %>
-            <a href="cst-team.jsp" class="btn btn-primary back-btn">&larr; <%= com.smartcalendar.utils.LanguageUtil.getText(lang, "cst.back.departments") %></a>
+            <a href="cst-team" class="btn btn-primary back-btn">&larr; <%= com.smartcalendar.utils.LanguageUtil.getText(lang, "cst.back.departments") %></a>
         <% } %>
         </div>
     </div>

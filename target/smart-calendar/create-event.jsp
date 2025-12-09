@@ -83,19 +83,9 @@
     <%
         boolean noHeader = "1".equals(request.getParameter("noheader"));
     %>
-    <nav class="main-nav" <%= noHeader?"style=\"display:none\"":"" %>>
-        <div class="nav-container">
-            <h1 class="nav-title">
-                <a href="dashboard.jsp"><%= LanguageUtil.getText(lang, "app.title") %></a>
-            </h1>
-            <div class="nav-actions">
-                <span class="user-welcome">
-                    <%= LanguageUtil.getText(lang, "dashboard.welcome") %>, <%= user.getFullName() %>!
-                </span>
-                
-            </div>
-        </div>
-    </nav>
+    <% if (!noHeader) { %>
+      <%@ include file="/WEB-INF/jspf/topnav.jspf" %>
+    <% } %>
 
     <div class="form-container">
 

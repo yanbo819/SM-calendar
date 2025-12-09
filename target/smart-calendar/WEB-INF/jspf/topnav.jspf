@@ -2,16 +2,16 @@
 <%@ page import="com.smartcalendar.utils.LanguageUtil" %>
 <nav class="main-nav" style="position:sticky;top:0;inset-inline:0;background:#fff;border-bottom:1px solid #e5e7eb;z-index:100;">
   <div class="nav-container">
-    <h1 class="nav-title" style="display:flex;align-items:center;gap:6px;margin:0;padding:6px 8px 6px 10px;">
-      <img id="brandLogo" src="images/logo-health.svg" alt="App Logo" width="40" height="40" loading="eager" decoding="async" />
-      <a href="dashboard" id="brandName" style="font-weight:600;font-size:1.0rem;line-height:1;">&nbsp;<%= (String)request.getAttribute("appName") %></a>
+    <h1 class="nav-title" style="display:flex;align-items:center;gap:var(--brand-gap);margin:0;padding:var(--brand-padding);">
+      <img id="brandLogo" src="images/logo-health.svg" alt="App Logo" width="40" height="40" loading="eager" decoding="async" style="inline-size:var(--brand-logo-size);block-size:var(--brand-logo-size);" />
+      <a href="dashboard" id="brandName" style="font-weight:600;font-size:var(--brand-font-size);line-height:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-inline-size:clamp(90px, 28vw, 240px);">&nbsp;<%= (String)request.getAttribute("appName") %></a>
     </h1>
-    <div class="nav-actions" style="display:flex;align-items:center;gap:8px;position:relative;margin-left:auto;padding:6px 10px;">
-      <button id="navMoreToggle" class="btn btn-outline" title="Settings" aria-label="Settings" aria-haspopup="true" aria-expanded="false" style="display:flex;align-items:center;gap:6px;padding:6px 10px;font-size:.85rem;">
+    <div class="nav-actions" style="display:flex;align-items:center;gap:var(--actions-gap);position:relative;margin-inline-start:auto;padding:var(--actions-padding);">
+      <button id="navMoreToggle" class="btn btn-outline" title="Settings" aria-label="Settings" aria-haspopup="true" aria-expanded="false" style="display:flex;align-items:center;gap:var(--settings-gap);padding:var(--settings-padding);font-size:var(--settings-font-size);min-inline-size:var(--settings-min-width);">
         <span>⚙️</span>
         <span class="settings-label">Settings</span>
       </button>
-      <div id="navMoreMenu" style="display:none;position:absolute;inset-block-start:100%;inset-inline-end:0;background:#fff;border:1px solid #ddd;border-radius:8px;padding:8px;min-inline-size:220px;box-shadow:0 4px 12px rgba(0,0,0,.12);z-index:50">
+      <div id="navMoreMenu" style="display:none;position:absolute;inset-block-start:100%;inset-inline-end:0;background:#fff;border:1px solid #ddd;border-radius:8px;padding:8px;min-inline-size:var(--menu-min-width);box-shadow:0 4px 12px rgba(0,0,0,.12);z-index:50">
         <form action="set-language" method="post" style="margin:0;display:flex;align-items:center;gap:6px;">
           <%@ include file="/WEB-INF/jspf/csrf-token.jspf" %>
           <label for="lang" style="font-size:.8rem;color:#374151;">Language</label>
@@ -38,7 +38,13 @@
     toggle.setAttribute('aria-expanded', open ? 'false' : 'true');
   });
   document.addEventListener('click', function(e){
-    if (!menu.contains(e.target) && e.target !== toggle) {
+    if (!menu.contains(e.target) && !toggle.contains(e.target)) {
+      menu.style.display = 'none';
+      toggle.setAttribute('aria-expanded', 'false');
+    }
+  });
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape') {
       menu.style.display = 'none';
       toggle.setAttribute('aria-expanded', 'false');
     }
@@ -46,20 +52,29 @@
 })();
 </script>
 <style>
-  /* Make container span full width and align items to corners */
+  /* Design tokens for responsive header */
+  :root{
+    --brand-logo-size: clamp(28px, 4.5vw, 40px);
+    --brand-font-size: clamp(.9rem, 1.6vw, 1.05rem);
+    --brand-gap: clamp(4px, 1vw, 8px);
+    --brand-padding: 6px clamp(6px, 1.8vw, 10px);
+
+    --actions-gap: clamp(6px, 1.4vw, 10px);
+    --actions-padding: 6px clamp(6px, 2vw, 12px);
+    --menu-min-width: clamp(160px, 22vw, 240px);
+
+    --settings-gap: clamp(4px, 1.2vw, 8px);
+    --settings-padding: clamp(6px, 1.3vw, 10px) clamp(8px, 2.2vw, 12px);
+    --settings-font-size: clamp(.82rem, 1.4vw, .9rem);
+    --settings-min-width: clamp(0px, 10vw, 120px);
+  }
+  /* Layout and alignment */
   .main-nav > .nav-container { display:flex; align-items:center; justify-content:space-between; padding:0; }
-  /* Smaller dropdown holder */
-  #navMoreMenu { min-inline-size: 180px !important; }
-  /* Responsive tweaks */
-  @media (max-width: 768px){
-    #brandLogo{ width:32px; height:32px; }
-    #brandName{ font-size:.95rem; }
-    #navMoreToggle{ padding:6px 8px; }
-    .settings-label{ display:none; }
-  }
-  @media (max-width: 480px){
-    #brandLogo{ width:28px; height:28px; }
-    #brandName{ font-size:.9rem; }
-    #navMoreMenu{ min-inline-size: 160px !important; }
-  }
+  /* Accessibility: focus styles */
+  #navMoreToggle:focus{ outline:3px solid rgba(99,102,241,.35); outline-offset:2px; }
+  #navMoreMenu a.btn, #navMoreMenu .form-control { font-size: clamp(.82rem, 1.5vw, .95rem); }
+  /* Hide Settings text label on narrower screens */
+  @media (max-width: 768px){ .settings-label{ display:none; } }
+  /* Touch-friendly targets on coarse pointers */
+  @media (pointer: coarse){ #navMoreToggle{ padding: clamp(8px, 2.2vw, 12px); } }
 </style>

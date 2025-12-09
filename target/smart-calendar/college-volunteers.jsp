@@ -21,6 +21,7 @@
 </head>
 <body>
     <%@ include file="/WEB-INF/jspf/topnav.jspf" %>
+    <%@ include file="/WEB-INF/jspf/icons.jspf" %>
 
     <div class="dashboard-container">
         <div class="page-header" style="text-align:center;margin-block-end:24px;">
@@ -37,7 +38,11 @@
             <a class="tile tile-face" href="cst-team" style="border-color:#2563eb;background:linear-gradient(180deg,#eff6ff,#ffffff);">
                 <div class="tile-content">
                     <div class="tile-header">
-                        <span class="tile-icon" style="color:#1d4ed8;">🤝</span>
+                        <span class="tile-icon" style="color:#1d4ed8;">
+                            <svg aria-hidden="true" focusable="false" width="28" height="28" viewBox="0 0 24 24" role="img">
+                                <use href="#icon-cst" />
+                            </svg>
+                        </span>
                         <h3><%= LanguageUtil.getText(lang, "dashboard.cstTeam") %></h3>
                     </div>
                     <p class="tile-desc"><%= LanguageUtil.getText(lang, "dashboard.cstTeamDesc") %></p>
@@ -49,7 +54,11 @@
             <a class="tile tile-face" href="business-admin" style="border-color:#16a34a;background:linear-gradient(180deg,#ecfdf5,#ffffff);">
                 <div class="tile-content">
                     <div class="tile-header">
-                        <span class="tile-icon" style="color:#15803d;">💼</span>
+                        <span class="tile-icon" style="color:#15803d;">
+                            <svg aria-hidden="true" focusable="false" width="28" height="28" viewBox="0 0 24 24" role="img">
+                                <use href="#icon-business" />
+                            </svg>
+                        </span>
                         <h3><%= LanguageUtil.getText(lang, "dashboard.businessAdmin") %></h3>
                     </div>
                     <p class="tile-desc" style="font-size:.8rem;line-height:1.3;color:#4b5563;">
@@ -66,7 +75,11 @@
             <a class="tile tile-face" href="chinese-volunteers" style="border-color:#dc2626;background:linear-gradient(180deg,#fef2f2,#ffffff);">
                 <div class="tile-content">
                     <div class="tile-header">
-                        <span class="tile-icon" style="color:#b91c1c;">🀄</span>
+                        <span class="tile-icon" style="color:#b91c1c;">
+                            <svg aria-hidden="true" focusable="false" width="28" height="28" viewBox="0 0 24 24" role="img">
+                                <use href="#icon-chinese" />
+                            </svg>
+                        </span>
                         <h3><%= LanguageUtil.getText(lang, "dashboard.chineseVolunteers") %></h3>
                     </div>
                     <p class="tile-desc" style="font-size:.8rem;line-height:1.3;color:#4b5563;">

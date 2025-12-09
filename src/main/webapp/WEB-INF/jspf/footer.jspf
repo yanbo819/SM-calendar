@@ -1,57 +1,153 @@
 <%@ page import="com.smartcalendar.utils.LanguageUtil" %>
-<%
-String _footerLang = (String) request.getAttribute("lang");
-if (_footerLang == null) _footerLang = (String) session.getAttribute("lang");
-if (_footerLang == null || !LanguageUtil.isSupportedLanguage(_footerLang)) _footerLang = "en";
-int _year = java.time.Year.now().getValue();
-String _uri = request.getRequestURI();
-%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:set var="footerLang" value="${empty requestScope.lang ? sessionScope.lang : requestScope.lang}" />
+<c:if test="${empty footerLang}"><c:set var="footerLang" value="en" /></c:if>
 <style>
+  /* Footer rights: centered, small, clean */
+  .footer-meta-fixed{position:fixed;left:50%;transform:translateX(-50%);bottom:12px;color:var(--gray-600, #6b7280);font-size:.72rem;background:#ffffffcc;padding:6px 12px;border-radius:10px;backdrop-filter:saturate(160%) blur(6px);text-align:center}
+  .rights-row{display:flex;align-items:center;justify-content:center;gap:8px}
+  .dot{inline-size:4px;block-size:4px;border-radius:50%;background:#9ca3af}
+
+  /* Support message chip: bottom-right message bubble */
   .support-floating{position:fixed;right:16px;bottom:16px;z-index:9999;display:flex;flex-direction:column;gap:8px}
-  .support-btn{display:inline-flex;align-items:center;gap:8px;background:#111827;color:#fff;border:1px solid #0f172a;border-radius:999px;padding:10px 14px;box-shadow:0 6px 20px rgba(0,0,0,.2);cursor:pointer}
-  .support-btn:hover{filter:brightness(1.05)}
-  .support-panel{position:fixed;right:16px;bottom:64px;background:#fff;border:1px solid #e5e7eb;border-radius:12px;box-shadow:0 12px 30px rgba(0,0,0,.18);padding:14px;min-inline-size:260px}
+  .support-btn{display:flex;align-items:center;gap:8px;background:var(--primary-color, #2563eb);color:#fff;border:1px solid rgba(0,0,0,.12);border-radius:999px;padding:8px 12px;box-shadow:0 6px 18px rgba(0,0,0,.18);cursor:pointer;max-inline-size:260px;transition:transform .18s ease, box-shadow .18s ease}
+  .support-btn:hover{transform:translateY(-1px);box-shadow:0 10px 28px rgba(0,0,0,.24)}
+  .support-btn:active{transform:translateY(0);box-shadow:0 6px 18px rgba(0,0,0,.18)}
+  .support-handle{display:inline-flex;align-items:center;justify-content:center;inline-size:22px;block-size:22px;border-radius:999px;background:rgba(255,255,255,.18);color:#fff;font-size:12px;cursor:grab;border:1px solid rgba(255,255,255,.35)}
+  .support-handle:active{cursor:grabbing}
+  .support-icon{font-size:.9rem}
+  .support-content{display:flex;flex-direction:column;min-inline-size:0}
+  .support-title{font-weight:600;font-size:.85rem;line-height:1.2}
+  .support-desc{font-size:.75rem;color:#eef2ff;opacity:.92;line-height:1.2}
+  .support-panel{position:fixed;right:16px;bottom:76px;background:#fff;border:1px solid var(--gray-200, #e5e7eb);border-radius:14px;box-shadow:0 12px 30px rgba(0,0,0,.18);padding:14px;min-inline-size:280px}
   .support-info{display:grid;gap:8px}
-  .contact-item{display:flex;align-items:center;gap:8px;font-size:.9rem;color:#374151}
+  .contact-item{display:flex;align-items:center;gap:8px;font-size:.9rem;color:var(--gray-700, #374151)}
   .label{font-weight:600}
-  .footer-meta-fixed{position:fixed;right:16px;bottom:104px;color:#6b7280;font-size:.8rem;background:#ffffffcc;padding:4px 8px;border-radius:8px}
   @media (max-width:640px){.support-panel{min-inline-size:220px}}
   @media (prefers-reduced-motion: reduce){.support-btn{transition:none}}
+  @media (prefers-color-scheme: dark){
+    .footer-meta-fixed{background:#111827cc;color:var(--gray-300, #d1d5db)}
+    .support-btn{background:#1e3a8a}
+    .support-panel{background:#0b0f19;border-color:#1f2937;box-shadow:0 12px 30px rgba(0,0,0,.5)}
+    .contact-item{color:var(--gray-300, #d1d5db)}
+  }
 </style>
-<div class="support-floating" role="contentinfo">
-  <button type="button" class="support-btn" id="supportBtn" aria-expanded="false" aria-controls="supportPanel" aria-label="Support">
-    <span class="support-icon">💬</span>
-    <span><%= LanguageUtil.getText(_footerLang, "support.button.short") %></span>
+
+<div class="footer-meta-fixed" role="contentinfo" aria-label="site rights">
+  <div class="rights-row">
+    <span>(c) <span id="rightsYear"></span> Smart Calendar</span>
+    <span class="dot" aria-hidden="true"></span>
+    <span><%= LanguageUtil.getText((String)pageContext.findAttribute("footerLang"), "common.rightsReserved") %></span>
+  </div>
+ </div>
+
+<div class="support-floating" role="complementary" aria-label="technical support">
+  <button type="button" class="support-btn" id="supportBtn" aria-expanded="false" aria-controls="supportPanel">
+    <span class="support-handle" id="supportHandle" title="Drag" aria-label="Drag">⋮⋮</span>
+    <span class="support-icon" aria-hidden="true">💬</span>
+    <span class="support-content">
+      <span class="support-title"><%= LanguageUtil.getText((String)pageContext.findAttribute("footerLang"), "support.title") %></span>
+      <span class="support-desc"><%= LanguageUtil.getText((String)pageContext.findAttribute("footerLang"), "support.button.short") %></span>
+    </span>
   </button>
   <div class="support-panel" id="supportPanel" hidden>
     <div class="support-info">
-      <strong><%= LanguageUtil.getText(_footerLang, "support.title") %></strong>
-      <div class="contact-item"><span class="label"><%= LanguageUtil.getText(_footerLang, "support.phoneLabel") %>:</span><a href="tel:19558255239" class="contact-link">19558255239</a></div>
-      <div class="contact-item"><span class="label"><%= LanguageUtil.getText(_footerLang, "support.wechatLabel") %>:</span><span class="mono">alahmadi819</span></div>
-      <div class="contact-item"><span class="label"><%= LanguageUtil.getText(_footerLang, "support.emailLabel") %>:</span><a href="mailto:yanbo2024_2025@qq.com" class="contact-link">yanbo2024_2025@qq.com</a></div>
+      <strong><%= LanguageUtil.getText((String)pageContext.findAttribute("footerLang"), "support.title") %></strong>
+      <c:if test="${not empty sessionScope.user}">
+        <div class="contact-item"><span class="label">User:</span><span class="mono"><%= ((com.smartcalendar.models.User)session.getAttribute("user")).getUsername() %></span></div>
+        <div class="contact-item"><span class="label">Role:</span><span class="mono"><%= ((com.smartcalendar.models.User)session.getAttribute("user")).getRole() %></span></div>
+      </c:if>
+      <div class="contact-item"><span class="label"><%= LanguageUtil.getText((String)pageContext.findAttribute("footerLang"), "support.phoneLabel") %>:</span><a href="tel:19558255239" class="contact-link">19558255239</a></div>
+      <div class="contact-item"><span class="label"><%= LanguageUtil.getText((String)pageContext.findAttribute("footerLang"), "support.wechatLabel") %>:</span><span class="mono">alahmadi819</span></div>
+      <div class="contact-item"><span class="label"><%= LanguageUtil.getText((String)pageContext.findAttribute("footerLang"), "support.emailLabel") %>:</span><a href="mailto:yanbo2024_2025@qq.com" class="contact-link">yanbo2024_2025@qq.com</a></div>
     </div>
   </div>
-  <div class="footer-meta-fixed">
-    <small>(c) <%= _year %> Smart Calendar - <%= LanguageUtil.getText(_footerLang, "common.rightsReserved") %></small>
-  </div>
 </div>
+
 <script>
 (function(){
-  const btn = document.getElementById('supportBtn');
-  const panel = document.getElementById('supportPanel');
+  var btn = document.getElementById('supportBtn');
+  var handle = document.getElementById('supportHandle');
+  var panel = document.getElementById('supportPanel');
+  var yEl = document.getElementById('rightsYear');
+  if (yEl) yEl.textContent = new Date().getFullYear();
   if(!btn||!panel) return;
+
+  // Toggle panel on click when not dragging
   btn.addEventListener('click', function(){
-    const expanded = btn.getAttribute('aria-expanded') === 'true';
+    if (btn.dataset.dragging === 'true') return;
+    var expanded = btn.getAttribute('aria-expanded') === 'true';
     btn.setAttribute('aria-expanded', (!expanded).toString());
     panel.hidden = expanded;
   });
+
+  // Accessibility: ESC closes panel
   document.addEventListener('keydown', function(e){
     if(e.key==='Escape'){ panel.hidden = true; btn.setAttribute('aria-expanded','false'); }
   });
-  // Close panel when clicking outside for better UX
+  // Click outside closes panel
   document.addEventListener('click', function(e){
-    const within = e.target.closest('#supportPanel') || e.target.closest('#supportBtn');
+    var within = e.target.closest('#supportPanel') || e.target.closest('#supportBtn');
     if(!within){ panel.hidden = true; btn.setAttribute('aria-expanded','false'); }
   });
+
+  // Drag (using handle) + snap left/right; snap left hides, snap right shows
+  var dragging = false, startX = 0, startY = 0;
+  var toPx = function(v){ return typeof v === 'number' ? (v + 'px') : v; };
+  var clamp = function(val, min, max){ return Math.max(min, Math.min(max, val)); };
+  var setPos = function(x, y){ btn.style.left = toPx(x); btn.style.right=''; btn.style.top = ''; btn.style.bottom = toPx(y); btn.style.transform=''; };
+  var snap = function(){
+    var rect = btn.getBoundingClientRect();
+    var centerX = rect.left + rect.width/2;
+    var mid = window.innerWidth/2;
+    if (centerX <= mid) {
+      // snap left and hide
+      btn.dataset.snap = 'left';
+      btn.style.left = '16px';
+      btn.style.right = '';
+      btn.style.opacity = '0';
+      panel.hidden = true;
+      btn.setAttribute('aria-expanded','false');
+      setTimeout(function(){ btn.style.display='none'; }, 120);
+    } else {
+      // snap right and show (bottom-right)
+      btn.dataset.snap = 'right';
+      btn.style.left = '';
+      btn.style.right = '16px';
+      btn.style.opacity = '';
+      btn.style.display = '';
+      btn.style.bottom = btn.style.bottom || '16px';
+    }
+  };
+
+  var onDown = function(e){
+    dragging = true; btn.dataset.dragging='true'; panel.hidden = true;
+    var rect = btn.getBoundingClientRect();
+    startX = (e.touches?e.touches[0].clientX:e.clientX) - rect.left;
+    startY = (e.touches?e.touches[0].clientY:e.clientY) - rect.top;
+  };
+  var onMove = function(e){
+    if(!dragging) return;
+    var clientX = e.touches?e.touches[0].clientX:e.clientX;
+    var clientY = e.touches?e.touches[0].clientY:e.clientY;
+    var x = clientX - startX;
+    var y = clientY - startY;
+    var bw = btn.offsetWidth, bh = btn.offsetHeight;
+    var w = window.innerWidth, h = window.innerHeight;
+    var clampedX = clamp(x, 8, w - bw - 8);
+    var clampedY = clamp(h - (clientY - startY) - bh, 8, h - bh - 8); // bottom offset
+    setPos(clampedX, clampedY);
+  };
+  var onUp = function(){ if(!dragging) return; dragging=false; btn.dataset.dragging='false'; snap(); };
+
+  // Bind dragging only to the handle for better click consistency
+  if (handle) {
+    handle.addEventListener('mousedown', onDown);
+    handle.addEventListener('touchstart', onDown, {passive:true});
+  }
+  window.addEventListener('mousemove', onMove);
+  window.addEventListener('touchmove', onMove, {passive:false});
+  window.addEventListener('mouseup', onUp);
+  window.addEventListener('touchend', onUp);
 })();
 </script>

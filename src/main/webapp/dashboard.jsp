@@ -78,7 +78,7 @@
             </h1>
             <div class="nav-actions" style="display:flex;align-items:center;gap:8px;position:relative;">
                 <span class="user-welcome">
-                    <%= LanguageUtil.getText(lang, "dashboard.welcome") %>, <%= user.getFullName() %>!
+                    <%= LanguageUtil.getText(lang, "dashboard.welcome") %>, <%= user.getUsername() %>!
                 </span>
                 <%
                     Integer notifCountAttr = (Integer) request.getAttribute("pendingNotifications");
@@ -121,6 +121,7 @@
                         <a href="admin-tools.jsp" class="btn btn-outline" style="inline-size:100%;margin-block:4px"><%= LanguageUtil.getText(lang, "nav.adminTools") %></a>
                         <a href="face-id.jsp" class="btn btn-outline" style="inline-size:100%;margin-block:4px"><%= LanguageUtil.getText(lang, "nav.addFaceId") %></a>
                     <% } %>
+                    <a href="events" class="btn btn-outline" style="inline-size:100%;margin-block:4px"><%= LanguageUtil.getText(lang, "dashboard.myEvents") %></a>
                     <a href="logout" class="btn btn-outline" style="inline-size:100%;margin-block:4px"><%= LanguageUtil.getText(lang, "nav.logout") %></a>
                 </div>
             </div>

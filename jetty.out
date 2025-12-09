@@ -12,7 +12,7 @@
 [INFO] 
 [INFO] --- compiler:3.11.0:compile (default-compile) @ smart-calendar ---
 [INFO] Changes detected - recompiling the module! :source
-[INFO] Compiling 65 source files with javac [debug release 11] to target/classes
+[INFO] Compiling 78 source files with javac [debug release 11] to target/classes
 [INFO] 
 [INFO] --- resources:3.3.1:testResources (default-testResources) @ smart-calendar ---
 [INFO] skip non existing resourceDirectory /Users/yanbo/Desktop/Smart calendar/src/test/resources
@@ -27,21 +27,547 @@
 [INFO] Configuring Jetty for project: Smart Calendar & Reminder Application
 [INFO] Classes = /Users/yanbo/Desktop/Smart calendar/target/classes
 [INFO] Context path = /smart-calendar
-[INFO] Tmp directory = /Users/yanbo/Desktop/Smart calendar/target/tmp
+[INFO] Tmp directory = /private/tmp/smartcalendar-jettytmp
 [INFO] web.xml file = file:///Users/yanbo/Desktop/Smart%20calendar/src/main/webapp/WEB-INF/web.xml
 [INFO] Webapp directory = /Users/yanbo/Desktop/Smart calendar/src/main/webapp
 [INFO] Web defaults = org/eclipse/jetty/webapp/webdefault.xml
 [INFO] Web overrides =  none
 [INFO] jetty-11.0.15; built: 2023-04-11T18:37:53.775Z; git: 5bc5e562c8d05c5862505aebe5cf83a61bdbcb96; jvm 23.0.2+7-58
 [INFO] Session workerName=node0
-[INFO] Started o.e.j.m.p.MavenWebAppContext@34692767{Smart Calendar and Reminder Application,/smart-calendar,[file:///Users/yanbo/Desktop/Smart%20calendar/src/main/webapp/],AVAILABLE}{file:///Users/yanbo/Desktop/Smart%20calendar/src/main/webapp/}
-[INFO] Started ServerConnector@31d5ce58{HTTP/1.1, (http/1.1)}{0.0.0.0:8082}
-[INFO] Started Server@56b9a73c{STARTING}[11.0.15,sto=0] @2249ms
+[INFO] Started o.e.j.m.p.MavenWebAppContext@128403d8{Smart Calendar and Reminder Application,/smart-calendar,[file:///Users/yanbo/Desktop/Smart%20calendar/src/main/webapp/],AVAILABLE}{file:///Users/yanbo/Desktop/Smart%20calendar/src/main/webapp/}
+[INFO] Started ServerConnector@18f94d41{HTTP/1.1, (http/1.1)}{0.0.0.0:8097}
+[INFO] Started Server@e093615{STARTING}[11.0.15,sto=0] @2460ms
 [INFO] Automatic redeployment disabled, see 'mvn jetty:help' for more redeployment options
-[INFO] Stopped Server@56b9a73c{STOPPING}[11.0.15,sto=0]
-[INFO] Stopped ServerConnector@31d5ce58{HTTP/1.1, (http/1.1)}{0.0.0.0:8082}
-[INFO] Stopped o.e.j.m.p.MavenWebAppContext@34692767{Smart Calendar and Reminder Application,/smart-calendar,[file:///Users/yanbo/Desktop/Smart%20calendar/src/main/webapp/],STOPPED}{file:///Users/yanbo/Desktop/Smart%20calendar/src/main/webapp/}
-[INFO] ------------------------------------------------------------------------
-[INFO] BUILD SUCCESS
-[INFO] ------------------------------------------------------------------------
-[INFO] Total time:  02:13 h
+
+=== Unhandled Exception (LanguageFilter) ===
+Path: /smart-calendar/login
+Lang: en
+Query: (none)
+User-Agent: curl/8.7.1
+Exception Type: org.apache.jasper.JasperException
+Message: Unable to compile class for JSP: 
+
+An error occurred at line: [3] in the jsp file: [/WEB-INF/jspf/csrf-meta.jspf]
+Duplicate local variable __csrfObj
+1: <%@ page import="jakarta.servlet.jsp.PageContext" %>
+2: <%
+3:   Object __csrfObj = pageContext.getAttribute("__csrf", PageContext.PAGE_SCOPE);
+4:   String __csrf = (String) (__csrfObj != null ? __csrfObj : session.getAttribute("csrfToken"));
+5:   if (__csrf != null) {
+6:     pageContext.setAttribute("__csrf", __csrf, PageContext.PAGE_SCOPE);
+
+
+An error occurred at line: [4] in the jsp file: [/WEB-INF/jspf/csrf-meta.jspf]
+Duplicate local variable __csrf
+1: <%@ page import="jakarta.servlet.jsp.PageContext" %>
+2: <%
+3:   Object __csrfObj = pageContext.getAttribute("__csrf", PageContext.PAGE_SCOPE);
+4:   String __csrf = (String) (__csrfObj != null ? __csrfObj : session.getAttribute("csrfToken"));
+5:   if (__csrf != null) {
+6:     pageContext.setAttribute("__csrf", __csrf, PageContext.PAGE_SCOPE);
+7: %>
+
+
+An error occurred at line: [3] in the jsp file: [/WEB-INF/jspf/footer.jspf]
+Duplicate local variable _footerLang
+1: <%@ page import="com.smartcalendar.utils.LanguageUtil" %>
+2: <%
+3: String _footerLang = (String) request.getAttribute("lang");
+4: if (_footerLang == null) _footerLang = (String) session.getAttribute("lang");
+5: if (_footerLang == null || !LanguageUtil.isSupportedLanguage(_footerLang)) _footerLang = "en";
+6: int _year = java.time.Year.now().getValue();
+
+
+An error occurred at line: [6] in the jsp file: [/WEB-INF/jspf/footer.jspf]
+Duplicate local variable _year
+3: String _footerLang = (String) request.getAttribute("lang");
+4: if (_footerLang == null) _footerLang = (String) session.getAttribute("lang");
+5: if (_footerLang == null || !LanguageUtil.isSupportedLanguage(_footerLang)) _footerLang = "en";
+6: int _year = java.time.Year.now().getValue();
+7: String _uri = request.getRequestURI();
+8: %>
+9: <style>
+
+
+An error occurred at line: [7] in the jsp file: [/WEB-INF/jspf/footer.jspf]
+Duplicate local variable _uri
+4: if (_footerLang == null) _footerLang = (String) session.getAttribute("lang");
+5: if (_footerLang == null || !LanguageUtil.isSupportedLanguage(_footerLang)) _footerLang = "en";
+6: int _year = java.time.Year.now().getValue();
+7: String _uri = request.getRequestURI();
+8: %>
+9: <style>
+10:   .support-floating{position:fixed;right:16px;bottom:16px;z-index:9999;display:flex;flex-direction:column;gap:8px}
+
+
+Stacktrace:
+org.apache.jasper.JasperException: Unable to compile class for JSP: 
+
+An error occurred at line: [3] in the jsp file: [/WEB-INF/jspf/csrf-meta.jspf]
+Duplicate local variable __csrfObj
+1: <%@ page import="jakarta.servlet.jsp.PageContext" %>
+2: <%
+3:   Object __csrfObj = pageContext.getAttribute("__csrf", PageContext.PAGE_SCOPE);
+4:   String __csrf = (String) (__csrfObj != null ? __csrfObj : session.getAttribute("csrfToken"));
+5:   if (__csrf != null) {
+6:     pageContext.setAttribute("__csrf", __csrf, PageContext.PAGE_SCOPE);
+
+
+An error occurred at line: [4] in the jsp file: [/WEB-INF/jspf/csrf-meta.jspf]
+Duplicate local variable __csrf
+1: <%@ page import="jakarta.servlet.jsp.PageContext" %>
+2: <%
+3:   Object __csrfObj = pageContext.getAttribute("__csrf", PageContext.PAGE_SCOPE);
+4:   String __csrf = (String) (__csrfObj != null ? __csrfObj : session.getAttribute("csrfToken"));
+5:   if (__csrf != null) {
+6:     pageContext.setAttribute("__csrf", __csrf, PageContext.PAGE_SCOPE);
+7: %>
+
+
+An error occurred at line: [3] in the jsp file: [/WEB-INF/jspf/footer.jspf]
+Duplicate local variable _footerLang
+1: <%@ page import="com.smartcalendar.utils.LanguageUtil" %>
+2: <%
+3: String _footerLang = (String) request.getAttribute("lang");
+4: if (_footerLang == null) _footerLang = (String) session.getAttribute("lang");
+5: if (_footerLang == null || !LanguageUtil.isSupportedLanguage(_footerLang)) _footerLang = "en";
+6: int _year = java.time.Year.now().getValue();
+
+
+An error occurred at line: [6] in the jsp file: [/WEB-INF/jspf/footer.jspf]
+Duplicate local variable _year
+3: String _footerLang = (String) request.getAttribute("lang");
+4: if (_footerLang == null) _footerLang = (String) session.getAttribute("lang");
+5: if (_footerLang == null || !LanguageUtil.isSupportedLanguage(_footerLang)) _footerLang = "en";
+6: int _year = java.time.Year.now().getValue();
+7: String _uri = request.getRequestURI();
+8: %>
+9: <style>
+
+
+An error occurred at line: [7] in the jsp file: [/WEB-INF/jspf/footer.jspf]
+Duplicate local variable _uri
+4: if (_footerLang == null) _footerLang = (String) session.getAttribute("lang");
+5: if (_footerLang == null || !LanguageUtil.isSupportedLanguage(_footerLang)) _footerLang = "en";
+6: int _year = java.time.Year.now().getValue();
+7: String _uri = request.getRequestURI();
+8: %>
+9: <style>
+10:   .support-floating{position:fixed;right:16px;bottom:16px;z-index:9999;display:flex;flex-direction:column;gap:8px}
+
+
+Stacktrace:
+	at org.apache.jasper.compiler.DefaultErrorHandler.javacError(DefaultErrorHandler.java:102)
+	at org.apache.jasper.compiler.ErrorDispatcher.javacError(ErrorDispatcher.java:213)
+	at org.apache.jasper.compiler.JDTCompiler.generateClass(JDTCompiler.java:487)
+	at org.apache.jasper.compiler.Compiler.compile(Compiler.java:397)
+	at org.apache.jasper.compiler.Compiler.compile(Compiler.java:367)
+	at org.apache.jasper.compiler.Compiler.compile(Compiler.java:351)
+	at org.apache.jasper.JspCompilationContext.compile(JspCompilationContext.java:603)
+	at org.apache.jasper.servlet.JspServletWrapper.service(JspServletWrapper.java:399)
+	at org.apache.jasper.servlet.JspServlet.serviceJspFile(JspServlet.java:380)
+	at org.apache.jasper.servlet.JspServlet.service(JspServlet.java:328)
+	at org.eclipse.jetty.jsp.JettyJspServlet.service(JettyJspServlet.java:101)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:587)
+	at org.eclipse.jetty.servlet.ServletHolder$NotAsync.service(ServletHolder.java:1419)
+	at org.eclipse.jetty.servlet.ServletHolder.handle(ServletHolder.java:764)
+	at org.eclipse.jetty.servlet.ServletHandler$ChainEnd.doFilter(ServletHandler.java:1665)
+	at org.eclipse.jetty.servlet.ServletHandler.doHandle(ServletHandler.java:527)
+	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:131)
+	at org.eclipse.jetty.security.SecurityHandler.handle(SecurityHandler.java:596)
+	at org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:122)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:223)
+	at org.eclipse.jetty.server.session.SessionHandler.doHandle(SessionHandler.java:1570)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:221)
+	at org.eclipse.jetty.server.handler.ContextHandler.doHandle(ContextHandler.java:1381)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:176)
+	at org.eclipse.jetty.servlet.ServletHandler.doScope(ServletHandler.java:484)
+	at org.eclipse.jetty.server.session.SessionHandler.doScope(SessionHandler.java:1543)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:174)
+	at org.eclipse.jetty.server.handler.ContextHandler.doScope(ContextHandler.java:1303)
+	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:129)
+	at org.eclipse.jetty.server.Dispatcher.forward(Dispatcher.java:215)
+	at org.eclipse.jetty.server.Dispatcher.forward(Dispatcher.java:135)
+	at com.smartcalendar.servlets.LoginServlet.doGet(LoginServlet.java:38)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:500)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:587)
+	at org.eclipse.jetty.servlet.ServletHolder$NotAsync.service(ServletHolder.java:1419)
+	at org.eclipse.jetty.servlet.ServletHolder.handle(ServletHolder.java:764)
+	at org.eclipse.jetty.servlet.ServletHandler$ChainEnd.doFilter(ServletHandler.java:1665)
+	at com.smartcalendar.filters.LanguageFilter.doFilter(LanguageFilter.java:48)
+	at org.eclipse.jetty.servlet.FilterHolder.doFilter(FilterHolder.java:202)
+	at org.eclipse.jetty.servlet.ServletHandler$Chain.doFilter(ServletHandler.java:1635)
+	at com.smartcalendar.filters.CsrfFilter.doFilter(CsrfFilter.java:71)
+	at org.eclipse.jetty.servlet.FilterHolder.doFilter(FilterHolder.java:210)
+	at org.eclipse.jetty.servlet.ServletHandler$Chain.doFilter(ServletHandler.java:1635)
+	at org.eclipse.jetty.websocket.servlet.WebSocketUpgradeFilter.doFilter(WebSocketUpgradeFilter.java:170)
+	at org.eclipse.jetty.servlet.FilterHolder.doFilter(FilterHolder.java:202)
+	at org.eclipse.jetty.servlet.ServletHandler$Chain.doFilter(ServletHandler.java:1635)
+	at org.eclipse.jetty.servlet.ServletHandler.doHandle(ServletHandler.java:527)
+	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:131)
+	at org.eclipse.jetty.security.SecurityHandler.handle(SecurityHandler.java:578)
+	at org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:122)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:223)
+	at org.eclipse.jetty.server.session.SessionHandler.doHandle(SessionHandler.java:1570)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:221)
+	at org.eclipse.jetty.server.handler.ContextHandler.doHandle(ContextHandler.java:1381)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:176)
+	at org.eclipse.jetty.servlet.ServletHandler.doScope(ServletHandler.java:484)
+	at org.eclipse.jetty.server.session.SessionHandler.doScope(SessionHandler.java:1543)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:174)
+	at org.eclipse.jetty.server.handler.ContextHandler.doScope(ContextHandler.java:1303)
+	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:129)
+	at org.eclipse.jetty.server.handler.ContextHandlerCollection.handle(ContextHandlerCollection.java:149)
+	at org.eclipse.jetty.server.handler.HandlerList.handle(HandlerList.java:51)
+	at org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:122)
+	at org.eclipse.jetty.server.Server.handle(Server.java:563)
+	at org.eclipse.jetty.server.HttpChannel.lambda$handle$0(HttpChannel.java:505)
+	at org.eclipse.jetty.server.HttpChannel.dispatch(HttpChannel.java:762)
+	at org.eclipse.jetty.server.HttpChannel.handle(HttpChannel.java:497)
+	at org.eclipse.jetty.server.HttpConnection.onFillable(HttpConnection.java:282)
+	at org.eclipse.jetty.io.AbstractConnection$ReadCallback.succeeded(AbstractConnection.java:314)
+	at org.eclipse.jetty.io.FillInterest.fillable(FillInterest.java:100)
+	at org.eclipse.jetty.io.SelectableChannelEndPoint$1.run(SelectableChannelEndPoint.java:53)
+	at org.eclipse.jetty.util.thread.strategy.AdaptiveExecutionStrategy.runTask(AdaptiveExecutionStrategy.java:416)
+	at org.eclipse.jetty.util.thread.strategy.AdaptiveExecutionStrategy.consumeTask(AdaptiveExecutionStrategy.java:385)
+	at org.eclipse.jetty.util.thread.strategy.AdaptiveExecutionStrategy.tryProduce(AdaptiveExecutionStrategy.java:272)
+	at org.eclipse.jetty.util.thread.strategy.AdaptiveExecutionStrategy.produce(AdaptiveExecutionStrategy.java:194)
+	at org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:969)
+	at org.eclipse.jetty.util.thread.QueuedThreadPool$Runner.doRunJob(QueuedThreadPool.java:1194)
+	at org.eclipse.jetty.util.thread.QueuedThreadPool$Runner.run(QueuedThreadPool.java:1149)
+	at java.base/java.lang.Thread.run(Thread.java:1575)
+=== End Exception ===
+
+[WARNING] /smart-calendar/login
+org.apache.jasper.JasperException: Unable to compile class for JSP: 
+
+An error occurred at line: [3] in the jsp file: [/WEB-INF/jspf/csrf-meta.jspf]
+Duplicate local variable __csrfObj
+1: <%@ page import="jakarta.servlet.jsp.PageContext" %>
+2: <%
+3:   Object __csrfObj = pageContext.getAttribute("__csrf", PageContext.PAGE_SCOPE);
+4:   String __csrf = (String) (__csrfObj != null ? __csrfObj : session.getAttribute("csrfToken"));
+5:   if (__csrf != null) {
+6:     pageContext.setAttribute("__csrf", __csrf, PageContext.PAGE_SCOPE);
+
+
+An error occurred at line: [4] in the jsp file: [/WEB-INF/jspf/csrf-meta.jspf]
+Duplicate local variable __csrf
+1: <%@ page import="jakarta.servlet.jsp.PageContext" %>
+2: <%
+3:   Object __csrfObj = pageContext.getAttribute("__csrf", PageContext.PAGE_SCOPE);
+4:   String __csrf = (String) (__csrfObj != null ? __csrfObj : session.getAttribute("csrfToken"));
+5:   if (__csrf != null) {
+6:     pageContext.setAttribute("__csrf", __csrf, PageContext.PAGE_SCOPE);
+7: %>
+
+
+An error occurred at line: [3] in the jsp file: [/WEB-INF/jspf/footer.jspf]
+Duplicate local variable _footerLang
+1: <%@ page import="com.smartcalendar.utils.LanguageUtil" %>
+2: <%
+3: String _footerLang = (String) request.getAttribute("lang");
+4: if (_footerLang == null) _footerLang = (String) session.getAttribute("lang");
+5: if (_footerLang == null || !LanguageUtil.isSupportedLanguage(_footerLang)) _footerLang = "en";
+6: int _year = java.time.Year.now().getValue();
+
+
+An error occurred at line: [6] in the jsp file: [/WEB-INF/jspf/footer.jspf]
+Duplicate local variable _year
+3: String _footerLang = (String) request.getAttribute("lang");
+4: if (_footerLang == null) _footerLang = (String) session.getAttribute("lang");
+5: if (_footerLang == null || !LanguageUtil.isSupportedLanguage(_footerLang)) _footerLang = "en";
+6: int _year = java.time.Year.now().getValue();
+7: String _uri = request.getRequestURI();
+8: %>
+9: <style>
+
+
+An error occurred at line: [7] in the jsp file: [/WEB-INF/jspf/footer.jspf]
+Duplicate local variable _uri
+4: if (_footerLang == null) _footerLang = (String) session.getAttribute("lang");
+5: if (_footerLang == null || !LanguageUtil.isSupportedLanguage(_footerLang)) _footerLang = "en";
+6: int _year = java.time.Year.now().getValue();
+7: String _uri = request.getRequestURI();
+8: %>
+9: <style>
+10:   .support-floating{position:fixed;right:16px;bottom:16px;z-index:9999;display:flex;flex-direction:column;gap:8px}
+
+
+Stacktrace:
+    at org.apache.jasper.compiler.DefaultErrorHandler.javacError (DefaultErrorHandler.java:102)
+    at org.apache.jasper.compiler.ErrorDispatcher.javacError (ErrorDispatcher.java:213)
+    at org.apache.jasper.compiler.JDTCompiler.generateClass (JDTCompiler.java:487)
+    at org.apache.jasper.compiler.Compiler.compile (Compiler.java:397)
+    at org.apache.jasper.compiler.Compiler.compile (Compiler.java:367)
+    at org.apache.jasper.compiler.Compiler.compile (Compiler.java:351)
+    at org.apache.jasper.JspCompilationContext.compile (JspCompilationContext.java:603)
+    at org.apache.jasper.servlet.JspServletWrapper.service (JspServletWrapper.java:399)
+    at org.apache.jasper.servlet.JspServlet.serviceJspFile (JspServlet.java:380)
+    at org.apache.jasper.servlet.JspServlet.service (JspServlet.java:328)
+    at org.eclipse.jetty.jsp.JettyJspServlet.service (JettyJspServlet.java:101)
+    at jakarta.servlet.http.HttpServlet.service (HttpServlet.java:587)
+    at org.eclipse.jetty.servlet.ServletHolder$NotAsync.service (ServletHolder.java:1419)
+    at org.eclipse.jetty.servlet.ServletHolder.handle (ServletHolder.java:764)
+    at org.eclipse.jetty.servlet.ServletHandler$ChainEnd.doFilter (ServletHandler.java:1665)
+    at org.eclipse.jetty.servlet.ServletHandler.doHandle (ServletHandler.java:527)
+    at org.eclipse.jetty.server.handler.ScopedHandler.handle (ScopedHandler.java:131)
+    at org.eclipse.jetty.security.SecurityHandler.handle (SecurityHandler.java:596)
+    at org.eclipse.jetty.server.handler.HandlerWrapper.handle (HandlerWrapper.java:122)
+    at org.eclipse.jetty.server.handler.ScopedHandler.nextHandle (ScopedHandler.java:223)
+    at org.eclipse.jetty.server.session.SessionHandler.doHandle (SessionHandler.java:1570)
+    at org.eclipse.jetty.server.handler.ScopedHandler.nextHandle (ScopedHandler.java:221)
+    at org.eclipse.jetty.server.handler.ContextHandler.doHandle (ContextHandler.java:1381)
+    at org.eclipse.jetty.server.handler.ScopedHandler.nextScope (ScopedHandler.java:176)
+    at org.eclipse.jetty.servlet.ServletHandler.doScope (ServletHandler.java:484)
+    at org.eclipse.jetty.server.session.SessionHandler.doScope (SessionHandler.java:1543)
+    at org.eclipse.jetty.server.handler.ScopedHandler.nextScope (ScopedHandler.java:174)
+    at org.eclipse.jetty.server.handler.ContextHandler.doScope (ContextHandler.java:1303)
+    at org.eclipse.jetty.server.handler.ScopedHandler.handle (ScopedHandler.java:129)
+    at org.eclipse.jetty.server.Dispatcher.forward (Dispatcher.java:215)
+    at org.eclipse.jetty.server.Dispatcher.forward (Dispatcher.java:135)
+    at com.smartcalendar.servlets.LoginServlet.doGet (LoginServlet.java:38)
+    at jakarta.servlet.http.HttpServlet.service (HttpServlet.java:500)
+    at jakarta.servlet.http.HttpServlet.service (HttpServlet.java:587)
+    at org.eclipse.jetty.servlet.ServletHolder$NotAsync.service (ServletHolder.java:1419)
+    at org.eclipse.jetty.servlet.ServletHolder.handle (ServletHolder.java:764)
+    at org.eclipse.jetty.servlet.ServletHandler$ChainEnd.doFilter (ServletHandler.java:1665)
+    at com.smartcalendar.filters.LanguageFilter.doFilter (LanguageFilter.java:48)
+    at org.eclipse.jetty.servlet.FilterHolder.doFilter (FilterHolder.java:202)
+    at org.eclipse.jetty.servlet.ServletHandler$Chain.doFilter (ServletHandler.java:1635)
+    at com.smartcalendar.filters.CsrfFilter.doFilter (CsrfFilter.java:71)
+    at org.eclipse.jetty.servlet.FilterHolder.doFilter (FilterHolder.java:210)
+    at org.eclipse.jetty.servlet.ServletHandler$Chain.doFilter (ServletHandler.java:1635)
+    at org.eclipse.jetty.websocket.servlet.WebSocketUpgradeFilter.doFilter (WebSocketUpgradeFilter.java:170)
+    at org.eclipse.jetty.servlet.FilterHolder.doFilter (FilterHolder.java:202)
+    at org.eclipse.jetty.servlet.ServletHandler$Chain.doFilter (ServletHandler.java:1635)
+    at org.eclipse.jetty.servlet.ServletHandler.doHandle (ServletHandler.java:527)
+    at org.eclipse.jetty.server.handler.ScopedHandler.handle (ScopedHandler.java:131)
+    at org.eclipse.jetty.security.SecurityHandler.handle (SecurityHandler.java:578)
+    at org.eclipse.jetty.server.handler.HandlerWrapper.handle (HandlerWrapper.java:122)
+    at org.eclipse.jetty.server.handler.ScopedHandler.nextHandle (ScopedHandler.java:223)
+    at org.eclipse.jetty.server.session.SessionHandler.doHandle (SessionHandler.java:1570)
+    at org.eclipse.jetty.server.handler.ScopedHandler.nextHandle (ScopedHandler.java:221)
+    at org.eclipse.jetty.server.handler.ContextHandler.doHandle (ContextHandler.java:1381)
+    at org.eclipse.jetty.server.handler.ScopedHandler.nextScope (ScopedHandler.java:176)
+    at org.eclipse.jetty.servlet.ServletHandler.doScope (ServletHandler.java:484)
+    at org.eclipse.jetty.server.session.SessionHandler.doScope (SessionHandler.java:1543)
+    at org.eclipse.jetty.server.handler.ScopedHandler.nextScope (ScopedHandler.java:174)
+    at org.eclipse.jetty.server.handler.ContextHandler.doScope (ContextHandler.java:1303)
+    at org.eclipse.jetty.server.handler.ScopedHandler.handle (ScopedHandler.java:129)
+    at org.eclipse.jetty.server.handler.ContextHandlerCollection.handle (ContextHandlerCollection.java:149)
+    at org.eclipse.jetty.server.handler.HandlerList.handle (HandlerList.java:51)
+    at org.eclipse.jetty.server.handler.HandlerWrapper.handle (HandlerWrapper.java:122)
+    at org.eclipse.jetty.server.Server.handle (Server.java:563)
+    at org.eclipse.jetty.server.HttpChannel.lambda$handle$0 (HttpChannel.java:505)
+    at org.eclipse.jetty.server.HttpChannel.dispatch (HttpChannel.java:762)
+    at org.eclipse.jetty.server.HttpChannel.handle (HttpChannel.java:497)
+    at org.eclipse.jetty.server.HttpConnection.onFillable (HttpConnection.java:282)
+    at org.eclipse.jetty.io.AbstractConnection$ReadCallback.succeeded (AbstractConnection.java:314)
+    at org.eclipse.jetty.io.FillInterest.fillable (FillInterest.java:100)
+    at org.eclipse.jetty.io.SelectableChannelEndPoint$1.run (SelectableChannelEndPoint.java:53)
+    at org.eclipse.jetty.util.thread.strategy.AdaptiveExecutionStrategy.runTask (AdaptiveExecutionStrategy.java:416)
+    at org.eclipse.jetty.util.thread.strategy.AdaptiveExecutionStrategy.consumeTask (AdaptiveExecutionStrategy.java:385)
+    at org.eclipse.jetty.util.thread.strategy.AdaptiveExecutionStrategy.tryProduce (AdaptiveExecutionStrategy.java:272)
+    at org.eclipse.jetty.util.thread.strategy.AdaptiveExecutionStrategy.produce (AdaptiveExecutionStrategy.java:194)
+    at org.eclipse.jetty.util.thread.QueuedThreadPool.runJob (QueuedThreadPool.java:969)
+    at org.eclipse.jetty.util.thread.QueuedThreadPool$Runner.doRunJob (QueuedThreadPool.java:1194)
+    at org.eclipse.jetty.util.thread.QueuedThreadPool$Runner.run (QueuedThreadPool.java:1149)
+    at java.lang.Thread.run (Thread.java:1575)
+
+=== Unhandled Exception (LanguageFilter) ===
+Path: /smart-calendar/login
+Lang: en
+Query: (none)
+User-Agent: curl/8.7.1
+Exception Type: org.apache.jasper.JasperException
+Message: /WEB-INF/jspf/footer.jspf (line: [6], column: [0]) useBean: Duplicate bean name: [{0}]
+org.apache.jasper.JasperException: /WEB-INF/jspf/footer.jspf (line: [6], column: [0]) useBean: Duplicate bean name: [{0}]
+	at org.apache.jasper.compiler.DefaultErrorHandler.jspError(DefaultErrorHandler.java:41)
+	at org.apache.jasper.compiler.ErrorDispatcher.dispatch(ErrorDispatcher.java:292)
+	at org.apache.jasper.compiler.ErrorDispatcher.jspError(ErrorDispatcher.java:115)
+	at org.apache.jasper.compiler.Validator$ValidateVisitor.visit(Validator.java:651)
+	at org.apache.jasper.compiler.Node$UseBean.accept(Node.java:1189)
+	at org.apache.jasper.compiler.Node$Nodes.visit(Node.java:2387)
+	at org.apache.jasper.compiler.Node$Visitor.visitBody(Node.java:2439)
+	at org.apache.jasper.compiler.Node$Visitor.visit(Node.java:2445)
+	at org.apache.jasper.compiler.Node$Root.accept(Node.java:473)
+	at org.apache.jasper.compiler.Node$Nodes.visit(Node.java:2387)
+	at org.apache.jasper.compiler.Node$Visitor.visitBody(Node.java:2439)
+	at org.apache.jasper.compiler.Validator$ValidateVisitor.visit(Validator.java:548)
+	at org.apache.jasper.compiler.Node$IncludeDirective.accept(Node.java:646)
+	at org.apache.jasper.compiler.Node$Nodes.visit(Node.java:2387)
+	at org.apache.jasper.compiler.Node$Visitor.visitBody(Node.java:2439)
+	at org.apache.jasper.compiler.Node$Visitor.visit(Node.java:2445)
+	at org.apache.jasper.compiler.Node$Root.accept(Node.java:473)
+	at org.apache.jasper.compiler.Node$Nodes.visit(Node.java:2387)
+	at org.apache.jasper.compiler.Validator.validateExDirectives(Validator.java:1869)
+	at org.apache.jasper.compiler.Compiler.generateJava(Compiler.java:224)
+	at org.apache.jasper.compiler.Compiler.compile(Compiler.java:391)
+	at org.apache.jasper.compiler.Compiler.compile(Compiler.java:367)
+	at org.apache.jasper.compiler.Compiler.compile(Compiler.java:351)
+	at org.apache.jasper.JspCompilationContext.compile(JspCompilationContext.java:603)
+	at org.apache.jasper.servlet.JspServletWrapper.service(JspServletWrapper.java:399)
+	at org.apache.jasper.servlet.JspServlet.serviceJspFile(JspServlet.java:380)
+	at org.apache.jasper.servlet.JspServlet.service(JspServlet.java:328)
+	at org.eclipse.jetty.jsp.JettyJspServlet.service(JettyJspServlet.java:101)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:587)
+	at org.eclipse.jetty.servlet.ServletHolder$NotAsync.service(ServletHolder.java:1419)
+	at org.eclipse.jetty.servlet.ServletHolder.handle(ServletHolder.java:764)
+	at org.eclipse.jetty.servlet.ServletHandler$ChainEnd.doFilter(ServletHandler.java:1665)
+	at org.eclipse.jetty.servlet.ServletHandler.doHandle(ServletHandler.java:527)
+	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:131)
+	at org.eclipse.jetty.security.SecurityHandler.handle(SecurityHandler.java:596)
+	at org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:122)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:223)
+	at org.eclipse.jetty.server.session.SessionHandler.doHandle(SessionHandler.java:1570)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:221)
+	at org.eclipse.jetty.server.handler.ContextHandler.doHandle(ContextHandler.java:1381)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:176)
+	at org.eclipse.jetty.servlet.ServletHandler.doScope(ServletHandler.java:484)
+	at org.eclipse.jetty.server.session.SessionHandler.doScope(SessionHandler.java:1543)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:174)
+	at org.eclipse.jetty.server.handler.ContextHandler.doScope(ContextHandler.java:1303)
+	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:129)
+	at org.eclipse.jetty.server.Dispatcher.forward(Dispatcher.java:215)
+	at org.eclipse.jetty.server.Dispatcher.forward(Dispatcher.java:135)
+	at com.smartcalendar.servlets.LoginServlet.doGet(LoginServlet.java:38)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:500)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:587)
+	at org.eclipse.jetty.servlet.ServletHolder$NotAsync.service(ServletHolder.java:1419)
+	at org.eclipse.jetty.servlet.ServletHolder.handle(ServletHolder.java:764)
+	at org.eclipse.jetty.servlet.ServletHandler$ChainEnd.doFilter(ServletHandler.java:1665)
+	at com.smartcalendar.filters.LanguageFilter.doFilter(LanguageFilter.java:48)
+	at org.eclipse.jetty.servlet.FilterHolder.doFilter(FilterHolder.java:202)
+	at org.eclipse.jetty.servlet.ServletHandler$Chain.doFilter(ServletHandler.java:1635)
+	at com.smartcalendar.filters.CsrfFilter.doFilter(CsrfFilter.java:71)
+	at org.eclipse.jetty.servlet.FilterHolder.doFilter(FilterHolder.java:210)
+	at org.eclipse.jetty.servlet.ServletHandler$Chain.doFilter(ServletHandler.java:1635)
+	at org.eclipse.jetty.websocket.servlet.WebSocketUpgradeFilter.doFilter(WebSocketUpgradeFilter.java:170)
+	at org.eclipse.jetty.servlet.FilterHolder.doFilter(FilterHolder.java:202)
+	at org.eclipse.jetty.servlet.ServletHandler$Chain.doFilter(ServletHandler.java:1635)
+	at org.eclipse.jetty.servlet.ServletHandler.doHandle(ServletHandler.java:527)
+	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:131)
+	at org.eclipse.jetty.security.SecurityHandler.handle(SecurityHandler.java:578)
+	at org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:122)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:223)
+	at org.eclipse.jetty.server.session.SessionHandler.doHandle(SessionHandler.java:1570)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:221)
+	at org.eclipse.jetty.server.handler.ContextHandler.doHandle(ContextHandler.java:1381)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:176)
+	at org.eclipse.jetty.servlet.ServletHandler.doScope(ServletHandler.java:484)
+	at org.eclipse.jetty.server.session.SessionHandler.doScope(SessionHandler.java:1543)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:174)
+	at org.eclipse.jetty.server.handler.ContextHandler.doScope(ContextHandler.java:1303)
+	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:129)
+	at org.eclipse.jetty.server.handler.ContextHandlerCollection.handle(ContextHandlerCollection.java:149)
+	at org.eclipse.jetty.server.handler.HandlerList.handle(HandlerList.java:51)
+	at org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:122)
+	at org.eclipse.jetty.server.Server.handle(Server.java:563)
+	at org.eclipse.jetty.server.HttpChannel.lambda$handle$0(HttpChannel.java:505)
+	at org.eclipse.jetty.server.HttpChannel.dispatch(HttpChannel.java:762)
+	at org.eclipse.jetty.server.HttpChannel.handle(HttpChannel.java:497)
+	at org.eclipse.jetty.server.HttpConnection.onFillable(HttpConnection.java:282)
+	at org.eclipse.jetty.io.AbstractConnection$ReadCallback.succeeded(AbstractConnection.java:314)
+	at org.eclipse.jetty.io.FillInterest.fillable(FillInterest.java:100)
+	at org.eclipse.jetty.io.SelectableChannelEndPoint$1.run(SelectableChannelEndPoint.java:53)
+	at org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:969)
+	at org.eclipse.jetty.util.thread.QueuedThreadPool$Runner.doRunJob(QueuedThreadPool.java:1194)
+	at org.eclipse.jetty.util.thread.QueuedThreadPool$Runner.run(QueuedThreadPool.java:1149)
+	at java.base/java.lang.Thread.run(Thread.java:1575)
+=== End Exception ===
+
+[WARNING] /smart-calendar/login
+org.apache.jasper.JasperException: /WEB-INF/jspf/footer.jspf (line: [6], column: [0]) useBean: Duplicate bean name: [{0}]
+    at org.apache.jasper.compiler.DefaultErrorHandler.jspError (DefaultErrorHandler.java:41)
+    at org.apache.jasper.compiler.ErrorDispatcher.dispatch (ErrorDispatcher.java:292)
+    at org.apache.jasper.compiler.ErrorDispatcher.jspError (ErrorDispatcher.java:115)
+    at org.apache.jasper.compiler.Validator$ValidateVisitor.visit (Validator.java:651)
+    at org.apache.jasper.compiler.Node$UseBean.accept (Node.java:1189)
+    at org.apache.jasper.compiler.Node$Nodes.visit (Node.java:2387)
+    at org.apache.jasper.compiler.Node$Visitor.visitBody (Node.java:2439)
+    at org.apache.jasper.compiler.Node$Visitor.visit (Node.java:2445)
+    at org.apache.jasper.compiler.Node$Root.accept (Node.java:473)
+    at org.apache.jasper.compiler.Node$Nodes.visit (Node.java:2387)
+    at org.apache.jasper.compiler.Node$Visitor.visitBody (Node.java:2439)
+    at org.apache.jasper.compiler.Validator$ValidateVisitor.visit (Validator.java:548)
+    at org.apache.jasper.compiler.Node$IncludeDirective.accept (Node.java:646)
+    at org.apache.jasper.compiler.Node$Nodes.visit (Node.java:2387)
+    at org.apache.jasper.compiler.Node$Visitor.visitBody (Node.java:2439)
+    at org.apache.jasper.compiler.Node$Visitor.visit (Node.java:2445)
+    at org.apache.jasper.compiler.Node$Root.accept (Node.java:473)
+    at org.apache.jasper.compiler.Node$Nodes.visit (Node.java:2387)
+    at org.apache.jasper.compiler.Validator.validateExDirectives (Validator.java:1869)
+    at org.apache.jasper.compiler.Compiler.generateJava (Compiler.java:224)
+    at org.apache.jasper.compiler.Compiler.compile (Compiler.java:391)
+    at org.apache.jasper.compiler.Compiler.compile (Compiler.java:367)
+    at org.apache.jasper.compiler.Compiler.compile (Compiler.java:351)
+    at org.apache.jasper.JspCompilationContext.compile (JspCompilationContext.java:603)
+    at org.apache.jasper.servlet.JspServletWrapper.service (JspServletWrapper.java:399)
+    at org.apache.jasper.servlet.JspServlet.serviceJspFile (JspServlet.java:380)
+    at org.apache.jasper.servlet.JspServlet.service (JspServlet.java:328)
+    at org.eclipse.jetty.jsp.JettyJspServlet.service (JettyJspServlet.java:101)
+    at jakarta.servlet.http.HttpServlet.service (HttpServlet.java:587)
+    at org.eclipse.jetty.servlet.ServletHolder$NotAsync.service (ServletHolder.java:1419)
+    at org.eclipse.jetty.servlet.ServletHolder.handle (ServletHolder.java:764)
+    at org.eclipse.jetty.servlet.ServletHandler$ChainEnd.doFilter (ServletHandler.java:1665)
+    at org.eclipse.jetty.servlet.ServletHandler.doHandle (ServletHandler.java:527)
+    at org.eclipse.jetty.server.handler.ScopedHandler.handle (ScopedHandler.java:131)
+    at org.eclipse.jetty.security.SecurityHandler.handle (SecurityHandler.java:596)
+    at org.eclipse.jetty.server.handler.HandlerWrapper.handle (HandlerWrapper.java:122)
+    at org.eclipse.jetty.server.handler.ScopedHandler.nextHandle (ScopedHandler.java:223)
+    at org.eclipse.jetty.server.session.SessionHandler.doHandle (SessionHandler.java:1570)
+    at org.eclipse.jetty.server.handler.ScopedHandler.nextHandle (ScopedHandler.java:221)
+    at org.eclipse.jetty.server.handler.ContextHandler.doHandle (ContextHandler.java:1381)
+    at org.eclipse.jetty.server.handler.ScopedHandler.nextScope (ScopedHandler.java:176)
+    at org.eclipse.jetty.servlet.ServletHandler.doScope (ServletHandler.java:484)
+    at org.eclipse.jetty.server.session.SessionHandler.doScope (SessionHandler.java:1543)
+    at org.eclipse.jetty.server.handler.ScopedHandler.nextScope (ScopedHandler.java:174)
+    at org.eclipse.jetty.server.handler.ContextHandler.doScope (ContextHandler.java:1303)
+    at org.eclipse.jetty.server.handler.ScopedHandler.handle (ScopedHandler.java:129)
+    at org.eclipse.jetty.server.Dispatcher.forward (Dispatcher.java:215)
+    at org.eclipse.jetty.server.Dispatcher.forward (Dispatcher.java:135)
+    at com.smartcalendar.servlets.LoginServlet.doGet (LoginServlet.java:38)
+    at jakarta.servlet.http.HttpServlet.service (HttpServlet.java:500)
+    at jakarta.servlet.http.HttpServlet.service (HttpServlet.java:587)
+    at org.eclipse.jetty.servlet.ServletHolder$NotAsync.service (ServletHolder.java:1419)
+    at org.eclipse.jetty.servlet.ServletHolder.handle (ServletHolder.java:764)
+    at org.eclipse.jetty.servlet.ServletHandler$ChainEnd.doFilter (ServletHandler.java:1665)
+    at com.smartcalendar.filters.LanguageFilter.doFilter (LanguageFilter.java:48)
+    at org.eclipse.jetty.servlet.FilterHolder.doFilter (FilterHolder.java:202)
+    at org.eclipse.jetty.servlet.ServletHandler$Chain.doFilter (ServletHandler.java:1635)
+    at com.smartcalendar.filters.CsrfFilter.doFilter (CsrfFilter.java:71)
+    at org.eclipse.jetty.servlet.FilterHolder.doFilter (FilterHolder.java:210)
+    at org.eclipse.jetty.servlet.ServletHandler$Chain.doFilter (ServletHandler.java:1635)
+    at org.eclipse.jetty.websocket.servlet.WebSocketUpgradeFilter.doFilter (WebSocketUpgradeFilter.java:170)
+    at org.eclipse.jetty.servlet.FilterHolder.doFilter (FilterHolder.java:202)
+    at org.eclipse.jetty.servlet.ServletHandler$Chain.doFilter (ServletHandler.java:1635)
+    at org.eclipse.jetty.servlet.ServletHandler.doHandle (ServletHandler.java:527)
+    at org.eclipse.jetty.server.handler.ScopedHandler.handle (ScopedHandler.java:131)
+    at org.eclipse.jetty.security.SecurityHandler.handle (SecurityHandler.java:578)
+    at org.eclipse.jetty.server.handler.HandlerWrapper.handle (HandlerWrapper.java:122)
+    at org.eclipse.jetty.server.handler.ScopedHandler.nextHandle (ScopedHandler.java:223)
+    at org.eclipse.jetty.server.session.SessionHandler.doHandle (SessionHandler.java:1570)
+    at org.eclipse.jetty.server.handler.ScopedHandler.nextHandle (ScopedHandler.java:221)
+    at org.eclipse.jetty.server.handler.ContextHandler.doHandle (ContextHandler.java:1381)
+    at org.eclipse.jetty.server.handler.ScopedHandler.nextScope (ScopedHandler.java:176)
+    at org.eclipse.jetty.servlet.ServletHandler.doScope (ServletHandler.java:484)
+    at org.eclipse.jetty.server.session.SessionHandler.doScope (SessionHandler.java:1543)
+    at org.eclipse.jetty.server.handler.ScopedHandler.nextScope (ScopedHandler.java:174)
+    at org.eclipse.jetty.server.handler.ContextHandler.doScope (ContextHandler.java:1303)
+    at org.eclipse.jetty.server.handler.ScopedHandler.handle (ScopedHandler.java:129)
+    at org.eclipse.jetty.server.handler.ContextHandlerCollection.handle (ContextHandlerCollection.java:149)
+    at org.eclipse.jetty.server.handler.HandlerList.handle (HandlerList.java:51)
+    at org.eclipse.jetty.server.handler.HandlerWrapper.handle (HandlerWrapper.java:122)
+    at org.eclipse.jetty.server.Server.handle (Server.java:563)
+    at org.eclipse.jetty.server.HttpChannel.lambda$handle$0 (HttpChannel.java:505)
+    at org.eclipse.jetty.server.HttpChannel.dispatch (HttpChannel.java:762)
+    at org.eclipse.jetty.server.HttpChannel.handle (HttpChannel.java:497)
+    at org.eclipse.jetty.server.HttpConnection.onFillable (HttpConnection.java:282)
+    at org.eclipse.jetty.io.AbstractConnection$ReadCallback.succeeded (AbstractConnection.java:314)
+    at org.eclipse.jetty.io.FillInterest.fillable (FillInterest.java:100)
+    at org.eclipse.jetty.io.SelectableChannelEndPoint$1.run (SelectableChannelEndPoint.java:53)
+    at org.eclipse.jetty.util.thread.QueuedThreadPool.runJob (QueuedThreadPool.java:969)
+    at org.eclipse.jetty.util.thread.QueuedThreadPool$Runner.doRunJob (QueuedThreadPool.java:1194)
+    at org.eclipse.jetty.util.thread.QueuedThreadPool$Runner.run (QueuedThreadPool.java:1149)
+    at java.lang.Thread.run (Thread.java:1575)

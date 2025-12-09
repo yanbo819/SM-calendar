@@ -73,8 +73,7 @@
     <nav class="main-nav">
         <div class="nav-container">
             <h1 class="nav-title" style="display:flex;align-items:center;gap:8px;">
-                <img src="images/logo-animated-pro.svg" alt="Smart Calendar" width="140" height="42" loading="eager" decoding="async" />
-                <span><%= LanguageUtil.getText(lang, "app.title") %></span>
+                <img src="images/logo-icon.svg" alt="Smart Calendar" width="120" height="120" loading="eager" decoding="async" />
             </h1>
             <div class="nav-actions" style="display:flex;align-items:center;gap:8px;position:relative;">
                 <span class="user-welcome">

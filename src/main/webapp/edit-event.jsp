@@ -51,7 +51,7 @@
     <nav class="main-nav">
         <div class="nav-container">
             <h1 class="nav-title" style="display:flex;align-items:center;gap:8px;">
-                <img src="images/logo-animated-pro.svg" alt="Smart Calendar" width="140" height="42" loading="eager" decoding="async" />
+                <img src="images/logo-smart.svg" alt="Smart Calendar" width="140" height="42" loading="eager" decoding="async" />
                 <a href="dashboard.jsp"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "app.title") %></a>
             </h1>
             <div class="nav-actions">
@@ -62,6 +62,8 @@
     </nav>
 
     <div class="form-container">
+
+    <%@ include file="/WEB-INF/jspf/footer.jspf" %>
         <div class="form-header" style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
             <div>
                 <h2 class="page-title"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "event.editTitle") %></h2>

@@ -98,6 +98,8 @@
     </nav>
 
     <div class="form-container">
+
+    <%@ include file="/WEB-INF/jspf/footer.jspf" %>
         <div class="form-header" style="display:flex; align-items:center; justify-content:space-between; gap:12px;">
             <div>
                 <h2 class="page-title"><%= LanguageUtil.getText(lang, "event.createPageTitle") %></h2>

@@ -34,7 +34,7 @@
   <nav class="main-nav">
     <div class="nav-container">
       <h1 class="nav-title" style="display:flex;align-items:center;gap:8px;">
-        <img src="images/logo-animated-pro.svg" alt="Smart Calendar" width="140" height="42" loading="eager" decoding="async" />
+        <img src="images/logo-smart.svg" alt="Smart Calendar" width="140" height="42" loading="eager" decoding="async" />
         <a href="dashboard.jsp">Smart Calendar</a>
       </h1>
       <div class="nav-actions">
@@ -44,6 +44,8 @@
   </nav>
   <% if (isAdmin) { %>
   <jsp:include page="/WEB-INF/jsp/includes/admin-toolbar.jspf" />
+
+  <%@ include file="/WEB-INF/jspf/footer.jspf" %>
   <% } %>
   <div class="form-container">
     <div class="form-header" style="display:flex;align-items:center;justify-content:space-between;gap:12px;">

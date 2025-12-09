@@ -47,7 +47,7 @@
             <!-- Brand Section -->
             <div class="auth-brand">
                 <div class="brand-logo" style="display:flex;align-items:center;justify-content:center;background:transparent;box-shadow:none;width:auto;height:auto;margin-bottom:var(--space-2);">
-                    <img src="images/logo-animated-pro.svg" alt="Smart Calendar" width="320" height="96" loading="eager" decoding="async" />
+                    <img src="images/logo-icon.svg" alt="Smart Calendar" width="160" height="160" loading="eager" decoding="async" />
                 </div>
                 <h1 class="brand-title"><%= LanguageUtil.getText(lang, "app.title") %></h1>
                 <p class="brand-subtitle"><%= LanguageUtil.getText(lang, "login.subtitle") %></p>

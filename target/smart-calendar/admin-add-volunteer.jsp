@@ -28,6 +28,7 @@
         .container{max-width:500px;margin:40px auto;padding:0 16px;}
         .form-section{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:32px;}
         .form-title{margin:0 0 18px 0;text-align:center;font-size:1.3em;font-weight:600;}
+<%@ include file="/WEB-INF/jspf/footer.jspf" %>
         .form-grid{display:grid;gap:18px;}
         .form-grid label{font-weight:500;display:block;margin-bottom:6px;}
         .form-grid input,.form-grid select{width:100%;padding:10px;border:1px solid #e5e7eb;border-radius:8px;font-size:1em;}

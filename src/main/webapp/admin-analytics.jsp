@@ -37,6 +37,8 @@
 </nav>
 <div class="analytics-container">
   <div class="filters">
+
+<%@ include file="/WEB-INF/jspf/footer.jspf" %>
     <div style="flex:1;min-inline-size:240px">
       <label for="endpoint">Endpoint</label>
       <form method="get" action="admin-analytics" style="display:flex;gap:12px;flex-wrap:wrap">

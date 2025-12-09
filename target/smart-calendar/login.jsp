@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/jspf/lang-init.jspf" %>
+<%@ include file="/WEB-INF/jspf/app-brand.jspf" %>
 <%@ page import="com.smartcalendar.utils.LanguageUtil" %>
 <%
     String errorMessage = (String) request.getAttribute("errorMessage");
@@ -9,7 +10,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= LanguageUtil.getText(lang, "app.title") %> - <%= LanguageUtil.getText(lang, "login.title") %></title>
+    <title><%= (String)request.getAttribute("appName") %> - <%= LanguageUtil.getText(lang, "login.title") %></title>
     <%@ include file="/WEB-INF/jspf/csrf-meta.jspf" %>
     <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="css/modern-auth.css">
@@ -47,9 +48,9 @@
             <!-- Brand Section -->
             <div class="auth-brand">
                 <div class="brand-logo" style="display:flex;align-items:center;justify-content:center;background:transparent;box-shadow:none;width:auto;height:auto;margin-bottom:var(--space-2);">
-                    <img src="images/logo-icon.svg" alt="Smart Calendar" width="160" height="160" loading="eager" decoding="async" />
+                    <img src="images/logo-health.svg" alt="App Logo" width="168" height="168" loading="eager" decoding="async" />
                 </div>
-                <h1 class="brand-title"><%= LanguageUtil.getText(lang, "app.title") %></h1>
+                <h1 class="brand-title"><%= (String)request.getAttribute("appName") %></h1>
                 <p class="brand-subtitle"><%= LanguageUtil.getText(lang, "login.subtitle") %></p>
             </div>
 

@@ -17,7 +17,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin Publish Event</title>
+  <%@ include file="/WEB-INF/jspf/app-brand.jspf" %>
+  <title><%= (String)request.getAttribute("appName") %> - Admin Publish Event</title>
   <%@ include file="/WEB-INF/jspf/csrf-meta.jspf" %>
   <link rel="stylesheet" href="css/main.css" />
   <style>
@@ -31,17 +32,7 @@
 </head>
 <body>
 <%@ include file="/WEB-INF/jspf/flash-messages.jspf" %>
-  <nav class="main-nav">
-    <div class="nav-container">
-      <h1 class="nav-title" style="display:flex;align-items:center;gap:8px;">
-        <img src="images/logo-smart.svg" alt="Smart Calendar" width="140" height="42" loading="eager" decoding="async" />
-        <a href="dashboard.jsp">Smart Calendar</a>
-      </h1>
-      <div class="nav-actions">
-        <span class="user-welcome">Admin: <%= user.getFullName() %></span>
-      </div>
-    </div>
-  </nav>
+  <%@ include file="/WEB-INF/jspf/topnav.jspf" %>
   <% if (isAdmin) { %>
   <jsp:include page="/WEB-INF/jsp/includes/admin-toolbar.jspf" />
 

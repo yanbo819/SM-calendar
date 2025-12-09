@@ -1,0 +1,11 @@
+<%
+{
+	if (request.getAttribute("appName") == null) {
+		String _appNameParam = getServletContext().getInitParameter("app.name");
+		request.setAttribute(
+			"appName",
+			(_appNameParam != null && !_appNameParam.isBlank()) ? _appNameParam : "Smart Calendar"
+		);
+	}
+}
+%>

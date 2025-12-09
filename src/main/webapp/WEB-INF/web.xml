@@ -13,6 +13,10 @@
 
     <!-- Context Parameters -->
     <context-param>
+        <param-name>app.name</param-name>
+        <param-value>Smart Calendar</param-value>
+    </context-param>
+    <context-param>
         <param-name>app.version</param-name>
         <param-value>1.0.0</param-value>
     </context-param>

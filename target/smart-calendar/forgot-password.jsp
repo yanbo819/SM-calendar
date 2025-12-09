@@ -14,7 +14,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= LanguageUtil.getText(lang, "app.title") %> - Reset Password</title>
+    <%@ include file="/WEB-INF/jspf/app-brand.jspf" %>
+    <title><%= (String)request.getAttribute("appName") %> - Reset Password</title>
     <link rel="stylesheet" href="css/modern-auth.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -101,7 +102,7 @@
             <!-- Brand Section -->
             <div class="auth-brand">
                 <div class="brand-logo" style="display:flex;align-items:center;justify-content:center;background:transparent;box-shadow:none;width:auto;height:auto;margin-bottom:var(--space-2);">
-                    <img src="images/logo-animated-pro.svg" alt="Smart Calendar" width="280" height="84" loading="eager" decoding="async" />
+                    <img src="images/logo-health.svg" alt="App Logo" width="168" height="168" loading="eager" decoding="async" />
                 </div>
                 <h1 class="brand-title">Reset Password</h1>
                 <p class="brand-subtitle">Don't worry! We'll help you reset your password securely.</p>

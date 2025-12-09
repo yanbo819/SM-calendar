@@ -1,0 +1,65 @@
+<%@ include file="/WEB-INF/jspf/app-brand.jspf" %>
+<%@ page import="com.smartcalendar.utils.LanguageUtil" %>
+<nav class="main-nav" style="position:sticky;top:0;inset-inline:0;background:#fff;border-bottom:1px solid #e5e7eb;z-index:100;">
+  <div class="nav-container">
+    <h1 class="nav-title" style="display:flex;align-items:center;gap:6px;margin:0;padding:6px 8px 6px 10px;">
+      <img id="brandLogo" src="images/logo-health.svg" alt="App Logo" width="40" height="40" loading="eager" decoding="async" />
+      <a href="dashboard" id="brandName" style="font-weight:600;font-size:1.0rem;line-height:1;">&nbsp;<%= (String)request.getAttribute("appName") %></a>
+    </h1>
+    <div class="nav-actions" style="display:flex;align-items:center;gap:8px;position:relative;margin-left:auto;padding:6px 10px;">
+      <button id="navMoreToggle" class="btn btn-outline" title="Settings" aria-label="Settings" aria-haspopup="true" aria-expanded="false" style="display:flex;align-items:center;gap:6px;padding:6px 10px;font-size:.85rem;">
+        <span>⚙️</span>
+        <span class="settings-label">Settings</span>
+      </button>
+      <div id="navMoreMenu" style="display:none;position:absolute;inset-block-start:100%;inset-inline-end:0;background:#fff;border:1px solid #ddd;border-radius:8px;padding:8px;min-inline-size:220px;box-shadow:0 4px 12px rgba(0,0,0,.12);z-index:50">
+        <form action="set-language" method="post" style="margin:0;display:flex;align-items:center;gap:6px;">
+          <%@ include file="/WEB-INF/jspf/csrf-token.jspf" %>
+          <label for="lang" style="font-size:.8rem;color:#374151;">Language</label>
+          <select name="lang" id="lang" onchange="this.form.submit()" class="form-control" style="padding:4px 8px;min-inline-size:120px;">
+            <% for (String code : LanguageUtil.getSupportedLanguages()) { %>
+              <option value="<%= code %>" <%= code.equals((String)(session.getAttribute("lang") != null ? session.getAttribute("lang") : "en"))?"selected":"" %>><%= LanguageUtil.getLanguageName(code) %></option>
+            <% } %>
+          </select>
+        </form>
+        <a href="events" class="btn btn-outline" style="inline-size:100%;margin-block:6px">Events</a>
+        <a href="logout" class="btn btn-outline" style="inline-size:100%;margin-block:6px">Logout</a>
+      </div>
+    </div>
+  </div>
+</nav>
+<script>
+(function(){
+  const toggle = document.getElementById('navMoreToggle');
+  const menu = document.getElementById('navMoreMenu');
+  if (!toggle || !menu) return;
+  toggle.addEventListener('click', function(){
+    const open = menu.style.display === 'block';
+    menu.style.display = open ? 'none' : 'block';
+    toggle.setAttribute('aria-expanded', open ? 'false' : 'true');
+  });
+  document.addEventListener('click', function(e){
+    if (!menu.contains(e.target) && e.target !== toggle) {
+      menu.style.display = 'none';
+      toggle.setAttribute('aria-expanded', 'false');
+    }
+  });
+})();
+</script>
+<style>
+  /* Make container span full width and align items to corners */
+  .main-nav > .nav-container { display:flex; align-items:center; justify-content:space-between; padding:0; }
+  /* Smaller dropdown holder */
+  #navMoreMenu { min-inline-size: 180px !important; }
+  /* Responsive tweaks */
+  @media (max-width: 768px){
+    #brandLogo{ width:32px; height:32px; }
+    #brandName{ font-size:.95rem; }
+    #navMoreToggle{ padding:6px 8px; }
+    .settings-label{ display:none; }
+  }
+  @media (max-width: 480px){
+    #brandLogo{ width:28px; height:28px; }
+    #brandName{ font-size:.9rem; }
+    #navMoreMenu{ min-inline-size: 160px !important; }
+  }
+</style>

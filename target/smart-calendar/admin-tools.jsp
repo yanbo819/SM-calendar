@@ -10,7 +10,8 @@
 <html lang="<%= lang %>" dir="<%= textDir %>">
 <head>
 <meta charset="UTF-8" />
-<title><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.tools") %></title>
+<%@ include file="/WEB-INF/jspf/app-brand.jspf" %>
+<title><%= (String)request.getAttribute("appName") %> - <%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.tools") %></title>
 <%@ include file="/WEB-INF/jspf/csrf-meta.jspf" %>
 <link rel="stylesheet" href="css/main.css" />
 <link rel="stylesheet" href="css/dashboard.css" />
@@ -25,28 +26,7 @@
 </style>
 </head>
 <body dir="<%= textDir %>">
-<nav class="main-nav">
-    <div class="nav-container">
-        <h1 class="nav-title" style="display:flex;align-items:center;gap:8px;">
-            <img src="images/logo-animated-pro.svg" alt="Smart Calendar" width="140" height="42" loading="eager" decoding="async" />
-            <a href="dashboard"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "app.title") %></a>
-        </h1>
-        <div class="nav-actions" style="display:flex;gap:8px;align-items:center;">
-            <form action="set-language" method="post" style="margin:0;display:flex;align-items:center;gap:4px;">
-                <%@ include file="/WEB-INF/jspf/csrf-token.jspf" %>
-                <select name="lang" onchange="this.form.submit()" class="form-control" style="padding:4px 8px;min-inline-size:110px;">
-                    <%
-                        for (String code : com.smartcalendar.utils.LanguageUtil.getSupportedLanguages()) {
-                    %>
-                    <option value="<%= code %>" <%= code.equals(lang)?"selected":"" %>><%= com.smartcalendar.utils.LanguageUtil.getLanguageName(code) %></option>
-                    <% } %>
-                </select>
-            </form>
-            <a href="events" class="btn btn-outline"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "events.title") %></a>
-            <a href="logout" class="btn btn-outline"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "nav.logout") %></a>
-        </div>
-    </div>
-</nav>
+<%@ include file="/WEB-INF/jspf/topnav.jspf" %>
 <div class="page-wrapper">
     <div class="admin-grid">
         <div class="tool-card">

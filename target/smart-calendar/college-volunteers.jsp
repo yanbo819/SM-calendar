@@ -4,62 +4,7 @@
 <%
     // Check if user is logged in
     User user = (User) session.getAttribute("user");
-    if (user == null) {
-        response.sendRedirect("login.jsp");
-        return;
-    }
-
-    String lang = (String) session.getAttribute("lang");
-    if (lang == null && user.getPreferredLanguage() != null) lang = user.getPreferredLanguage();
-    if (lang == null) lang = "en";
-    String textDir = com.smartcalendar.utils.LanguageUtil.getTextDirection(lang);
-
-    boolean isAdmin = user.getRole() != null && user.getRole().equalsIgnoreCase("admin");
-%>
-<!DOCTYPE html>
-<html lang="<%= lang %>" dir="<%= textDir %>">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= LanguageUtil.getText(lang, "dashboard.collegeVolunteers") %> - <%= LanguageUtil.getText(lang, "app.title") %></title>
-    <%@ include file="/WEB-INF/jspf/csrf-meta.jspf" %>
-    <link rel="stylesheet" href="css/main.css">
-    <link rel="stylesheet" href="css/dashboard.css">
-    <style>
-        /* Consistent dashboard button styling */
-        .nav-actions .btn, .tiles-grid .btn { background:#2563eb; color:#fff; border:1px solid #2563eb; }
-        .nav-actions .btn.btn-outline, .tiles-grid .btn.btn-outline { background:#2563eb; }
-        .nav-actions .btn:hover, .tiles-grid .btn:hover { background:#1d4ed8; border-color:#1d4ed8; }
-        .nav-actions .btn.btn-outline:hover, .tiles-grid .btn.btn-outline:hover { background:#1d4ed8; }
-    </style>
-</head>
-<body>
-    <%@ include file="/WEB-INF/jspf/flash-messages.jspf" %>
-    <!-- Animated background behind tiles -->
-    <div class="dashboard-bg">
-        <div class="orb orb-1"></div>
-        <div class="orb orb-2"></div>
-        <div class="orb orb-3"></div>
-    </div>
-    <nav class="main-nav">
-        <div class="nav-container">
-            <h1 class="nav-title" style="display:flex;align-items:center;gap:8px;">
-                <img src="images/logo-animated-pro.svg" alt="Smart Calendar" width="140" height="42" loading="eager" decoding="async" />
-                <span><%= LanguageUtil.getText(lang, "app.title") %></span>
-            </h1>
-            <div class="nav-actions" style="display:flex;align-items:center;gap:8px;position:relative;">
-                <span class="user-welcome">
-                    <%= LanguageUtil.getText(lang, "dashboard.welcome") %>, <%= user.getFullName() %>!
-                </span>
-                <%
-                    Integer notifCountAttr = (Integer) request.getAttribute("pendingNotifications");
-                    int notifCount = notifCountAttr != null ? notifCountAttr : 0;
-                %>
-                <div id="notifWrapper" style="position:relative;">
-                    <button id="notifBell" class="btn btn-outline" title="<%= LanguageUtil.getText(lang, "notif.title") %>" style="position:relative;padding:4px 10px;line-height:1;display:flex;align-items:center;gap:4px;" onclick="(function(){var d=document.getElementById('notifDropdown');d.style.display=d.style.display==='none'||d.style.display===''?'block':'none';})();">
-                        <span style="font-size:1.1rem">🔔</span>
-                        <% if (notifCount > 0) { %>
-                        <span class="badge" style="position:absolute;inset-block-start:-4px;inset-inline-end:-4px;background:#dc3545;color:#fff;border-radius:12px;padding:2px 6px;font-size:.65rem;"><%= notifCount %></span>
+    <%@ include file="/WEB-INF/jspf/topnav.jspf" %>
                         <% } %>
                     </button>
                     <div id="notifDropdown" style="display:none;position:absolute;inset-block-start:110%;inset-inline-end:0;background:#fff;border:1px solid #ddd;border-radius:8px;min-inline-size:220px;box-shadow:0 4px 14px rgba(0,0,0,.15);padding:8px;z-index:60;">

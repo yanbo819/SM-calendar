@@ -12,7 +12,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= LanguageUtil.getText(lang, "app.title") %> - Create Account</title>
+    <%@ include file="/WEB-INF/jspf/app-brand.jspf" %>
+    <title><%= (String)request.getAttribute("appName") %> - Create Account</title>
     <link rel="stylesheet" href="css/modern-auth.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -72,9 +73,9 @@
             <!-- Brand Section -->
             <div class="auth-brand">
                 <div class="brand-logo" style="display:flex;align-items:center;justify-content:center;background:transparent;box-shadow:none;width:auto;height:auto;margin-bottom:var(--space-2);">
-                    <img src="images/logo-icon.svg" alt="Smart Calendar" width="140" height="140" loading="eager" decoding="async" />
+                    <img src="images/logo-health.svg" alt="App Logo" width="150" height="150" loading="eager" decoding="async" />
                 </div>
-                <h1 class="brand-title">Create Account</h1>
+                <h1 class="brand-title"><%= (String)request.getAttribute("appName") %></h1>
                 <p class="brand-subtitle">Join us today! Fill in the details below to get started.</p>
             </div>
 

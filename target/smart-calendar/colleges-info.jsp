@@ -10,7 +10,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "colleges.info.title") %></title>
+    <%@ include file="/WEB-INF/jspf/app-brand.jspf" %>
+    <title><%= (String)request.getAttribute("appName") %> - <%= com.smartcalendar.utils.LanguageUtil.getText(lang, "colleges.info.title") %></title>
     <link rel="stylesheet" href="css/main.css">
     <style>
         .card{background:#fff;border:1px solid #e5e7eb;border-radius:12px;box-shadow:0 1px 2px rgba(0,0,0,.04);padding:24px}
@@ -45,21 +46,7 @@
     </style>
 </head>
 <body>
-    <nav class="main-nav">
-        <div class="nav-container">
-            <h1 class="nav-title" style="display:flex;align-items:center;gap:8px;">
-                <img src="images/logo-smart.svg" alt="Smart Calendar" width="140" height="42" loading="eager" decoding="async" />
-                <a href="dashboard"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "app.title") %></a>
-            </h1>
-            <div class="nav-actions">
-                <% if (user != null) { %>
-                    <span class="user-welcome"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "dashboard.welcome") %>, <%= user.getFullName() %>!</span>
-                <% } else { %>
-                    <span class="user-welcome"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "dashboard.welcome") %>!</span>
-                <% } %>
-            </div>
-        </div>
-    </nav>
+    <%@ include file="/WEB-INF/jspf/topnav.jspf" %>
 
     <div class="form-container">
         <div class="form-header" style="display:flex;align-items:center;justify-content:space-between;gap:12px;">

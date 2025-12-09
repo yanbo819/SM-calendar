@@ -1,3 +1,5 @@
+<%@ include file="/WEB-INF/jspf/icons.jspf" %>
+
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.util.*" %>
 <%@ page import="com.smartcalendar.models.User" %>
@@ -27,7 +29,7 @@
         .dept-card::before{content:'';position:absolute;inset-block-start:0;inset-inline-start:0;inset-inline-end:0;block-size:4px;background:linear-gradient(90deg,#f093fb,#f5576c,#4facfe,#00f2fe)}
         .dept-card:hover{box-shadow:0 16px 40px rgba(0,0,0,.15);transform:translateY(-6px)}
         .dept-name{font-size:1.15rem;font-weight:600;color:#1f2937;margin:0 0 10px 0;display:flex;align-items:center;gap:8px}
-        .dept-name::before{content:'🎌';font-size:1.2em}
+            .dept-name::before{content:''}
         .dept-desc{font-size:.9rem;color:#6b7280;margin:0 0 14px 0;line-height:1.5}
         .dept-stats{display:flex;gap:16px;margin-block-end:16px}
         .stat-item{display:flex;flex-direction:column;align-items:center;text-align:center}
@@ -87,6 +89,14 @@
         <% if (emptyChinese != null && emptyChinese.booleanValue()) { %>
             <div class="empty-state chinese" style="grid-column:1/-1;">
                 <h2>🀄 <%= com.smartcalendar.utils.LanguageUtil.getText(lang, "chineseVolunteers.subtitle") %></h2>
+                    <h2 style="display:flex;align-items:center;gap:8px">
+                        <span style="color:#f5576c">
+                            <svg aria-hidden="true" focusable="false" width="22" height="22" viewBox="0 0 24 24" role="img">
+                                <use href="#icon-chinese" />
+                            </svg>
+                        </span>
+                        <%= com.smartcalendar.utils.LanguageUtil.getText(lang, "chineseVolunteers.subtitle") %>
+                    </h2>
                 <p><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "chineseVolunteers.empty") %></p>
                 <a href="college-volunteers.jsp" class="btn-chinese" style="max-inline-size:260px;">&larr; <%= com.smartcalendar.utils.LanguageUtil.getText(lang, "common.back") %></a>
             </div>

@@ -22,19 +22,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.volunteer.addNew") %> - <%= dept.getName() %></title>
+    <%@ include file="/WEB-INF/jspf/app-brand.jspf" %>
+    <title><%= (String)request.getAttribute("appName") %> - <%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.volunteer.addNew") %> - <%= dept.getName() %></title>
     <link rel="stylesheet" href="css/main.css">
     <style>
         .container{max-width:500px;margin:40px auto;padding:0 16px;}
         .form-section{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:32px;}
         .form-title{margin:0 0 18px 0;text-align:center;font-size:1.3em;font-weight:600;}
-<%@ include file="/WEB-INF/jspf/footer.jspf" %>
         .form-grid{display:grid;gap:18px;}
         .form-grid label{font-weight:500;display:block;margin-bottom:6px;}
         .form-grid input,.form-grid select{width:100%;padding:10px;border:1px solid #e5e7eb;border-radius:8px;font-size:1em;}
         .form-actions{display:flex;gap:16px;justify-content:center;margin-top:24px;}
         .photo-preview{width:120px;height:120px;object-fit:cover;border-radius:12px;border:1px solid #e5e7eb;margin-bottom:10px;display:none;}
     </style>
+    <%@ include file="/WEB-INF/jspf/csrf-meta.jspf" %>
     <script>
     function previewPhoto(input) {
         const img = document.getElementById('photoPreview');
@@ -48,6 +49,7 @@
     </script>
 </head>
 <body>
+<%@ include file="/WEB-INF/jspf/topnav.jspf" %>
 <div class="container">
     <form class="form-section" method="post" action="admin-cst-volunteers" enctype="multipart/form-data">
         <%@ include file="/WEB-INF/jspf/csrf-token.jspf" %>
@@ -91,5 +93,6 @@
         </div>
     </form>
 </div>
+<%@ include file="/WEB-INF/jspf/footer.jspf" %>
 </body>
 </html>

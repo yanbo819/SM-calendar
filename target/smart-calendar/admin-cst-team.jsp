@@ -15,7 +15,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "cst.admin.title") %></title>
+    <%@ include file="/WEB-INF/jspf/app-brand.jspf" %>
+    <title><%= (String)request.getAttribute("appName") %> - <%= com.smartcalendar.utils.LanguageUtil.getText(lang, "cst.admin.title") %></title>
     <link rel="stylesheet" href="css/main.css">
     <style>
         .grid{display:grid;grid-template-columns:1fr;gap:16px}
@@ -27,14 +28,11 @@
         .cap{text-transform:capitalize}
         .actions{display:flex;gap:8px;align-items:center}
     </style>
+<%@ include file="/WEB-INF/jspf/csrf-meta.jspf" %>
 </head>
 <body>
+<%@ include file="/WEB-INF/jspf/topnav.jspf" %>
 <%@ include file="/WEB-INF/jspf/flash-messages.jspf" %>
-<nav class="main-nav">
-    <div class="nav-container">
-        <h1 class="nav-title"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "cst.admin.title") %></h1>
-    </div>
-</nav>
 <div class="dashboard-container">
     <div class="grid">
         <div class="card">

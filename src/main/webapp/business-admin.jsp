@@ -99,7 +99,7 @@
             <v:deptCard variant="business" id="<%= d.getId() %>" name="<%= d.getName() %>" desc="<%= desc %>" membersCount="<%= cnt %>" viewHref="cst-team-members.jsp?dept=<%= d.getId() %>" />
         <% } %>
     </div>
-    <v:pagination currentPage="<%= request.getAttribute("page") %>" totalPages="<%= request.getAttribute("totalPages") %>" basePath="business-admin" size="<%= request.getAttribute("size") %>" query="<%= request.getAttribute("searchQuery")!=null? (String)request.getAttribute("searchQuery") : "" %>" />
+    <v:pagination currentPage="${page}" totalPages="${totalPages}" basePath="business-admin" size="${size}" query="${searchQuery != null ? searchQuery : ''}" />
     
 </div>
 </div>

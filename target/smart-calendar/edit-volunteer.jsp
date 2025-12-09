@@ -15,7 +15,8 @@
 <html lang="<%= lang %>" dir="<%= textDir %>">
 <head>
   <meta charset="UTF-8" />
-  <title><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.volunteer.editTitle") %></title>
+  <%@ include file="/WEB-INF/jspf/app-brand.jspf" %>
+  <title><%= (String)request.getAttribute("appName") %> - <%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.volunteer.editTitle") %></title>
   <link rel="stylesheet" href="css/main.css" />
   <style>
     .wrap{max-inline-size:780px;margin:30px auto;padding:30px;background:#fff;border:1px solid #e5e7eb;border-radius:22px;box-shadow:0 6px 24px rgba(0,0,0,.06)}
@@ -24,10 +25,11 @@
     input{inline-size:100%;padding:10px 14px;border:1px solid #d1d5db;border-radius:12px;font-size:.85rem}
     .actions{display:flex;gap:12px;flex-wrap:wrap;margin-block-start:20px}
   </style>
+<%@ include file="/WEB-INF/jspf/csrf-meta.jspf" %>
 </head>
 <body>
+<%@ include file="/WEB-INF/jspf/topnav.jspf" %>
 <%@ include file="/WEB-INF/jspf/flash-messages.jspf" %>
-<nav class="main-nav"><div class="nav-container"><h1 class="nav-title"><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "admin.volunteer.editTitle") %></h1></div></nav>
 <div class="wrap">
   <form method="post" action="edit-volunteer" enctype="multipart/form-data">
     <%@ include file="/WEB-INF/jspf/csrf-token.jspf" %>

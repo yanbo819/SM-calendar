@@ -34,22 +34,22 @@
 
         <div class="tiles-grid" style="grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;">
             <!-- Volunteer Tile 1: CST Shining Team -->
-            <a class="tile tile-face" href="cst-team">
+            <a class="tile tile-face" href="cst-team" style="border-color:#2563eb;background:linear-gradient(180deg,#eff6ff,#ffffff);">
                 <div class="tile-content">
                     <div class="tile-header">
-                        <span class="tile-icon">🤝</span>
+                        <span class="tile-icon" style="color:#1d4ed8;">🤝</span>
                         <h3><%= LanguageUtil.getText(lang, "dashboard.cstTeam") %></h3>
                     </div>
                     <p class="tile-desc"><%= LanguageUtil.getText(lang, "dashboard.cstTeamDesc") %></p>
                 </div>
-                <span class="tile-cta"><%= LanguageUtil.getText(lang, "dashboard.openCta") %> →</span>
+                <span class="tile-cta" style="color:#1d4ed8;"><%= LanguageUtil.getText(lang, "dashboard.openCta") %> →</span>
             </a>
 
             <!-- Volunteer Tile 2: Business Administration -->
-            <a class="tile tile-face" href="business-admin">
+            <a class="tile tile-face" href="business-admin" style="border-color:#16a34a;background:linear-gradient(180deg,#ecfdf5,#ffffff);">
                 <div class="tile-content">
                     <div class="tile-header">
-                        <span class="tile-icon">💼</span>
+                        <span class="tile-icon" style="color:#15803d;">💼</span>
                         <h3><%= LanguageUtil.getText(lang, "dashboard.businessAdmin") %></h3>
                     </div>
                     <p class="tile-desc" style="font-size:.8rem;line-height:1.3;color:#4b5563;">
@@ -59,14 +59,14 @@
                         </span>
                     </p>
                 </div>
-                <span class="tile-cta"><%= LanguageUtil.getText(lang, "dashboard.openCta") %> →</span>
+                <span class="tile-cta" style="color:#15803d;"><%= LanguageUtil.getText(lang, "dashboard.openCta") %> →</span>
             </a>
 
             <!-- Volunteer Tile 3: Chinese Language Volunteers -->
-            <a class="tile tile-face" href="chinese-volunteers">
+            <a class="tile tile-face" href="chinese-volunteers" style="border-color:#dc2626;background:linear-gradient(180deg,#fef2f2,#ffffff);">
                 <div class="tile-content">
                     <div class="tile-header">
-                        <span class="tile-icon">🀄</span>
+                        <span class="tile-icon" style="color:#b91c1c;">🀄</span>
                         <h3><%= LanguageUtil.getText(lang, "dashboard.chineseVolunteers") %></h3>
                     </div>
                     <p class="tile-desc" style="font-size:.8rem;line-height:1.3;color:#4b5563;">
@@ -76,7 +76,7 @@
                         </span>
                     </p>
                 </div>
-                <span class="tile-cta"><%= LanguageUtil.getText(lang, "dashboard.openCta") %> →</span>
+                <span class="tile-cta" style="color:#b91c1c;"><%= LanguageUtil.getText(lang, "dashboard.openCta") %> →</span>
             </a>
         </div>
 

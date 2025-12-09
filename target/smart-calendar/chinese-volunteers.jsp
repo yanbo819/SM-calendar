@@ -113,7 +113,7 @@
             <v:deptCard variant="chinese" id="<%= d.getId() %>" name="<%= d.getName() %>" desc="<%= desc %>" membersCount="<%= cnt %>" focus="<%= focus %>" viewHref="cst-team-members.jsp?dept=<%= d.getId() %>" />
         <% } %>
     </div>
-    <v:pagination currentPage="<%= request.getAttribute("page") %>" totalPages="<%= request.getAttribute("totalPages") %>" basePath="chinese-volunteers" size="<%= request.getAttribute("size") %>" query="<%= request.getAttribute("searchQuery")!=null? (String)request.getAttribute("searchQuery") : "" %>" />
+    <v:pagination currentPage="${page}" totalPages="${totalPages}" basePath="chinese-volunteers" size="${size}" query="${searchQuery != null ? searchQuery : ''}" />
     
 </div>
 </div>

@@ -1,171 +1,86 @@
-Dec 09, 2025 9:05:42 PM com.smartcalendar.dao.CollegeDao listAll
-SEVERE: Failed to list colleges
-org.h2.jdbc.JdbcSQLFeatureNotSupportedException: Feature not supported: "AUTO_SERVER=TRUE && DB_CLOSE_ON_EXIT=FALSE" [50100-214]
-	at org.h2.message.DbException.getJdbcSQLException(DbException.java:556)
-	at org.h2.message.DbException.getJdbcSQLException(DbException.java:477)
-	at org.h2.message.DbException.get(DbException.java:223)
-	at org.h2.message.DbException.get(DbException.java:199)
-	at org.h2.message.DbException.getUnsupportedException(DbException.java:287)
-	at org.h2.engine.Database.<init>(Database.java:273)
-	at org.h2.engine.Engine.openSession(Engine.java:92)
-	at org.h2.engine.Engine.openSession(Engine.java:222)
-	at org.h2.engine.Engine.createSession(Engine.java:201)
-	at org.h2.engine.SessionRemote.connectEmbeddedOrServer(SessionRemote.java:338)
-	at org.h2.jdbc.JdbcConnection.<init>(JdbcConnection.java:122)
-	at org.h2.Driver.connect(Driver.java:59)
-	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:682)
-	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:230)
-	at com.smartcalendar.dao.DatabaseUtil.getConnection(DatabaseUtil.java:21)
-	at com.smartcalendar.dao.CollegeDao.listAll(CollegeDao.java:19)
-	at com.smartcalendar.servlets.AdminCollegesServlet.doGet(AdminCollegesServlet.java:35)
-	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:500)
-	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:587)
-	at org.eclipse.jetty.servlet.ServletHolder$NotAsync.service(ServletHolder.java:1419)
-	at org.eclipse.jetty.servlet.ServletHolder.handle(ServletHolder.java:764)
-	at org.eclipse.jetty.servlet.ServletHandler$ChainEnd.doFilter(ServletHandler.java:1665)
-	at com.smartcalendar.filters.LanguageFilter.doFilter(LanguageFilter.java:48)
-	at org.eclipse.jetty.servlet.FilterHolder.doFilter(FilterHolder.java:202)
-	at org.eclipse.jetty.servlet.ServletHandler$Chain.doFilter(ServletHandler.java:1635)
-	at com.smartcalendar.filters.CsrfFilter.doFilter(CsrfFilter.java:71)
-	at org.eclipse.jetty.servlet.FilterHolder.doFilter(FilterHolder.java:210)
-	at org.eclipse.jetty.servlet.ServletHandler$Chain.doFilter(ServletHandler.java:1635)
-	at org.eclipse.jetty.websocket.servlet.WebSocketUpgradeFilter.doFilter(WebSocketUpgradeFilter.java:170)
-	at org.eclipse.jetty.servlet.FilterHolder.doFilter(FilterHolder.java:202)
-	at org.eclipse.jetty.servlet.ServletHandler$Chain.doFilter(ServletHandler.java:1635)
-	at org.eclipse.jetty.servlet.ServletHandler.doHandle(ServletHandler.java:527)
-	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:131)
-	at org.eclipse.jetty.security.SecurityHandler.handle(SecurityHandler.java:578)
-	at org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:122)
-	at org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:223)
-	at org.eclipse.jetty.server.session.SessionHandler.doHandle(SessionHandler.java:1570)
-	at org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:221)
-	at org.eclipse.jetty.server.handler.ContextHandler.doHandle(ContextHandler.java:1381)
-	at org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:176)
-	at org.eclipse.jetty.servlet.ServletHandler.doScope(ServletHandler.java:484)
-	at org.eclipse.jetty.server.session.SessionHandler.doScope(SessionHandler.java:1543)
-	at org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:174)
-	at org.eclipse.jetty.server.handler.ContextHandler.doScope(ContextHandler.java:1303)
-	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:129)
-	at org.eclipse.jetty.server.handler.ContextHandlerCollection.handle(ContextHandlerCollection.java:149)
-	at org.eclipse.jetty.server.handler.HandlerList.handle(HandlerList.java:51)
-	at org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:122)
-	at org.eclipse.jetty.server.Server.handle(Server.java:563)
-	at org.eclipse.jetty.server.HttpChannel.lambda$handle$0(HttpChannel.java:505)
-	at org.eclipse.jetty.server.HttpChannel.dispatch(HttpChannel.java:762)
-	at org.eclipse.jetty.server.HttpChannel.handle(HttpChannel.java:497)
-	at org.eclipse.jetty.server.HttpConnection.onFillable(HttpConnection.java:282)
-	at org.eclipse.jetty.io.AbstractConnection$ReadCallback.succeeded(AbstractConnection.java:314)
-	at org.eclipse.jetty.io.FillInterest.fillable(FillInterest.java:100)
-	at org.eclipse.jetty.io.SelectableChannelEndPoint$1.run(SelectableChannelEndPoint.java:53)
-	at org.eclipse.jetty.util.thread.strategy.AdaptiveExecutionStrategy.runTask(AdaptiveExecutionStrategy.java:416)
-	at org.eclipse.jetty.util.thread.strategy.AdaptiveExecutionStrategy.consumeTask(AdaptiveExecutionStrategy.java:385)
-	at org.eclipse.jetty.util.thread.strategy.AdaptiveExecutionStrategy.tryProduce(AdaptiveExecutionStrategy.java:272)
-	at org.eclipse.jetty.util.thread.strategy.AdaptiveExecutionStrategy.lambda$new$0(AdaptiveExecutionStrategy.java:140)
-	at org.eclipse.jetty.util.thread.ReservedThreadExecutor$ReservedThread.run(ReservedThreadExecutor.java:411)
-	at org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:969)
-	at org.eclipse.jetty.util.thread.QueuedThreadPool$Runner.doRunJob(QueuedThreadPool.java:1194)
-	at org.eclipse.jetty.util.thread.QueuedThreadPool$Runner.run(QueuedThreadPool.java:1149)
-	at java.base/java.lang.Thread.run(Thread.java:1575)
-
-Dec 09, 2025 9:06:25 PM com.smartcalendar.dao.CollegeDao listAll
-SEVERE: Failed to list colleges
-org.h2.jdbc.JdbcSQLFeatureNotSupportedException: Feature not supported: "AUTO_SERVER=TRUE && DB_CLOSE_ON_EXIT=FALSE" [50100-214]
-	at org.h2.message.DbException.getJdbcSQLException(DbException.java:556)
-	at org.h2.message.DbException.getJdbcSQLException(DbException.java:477)
-	at org.h2.message.DbException.get(DbException.java:223)
-	at org.h2.message.DbException.get(DbException.java:199)
-	at org.h2.message.DbException.getUnsupportedException(DbException.java:287)
-	at org.h2.engine.Database.<init>(Database.java:273)
-	at org.h2.engine.Engine.openSession(Engine.java:92)
-	at org.h2.engine.Engine.openSession(Engine.java:222)
-	at org.h2.engine.Engine.createSession(Engine.java:201)
-	at org.h2.engine.SessionRemote.connectEmbeddedOrServer(SessionRemote.java:338)
-	at org.h2.jdbc.JdbcConnection.<init>(JdbcConnection.java:122)
-	at org.h2.Driver.connect(Driver.java:59)
-	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:682)
-	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:230)
-	at com.smartcalendar.dao.DatabaseUtil.getConnection(DatabaseUtil.java:21)
-	at com.smartcalendar.dao.CollegeDao.listAll(CollegeDao.java:19)
-	at com.smartcalendar.servlets.AdminCollegesServlet.doGet(AdminCollegesServlet.java:35)
-	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:500)
-	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:587)
-	at org.eclipse.jetty.servlet.ServletHolder$NotAsync.service(ServletHolder.java:1419)
-	at org.eclipse.jetty.servlet.ServletHolder.handle(ServletHolder.java:764)
-	at org.eclipse.jetty.servlet.ServletHandler$ChainEnd.doFilter(ServletHandler.java:1665)
-	at com.smartcalendar.filters.LanguageFilter.doFilter(LanguageFilter.java:48)
-	at org.eclipse.jetty.servlet.FilterHolder.doFilter(FilterHolder.java:202)
-	at org.eclipse.jetty.servlet.ServletHandler$Chain.doFilter(ServletHandler.java:1635)
-	at com.smartcalendar.filters.CsrfFilter.doFilter(CsrfFilter.java:71)
-	at org.eclipse.jetty.servlet.FilterHolder.doFilter(FilterHolder.java:210)
-	at org.eclipse.jetty.servlet.ServletHandler$Chain.doFilter(ServletHandler.java:1635)
-	at org.eclipse.jetty.websocket.servlet.WebSocketUpgradeFilter.doFilter(WebSocketUpgradeFilter.java:170)
-	at org.eclipse.jetty.servlet.FilterHolder.doFilter(FilterHolder.java:202)
-	at org.eclipse.jetty.servlet.ServletHandler$Chain.doFilter(ServletHandler.java:1635)
-	at org.eclipse.jetty.servlet.ServletHandler.doHandle(ServletHandler.java:527)
-	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:131)
-	at org.eclipse.jetty.security.SecurityHandler.handle(SecurityHandler.java:578)
-	at org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:122)
-	at org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:223)
-	at org.eclipse.jetty.server.session.SessionHandler.doHandle(SessionHandler.java:1570)
-	at org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:221)
-	at org.eclipse.jetty.server.handler.ContextHandler.doHandle(ContextHandler.java:1381)
-	at org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:176)
-	at org.eclipse.jetty.servlet.ServletHandler.doScope(ServletHandler.java:484)
-	at org.eclipse.jetty.server.session.SessionHandler.doScope(SessionHandler.java:1543)
-	at org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:174)
-	at org.eclipse.jetty.server.handler.ContextHandler.doScope(ContextHandler.java:1303)
-	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:129)
-	at org.eclipse.jetty.server.handler.ContextHandlerCollection.handle(ContextHandlerCollection.java:149)
-	at org.eclipse.jetty.server.handler.HandlerList.handle(HandlerList.java:51)
-	at org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:122)
-	at org.eclipse.jetty.server.Server.handle(Server.java:563)
-	at org.eclipse.jetty.server.HttpChannel.lambda$handle$0(HttpChannel.java:505)
-	at org.eclipse.jetty.server.HttpChannel.dispatch(HttpChannel.java:762)
-	at org.eclipse.jetty.server.HttpChannel.handle(HttpChannel.java:497)
-	at org.eclipse.jetty.server.HttpConnection.onFillable(HttpConnection.java:282)
-	at org.eclipse.jetty.io.AbstractConnection$ReadCallback.succeeded(AbstractConnection.java:314)
-	at org.eclipse.jetty.io.FillInterest.fillable(FillInterest.java:100)
-	at org.eclipse.jetty.io.SelectableChannelEndPoint$1.run(SelectableChannelEndPoint.java:53)
-	at org.eclipse.jetty.util.thread.strategy.AdaptiveExecutionStrategy.runTask(AdaptiveExecutionStrategy.java:416)
-	at org.eclipse.jetty.util.thread.strategy.AdaptiveExecutionStrategy.consumeTask(AdaptiveExecutionStrategy.java:385)
-	at org.eclipse.jetty.util.thread.strategy.AdaptiveExecutionStrategy.tryProduce(AdaptiveExecutionStrategy.java:272)
-	at org.eclipse.jetty.util.thread.strategy.AdaptiveExecutionStrategy.lambda$new$0(AdaptiveExecutionStrategy.java:140)
-	at org.eclipse.jetty.util.thread.ReservedThreadExecutor$ReservedThread.run(ReservedThreadExecutor.java:411)
-	at org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:969)
-	at org.eclipse.jetty.util.thread.QueuedThreadPool$Runner.doRunJob(QueuedThreadPool.java:1194)
-	at org.eclipse.jetty.util.thread.QueuedThreadPool$Runner.run(QueuedThreadPool.java:1149)
-	at java.base/java.lang.Thread.run(Thread.java:1575)
-
 
 === Unhandled Exception (LanguageFilter) ===
-Path: /smart-calendar/cst-team-members.jsp
+Path: /smart-calendar/business-admin
 Lang: en
-Query: dept=4
+Query: (none)
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
 Exception Type: org.apache.jasper.JasperException
-Message: /WEB-INF/jspf/flash-messages.jspf (line: [1], column: [2]) Page directive: illegal to have multiple occurrences of 'contentType' with different values (old: [text/html;charset=UTF-8], new: [text/html; charset=UTF-8])
-org.apache.jasper.JasperException: /WEB-INF/jspf/flash-messages.jspf (line: [1], column: [2]) Page directive: illegal to have multiple occurrences of 'contentType' with different values (old: [text/html;charset=UTF-8], new: [text/html; charset=UTF-8])
-	at org.apache.jasper.compiler.DefaultErrorHandler.jspError(DefaultErrorHandler.java:41)
-	at org.apache.jasper.compiler.ErrorDispatcher.dispatch(ErrorDispatcher.java:292)
-	at org.apache.jasper.compiler.ErrorDispatcher.jspError(ErrorDispatcher.java:115)
-	at org.apache.jasper.compiler.Validator$DirectiveVisitor.visit(Validator.java:139)
-	at org.apache.jasper.compiler.Node$PageDirective.accept(Node.java:582)
-	at org.apache.jasper.compiler.Node$Nodes.visit(Node.java:2387)
-	at org.apache.jasper.compiler.Node$Visitor.visitBody(Node.java:2439)
-	at org.apache.jasper.compiler.Node$Visitor.visit(Node.java:2445)
-	at org.apache.jasper.compiler.Node$Root.accept(Node.java:473)
-	at org.apache.jasper.compiler.Node$Nodes.visit(Node.java:2387)
-	at org.apache.jasper.compiler.Node$Visitor.visitBody(Node.java:2439)
-	at org.apache.jasper.compiler.Validator$DirectiveVisitor.visit(Validator.java:105)
-	at org.apache.jasper.compiler.Node$IncludeDirective.accept(Node.java:646)
-	at org.apache.jasper.compiler.Node$Nodes.visit(Node.java:2387)
-	at org.apache.jasper.compiler.Node$Visitor.visitBody(Node.java:2439)
-	at org.apache.jasper.compiler.Node$Visitor.visit(Node.java:2445)
-	at org.apache.jasper.compiler.Node$Root.accept(Node.java:473)
-	at org.apache.jasper.compiler.Node$Nodes.visit(Node.java:2387)
-	at org.apache.jasper.compiler.Validator.validateDirectives(Validator.java:1829)
-	at org.apache.jasper.compiler.Compiler.generateJava(Compiler.java:203)
-	at org.apache.jasper.compiler.Compiler.compile(Compiler.java:391)
+Message: Unable to compile class for JSP: 
+
+An error occurred at line: [43] in the jsp file: [/business-admin.jsp]
+The method setCount(String) in the type volunteerLayout_tag is not applicable for the arguments (int)
+40: <%@ taglib prefix="v" tagdir="/WEB-INF/tags" %>
+41: <%@ include file="/WEB-INF/jspf/topnav.jspf" %>
+42: <div class="dashboard-container">
+43:     <v:volunteerLayout
+44:         titleKey="dashboard.businessAdmin"
+45:         descKey="dashboard.businessAdminDesc"
+46:         count="<%= deps != null ? deps.size() : 0 %>"
+
+
+An error occurred at line: [99] in the jsp file: [/business-admin.jsp]
+The method setId(String) in the type deptCard_tag is not applicable for the arguments (int)
+96:             else if (d.getId() == 1003) desc = "Business operations, logistics and process optimization";
+97:             else desc = "Supporting business administration and management activities";
+98:         %>
+99:             <v:deptCard variant="business" id="<%= d.getId() %>" name="<%= d.getName() %>" desc="<%= desc %>" membersCount="<%= cnt %>" viewHref="cst-team-members.jsp?dept=<%= d.getId() %>" />
+100:         <% } %>
+101:     </div>
+102:     <v:pagination currentPage="${page}" totalPages="${totalPages}" basePath="business-admin" size="${size}" query="${searchQuery != null ? searchQuery : ''}" />
+
+
+An error occurred at line: [99] in the jsp file: [/business-admin.jsp]
+The method setMembersCount(String) in the type deptCard_tag is not applicable for the arguments (int)
+96:             else if (d.getId() == 1003) desc = "Business operations, logistics and process optimization";
+97:             else desc = "Supporting business administration and management activities";
+98:         %>
+99:             <v:deptCard variant="business" id="<%= d.getId() %>" name="<%= d.getName() %>" desc="<%= desc %>" membersCount="<%= cnt %>" viewHref="cst-team-members.jsp?dept=<%= d.getId() %>" />
+100:         <% } %>
+101:     </div>
+102:     <v:pagination currentPage="${page}" totalPages="${totalPages}" basePath="business-admin" size="${size}" query="${searchQuery != null ? searchQuery : ''}" />
+
+
+Stacktrace:
+org.apache.jasper.JasperException: Unable to compile class for JSP: 
+
+An error occurred at line: [43] in the jsp file: [/business-admin.jsp]
+The method setCount(String) in the type volunteerLayout_tag is not applicable for the arguments (int)
+40: <%@ taglib prefix="v" tagdir="/WEB-INF/tags" %>
+41: <%@ include file="/WEB-INF/jspf/topnav.jspf" %>
+42: <div class="dashboard-container">
+43:     <v:volunteerLayout
+44:         titleKey="dashboard.businessAdmin"
+45:         descKey="dashboard.businessAdminDesc"
+46:         count="<%= deps != null ? deps.size() : 0 %>"
+
+
+An error occurred at line: [99] in the jsp file: [/business-admin.jsp]
+The method setId(String) in the type deptCard_tag is not applicable for the arguments (int)
+96:             else if (d.getId() == 1003) desc = "Business operations, logistics and process optimization";
+97:             else desc = "Supporting business administration and management activities";
+98:         %>
+99:             <v:deptCard variant="business" id="<%= d.getId() %>" name="<%= d.getName() %>" desc="<%= desc %>" membersCount="<%= cnt %>" viewHref="cst-team-members.jsp?dept=<%= d.getId() %>" />
+100:         <% } %>
+101:     </div>
+102:     <v:pagination currentPage="${page}" totalPages="${totalPages}" basePath="business-admin" size="${size}" query="${searchQuery != null ? searchQuery : ''}" />
+
+
+An error occurred at line: [99] in the jsp file: [/business-admin.jsp]
+The method setMembersCount(String) in the type deptCard_tag is not applicable for the arguments (int)
+96:             else if (d.getId() == 1003) desc = "Business operations, logistics and process optimization";
+97:             else desc = "Supporting business administration and management activities";
+98:         %>
+99:             <v:deptCard variant="business" id="<%= d.getId() %>" name="<%= d.getName() %>" desc="<%= desc %>" membersCount="<%= cnt %>" viewHref="cst-team-members.jsp?dept=<%= d.getId() %>" />
+100:         <% } %>
+101:     </div>
+102:     <v:pagination currentPage="${page}" totalPages="${totalPages}" basePath="business-admin" size="${size}" query="${searchQuery != null ? searchQuery : ''}" />
+
+
+Stacktrace:
+	at org.apache.jasper.compiler.DefaultErrorHandler.javacError(DefaultErrorHandler.java:102)
+	at org.apache.jasper.compiler.ErrorDispatcher.javacError(ErrorDispatcher.java:213)
+	at org.apache.jasper.compiler.JDTCompiler.generateClass(JDTCompiler.java:487)
+	at org.apache.jasper.compiler.Compiler.compile(Compiler.java:397)
 	at org.apache.jasper.compiler.Compiler.compile(Compiler.java:367)
 	at org.apache.jasper.compiler.Compiler.compile(Compiler.java:351)
 	at org.apache.jasper.JspCompilationContext.compile(JspCompilationContext.java:603)
@@ -173,6 +88,1114 @@ org.apache.jasper.JasperException: /WEB-INF/jspf/flash-messages.jspf (line: [1],
 	at org.apache.jasper.servlet.JspServlet.serviceJspFile(JspServlet.java:380)
 	at org.apache.jasper.servlet.JspServlet.service(JspServlet.java:328)
 	at org.eclipse.jetty.jsp.JettyJspServlet.service(JettyJspServlet.java:101)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:587)
+	at org.eclipse.jetty.servlet.ServletHolder$NotAsync.service(ServletHolder.java:1419)
+	at org.eclipse.jetty.servlet.ServletHolder.handle(ServletHolder.java:764)
+	at org.eclipse.jetty.servlet.ServletHandler$ChainEnd.doFilter(ServletHandler.java:1665)
+	at org.eclipse.jetty.servlet.ServletHandler.doHandle(ServletHandler.java:527)
+	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:131)
+	at org.eclipse.jetty.security.SecurityHandler.handle(SecurityHandler.java:596)
+	at org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:122)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:223)
+	at org.eclipse.jetty.server.session.SessionHandler.doHandle(SessionHandler.java:1570)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:221)
+	at org.eclipse.jetty.server.handler.ContextHandler.doHandle(ContextHandler.java:1381)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:176)
+	at org.eclipse.jetty.servlet.ServletHandler.doScope(ServletHandler.java:484)
+	at org.eclipse.jetty.server.session.SessionHandler.doScope(SessionHandler.java:1543)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:174)
+	at org.eclipse.jetty.server.handler.ContextHandler.doScope(ContextHandler.java:1303)
+	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:129)
+	at org.eclipse.jetty.server.Dispatcher.forward(Dispatcher.java:215)
+	at org.eclipse.jetty.server.Dispatcher.forward(Dispatcher.java:135)
+	at com.smartcalendar.servlets.BusinessAdminServlet.doGet(BusinessAdminServlet.java:66)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:500)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:587)
+	at org.eclipse.jetty.servlet.ServletHolder$NotAsync.service(ServletHolder.java:1419)
+	at org.eclipse.jetty.servlet.ServletHolder.handle(ServletHolder.java:764)
+	at org.eclipse.jetty.servlet.ServletHandler$ChainEnd.doFilter(ServletHandler.java:1665)
+	at com.smartcalendar.filters.LanguageFilter.doFilter(LanguageFilter.java:48)
+	at org.eclipse.jetty.servlet.FilterHolder.doFilter(FilterHolder.java:202)
+	at org.eclipse.jetty.servlet.ServletHandler$Chain.doFilter(ServletHandler.java:1635)
+	at com.smartcalendar.filters.CsrfFilter.doFilter(CsrfFilter.java:71)
+	at org.eclipse.jetty.servlet.FilterHolder.doFilter(FilterHolder.java:210)
+	at org.eclipse.jetty.servlet.ServletHandler$Chain.doFilter(ServletHandler.java:1635)
+	at org.eclipse.jetty.websocket.servlet.WebSocketUpgradeFilter.doFilter(WebSocketUpgradeFilter.java:170)
+	at org.eclipse.jetty.servlet.FilterHolder.doFilter(FilterHolder.java:202)
+	at org.eclipse.jetty.servlet.ServletHandler$Chain.doFilter(ServletHandler.java:1635)
+	at org.eclipse.jetty.servlet.ServletHandler.doHandle(ServletHandler.java:527)
+	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:131)
+	at org.eclipse.jetty.security.SecurityHandler.handle(SecurityHandler.java:578)
+	at org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:122)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:223)
+	at org.eclipse.jetty.server.session.SessionHandler.doHandle(SessionHandler.java:1570)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:221)
+	at org.eclipse.jetty.server.handler.ContextHandler.doHandle(ContextHandler.java:1381)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:176)
+	at org.eclipse.jetty.servlet.ServletHandler.doScope(ServletHandler.java:484)
+	at org.eclipse.jetty.server.session.SessionHandler.doScope(SessionHandler.java:1543)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:174)
+	at org.eclipse.jetty.server.handler.ContextHandler.doScope(ContextHandler.java:1303)
+	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:129)
+	at org.eclipse.jetty.server.handler.ContextHandlerCollection.handle(ContextHandlerCollection.java:149)
+	at org.eclipse.jetty.server.handler.HandlerList.handle(HandlerList.java:51)
+	at org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:122)
+	at org.eclipse.jetty.server.Server.handle(Server.java:563)
+	at org.eclipse.jetty.server.HttpChannel.lambda$handle$0(HttpChannel.java:505)
+	at org.eclipse.jetty.server.HttpChannel.dispatch(HttpChannel.java:762)
+	at org.eclipse.jetty.server.HttpChannel.handle(HttpChannel.java:497)
+	at org.eclipse.jetty.server.HttpConnection.onFillable(HttpConnection.java:282)
+	at org.eclipse.jetty.io.AbstractConnection$ReadCallback.succeeded(AbstractConnection.java:314)
+	at org.eclipse.jetty.io.FillInterest.fillable(FillInterest.java:100)
+	at org.eclipse.jetty.io.SelectableChannelEndPoint$1.run(SelectableChannelEndPoint.java:53)
+	at org.eclipse.jetty.util.thread.strategy.AdaptiveExecutionStrategy.runTask(AdaptiveExecutionStrategy.java:416)
+	at org.eclipse.jetty.util.thread.strategy.AdaptiveExecutionStrategy.consumeTask(AdaptiveExecutionStrategy.java:385)
+	at org.eclipse.jetty.util.thread.strategy.AdaptiveExecutionStrategy.tryProduce(AdaptiveExecutionStrategy.java:272)
+	at org.eclipse.jetty.util.thread.strategy.AdaptiveExecutionStrategy.lambda$new$0(AdaptiveExecutionStrategy.java:140)
+	at org.eclipse.jetty.util.thread.ReservedThreadExecutor$ReservedThread.run(ReservedThreadExecutor.java:411)
+	at org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:969)
+	at org.eclipse.jetty.util.thread.QueuedThreadPool$Runner.doRunJob(QueuedThreadPool.java:1194)
+	at org.eclipse.jetty.util.thread.QueuedThreadPool$Runner.run(QueuedThreadPool.java:1149)
+	at java.base/java.lang.Thread.run(Thread.java:1575)
+=== End Exception ===
+
+
+=== Unhandled Exception (LanguageFilter) ===
+Path: /smart-calendar/chinese-volunteers
+Lang: en
+Query: (none)
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+Exception Type: org.apache.jasper.JasperException
+Message: Unable to compile class for JSP: 
+
+An error occurred at line: [47] in the jsp file: [/chinese-volunteers.jsp]
+The method setCount(String) in the type volunteerLayout_tag is not applicable for the arguments (int)
+44: <%@ taglib prefix="v" tagdir="/WEB-INF/tags" %>
+45: <%@ include file="/WEB-INF/jspf/topnav.jspf" %>
+46: <div class="dashboard-container">
+47:     <v:volunteerLayout
+48:         titleKey="dashboard.chineseVolunteers"
+49:         descKey="dashboard.chineseVolunteersDesc"
+50:         count="<%= deps != null ? deps.size() : 0 %>"
+
+
+An error occurred at line: [113] in the jsp file: [/chinese-volunteers.jsp]
+The method setId(String) in the type deptCard_tag is not applicable for the arguments (int)
+110:                 focus = "Language & Culture";
+111:             }
+112:         %>
+113:             <v:deptCard variant="chinese" id="<%= d.getId() %>" name="<%= d.getName() %>" desc="<%= desc %>" membersCount="<%= cnt %>" focus="<%= focus %>" viewHref="cst-team-members.jsp?dept=<%= d.getId() %>" />
+114:         <% } %>
+115:     </div>
+116:     <v:pagination currentPage="${page}" totalPages="${totalPages}" basePath="chinese-volunteers" size="${size}" query="${searchQuery != null ? searchQuery : ''}" />
+
+
+An error occurred at line: [113] in the jsp file: [/chinese-volunteers.jsp]
+The method setMembersCount(String) in the type deptCard_tag is not applicable for the arguments (int)
+110:                 focus = "Language & Culture";
+111:             }
+112:         %>
+113:             <v:deptCard variant="chinese" id="<%= d.getId() %>" name="<%= d.getName() %>" desc="<%= desc %>" membersCount="<%= cnt %>" focus="<%= focus %>" viewHref="cst-team-members.jsp?dept=<%= d.getId() %>" />
+114:         <% } %>
+115:     </div>
+116:     <v:pagination currentPage="${page}" totalPages="${totalPages}" basePath="chinese-volunteers" size="${size}" query="${searchQuery != null ? searchQuery : ''}" />
+
+
+Stacktrace:
+org.apache.jasper.JasperException: Unable to compile class for JSP: 
+
+An error occurred at line: [47] in the jsp file: [/chinese-volunteers.jsp]
+The method setCount(String) in the type volunteerLayout_tag is not applicable for the arguments (int)
+44: <%@ taglib prefix="v" tagdir="/WEB-INF/tags" %>
+45: <%@ include file="/WEB-INF/jspf/topnav.jspf" %>
+46: <div class="dashboard-container">
+47:     <v:volunteerLayout
+48:         titleKey="dashboard.chineseVolunteers"
+49:         descKey="dashboard.chineseVolunteersDesc"
+50:         count="<%= deps != null ? deps.size() : 0 %>"
+
+
+An error occurred at line: [113] in the jsp file: [/chinese-volunteers.jsp]
+The method setId(String) in the type deptCard_tag is not applicable for the arguments (int)
+110:                 focus = "Language & Culture";
+111:             }
+112:         %>
+113:             <v:deptCard variant="chinese" id="<%= d.getId() %>" name="<%= d.getName() %>" desc="<%= desc %>" membersCount="<%= cnt %>" focus="<%= focus %>" viewHref="cst-team-members.jsp?dept=<%= d.getId() %>" />
+114:         <% } %>
+115:     </div>
+116:     <v:pagination currentPage="${page}" totalPages="${totalPages}" basePath="chinese-volunteers" size="${size}" query="${searchQuery != null ? searchQuery : ''}" />
+
+
+An error occurred at line: [113] in the jsp file: [/chinese-volunteers.jsp]
+The method setMembersCount(String) in the type deptCard_tag is not applicable for the arguments (int)
+110:                 focus = "Language & Culture";
+111:             }
+112:         %>
+113:             <v:deptCard variant="chinese" id="<%= d.getId() %>" name="<%= d.getName() %>" desc="<%= desc %>" membersCount="<%= cnt %>" focus="<%= focus %>" viewHref="cst-team-members.jsp?dept=<%= d.getId() %>" />
+114:         <% } %>
+115:     </div>
+116:     <v:pagination currentPage="${page}" totalPages="${totalPages}" basePath="chinese-volunteers" size="${size}" query="${searchQuery != null ? searchQuery : ''}" />
+
+
+Stacktrace:
+	at org.apache.jasper.compiler.DefaultErrorHandler.javacError(DefaultErrorHandler.java:102)
+	at org.apache.jasper.compiler.ErrorDispatcher.javacError(ErrorDispatcher.java:213)
+	at org.apache.jasper.compiler.JDTCompiler.generateClass(JDTCompiler.java:487)
+	at org.apache.jasper.compiler.Compiler.compile(Compiler.java:397)
+	at org.apache.jasper.compiler.Compiler.compile(Compiler.java:367)
+	at org.apache.jasper.compiler.Compiler.compile(Compiler.java:351)
+	at org.apache.jasper.JspCompilationContext.compile(JspCompilationContext.java:603)
+	at org.apache.jasper.servlet.JspServletWrapper.service(JspServletWrapper.java:399)
+	at org.apache.jasper.servlet.JspServlet.serviceJspFile(JspServlet.java:380)
+	at org.apache.jasper.servlet.JspServlet.service(JspServlet.java:328)
+	at org.eclipse.jetty.jsp.JettyJspServlet.service(JettyJspServlet.java:101)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:587)
+	at org.eclipse.jetty.servlet.ServletHolder$NotAsync.service(ServletHolder.java:1419)
+	at org.eclipse.jetty.servlet.ServletHolder.handle(ServletHolder.java:764)
+	at org.eclipse.jetty.servlet.ServletHandler$ChainEnd.doFilter(ServletHandler.java:1665)
+	at org.eclipse.jetty.servlet.ServletHandler.doHandle(ServletHandler.java:527)
+	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:131)
+	at org.eclipse.jetty.security.SecurityHandler.handle(SecurityHandler.java:596)
+	at org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:122)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:223)
+	at org.eclipse.jetty.server.session.SessionHandler.doHandle(SessionHandler.java:1570)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:221)
+	at org.eclipse.jetty.server.handler.ContextHandler.doHandle(ContextHandler.java:1381)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:176)
+	at org.eclipse.jetty.servlet.ServletHandler.doScope(ServletHandler.java:484)
+	at org.eclipse.jetty.server.session.SessionHandler.doScope(SessionHandler.java:1543)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:174)
+	at org.eclipse.jetty.server.handler.ContextHandler.doScope(ContextHandler.java:1303)
+	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:129)
+	at org.eclipse.jetty.server.Dispatcher.forward(Dispatcher.java:215)
+	at org.eclipse.jetty.server.Dispatcher.forward(Dispatcher.java:135)
+	at com.smartcalendar.servlets.ChineseVolunteersServlet.doGet(ChineseVolunteersServlet.java:64)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:500)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:587)
+	at org.eclipse.jetty.servlet.ServletHolder$NotAsync.service(ServletHolder.java:1419)
+	at org.eclipse.jetty.servlet.ServletHolder.handle(ServletHolder.java:764)
+	at org.eclipse.jetty.servlet.ServletHandler$ChainEnd.doFilter(ServletHandler.java:1665)
+	at com.smartcalendar.filters.LanguageFilter.doFilter(LanguageFilter.java:48)
+	at org.eclipse.jetty.servlet.FilterHolder.doFilter(FilterHolder.java:202)
+	at org.eclipse.jetty.servlet.ServletHandler$Chain.doFilter(ServletHandler.java:1635)
+	at com.smartcalendar.filters.CsrfFilter.doFilter(CsrfFilter.java:71)
+	at org.eclipse.jetty.servlet.FilterHolder.doFilter(FilterHolder.java:210)
+	at org.eclipse.jetty.servlet.ServletHandler$Chain.doFilter(ServletHandler.java:1635)
+	at org.eclipse.jetty.websocket.servlet.WebSocketUpgradeFilter.doFilter(WebSocketUpgradeFilter.java:170)
+	at org.eclipse.jetty.servlet.FilterHolder.doFilter(FilterHolder.java:202)
+	at org.eclipse.jetty.servlet.ServletHandler$Chain.doFilter(ServletHandler.java:1635)
+	at org.eclipse.jetty.servlet.ServletHandler.doHandle(ServletHandler.java:527)
+	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:131)
+	at org.eclipse.jetty.security.SecurityHandler.handle(SecurityHandler.java:578)
+	at org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:122)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:223)
+	at org.eclipse.jetty.server.session.SessionHandler.doHandle(SessionHandler.java:1570)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:221)
+	at org.eclipse.jetty.server.handler.ContextHandler.doHandle(ContextHandler.java:1381)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:176)
+	at org.eclipse.jetty.servlet.ServletHandler.doScope(ServletHandler.java:484)
+	at org.eclipse.jetty.server.session.SessionHandler.doScope(SessionHandler.java:1543)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:174)
+	at org.eclipse.jetty.server.handler.ContextHandler.doScope(ContextHandler.java:1303)
+	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:129)
+	at org.eclipse.jetty.server.handler.ContextHandlerCollection.handle(ContextHandlerCollection.java:149)
+	at org.eclipse.jetty.server.handler.HandlerList.handle(HandlerList.java:51)
+	at org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:122)
+	at org.eclipse.jetty.server.Server.handle(Server.java:563)
+	at org.eclipse.jetty.server.HttpChannel.lambda$handle$0(HttpChannel.java:505)
+	at org.eclipse.jetty.server.HttpChannel.dispatch(HttpChannel.java:762)
+	at org.eclipse.jetty.server.HttpChannel.handle(HttpChannel.java:497)
+	at org.eclipse.jetty.server.HttpConnection.onFillable(HttpConnection.java:282)
+	at org.eclipse.jetty.io.AbstractConnection$ReadCallback.succeeded(AbstractConnection.java:314)
+	at org.eclipse.jetty.io.FillInterest.fillable(FillInterest.java:100)
+	at org.eclipse.jetty.io.SelectableChannelEndPoint$1.run(SelectableChannelEndPoint.java:53)
+	at org.eclipse.jetty.util.thread.strategy.AdaptiveExecutionStrategy.runTask(AdaptiveExecutionStrategy.java:416)
+	at org.eclipse.jetty.util.thread.strategy.AdaptiveExecutionStrategy.consumeTask(AdaptiveExecutionStrategy.java:385)
+	at org.eclipse.jetty.util.thread.strategy.AdaptiveExecutionStrategy.tryProduce(AdaptiveExecutionStrategy.java:272)
+	at org.eclipse.jetty.util.thread.strategy.AdaptiveExecutionStrategy.produce(AdaptiveExecutionStrategy.java:194)
+	at org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:969)
+	at org.eclipse.jetty.util.thread.QueuedThreadPool$Runner.doRunJob(QueuedThreadPool.java:1194)
+	at org.eclipse.jetty.util.thread.QueuedThreadPool$Runner.run(QueuedThreadPool.java:1149)
+	at java.base/java.lang.Thread.run(Thread.java:1575)
+=== End Exception ===
+
+
+=== Unhandled Exception (LanguageFilter) ===
+Path: /smart-calendar/business-admin
+Lang: en
+Query: (none)
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+Exception Type: org.apache.jasper.JasperException
+Message: Unable to compile class for JSP: 
+
+An error occurred at line: [43] in the jsp file: [/business-admin.jsp]
+The method setCount(String) in the type volunteerLayout_tag is not applicable for the arguments (int)
+40: <%@ taglib prefix="v" tagdir="/WEB-INF/tags" %>
+41: <%@ include file="/WEB-INF/jspf/topnav.jspf" %>
+42: <div class="dashboard-container">
+43:     <v:volunteerLayout
+44:         titleKey="dashboard.businessAdmin"
+45:         descKey="dashboard.businessAdminDesc"
+46:         count="<%= deps != null ? deps.size() : 0 %>"
+
+
+An error occurred at line: [99] in the jsp file: [/business-admin.jsp]
+The method setId(String) in the type deptCard_tag is not applicable for the arguments (int)
+96:             else if (d.getId() == 1003) desc = "Business operations, logistics and process optimization";
+97:             else desc = "Supporting business administration and management activities";
+98:         %>
+99:             <v:deptCard variant="business" id="<%= d.getId() %>" name="<%= d.getName() %>" desc="<%= desc %>" membersCount="<%= cnt %>" viewHref="cst-team-members.jsp?dept=<%= d.getId() %>" />
+100:         <% } %>
+101:     </div>
+102:     <v:pagination currentPage="${page}" totalPages="${totalPages}" basePath="business-admin" size="${size}" query="${searchQuery != null ? searchQuery : ''}" />
+
+
+An error occurred at line: [99] in the jsp file: [/business-admin.jsp]
+The method setMembersCount(String) in the type deptCard_tag is not applicable for the arguments (int)
+96:             else if (d.getId() == 1003) desc = "Business operations, logistics and process optimization";
+97:             else desc = "Supporting business administration and management activities";
+98:         %>
+99:             <v:deptCard variant="business" id="<%= d.getId() %>" name="<%= d.getName() %>" desc="<%= desc %>" membersCount="<%= cnt %>" viewHref="cst-team-members.jsp?dept=<%= d.getId() %>" />
+100:         <% } %>
+101:     </div>
+102:     <v:pagination currentPage="${page}" totalPages="${totalPages}" basePath="business-admin" size="${size}" query="${searchQuery != null ? searchQuery : ''}" />
+
+
+Stacktrace:
+org.apache.jasper.JasperException: Unable to compile class for JSP: 
+
+An error occurred at line: [43] in the jsp file: [/business-admin.jsp]
+The method setCount(String) in the type volunteerLayout_tag is not applicable for the arguments (int)
+40: <%@ taglib prefix="v" tagdir="/WEB-INF/tags" %>
+41: <%@ include file="/WEB-INF/jspf/topnav.jspf" %>
+42: <div class="dashboard-container">
+43:     <v:volunteerLayout
+44:         titleKey="dashboard.businessAdmin"
+45:         descKey="dashboard.businessAdminDesc"
+46:         count="<%= deps != null ? deps.size() : 0 %>"
+
+
+An error occurred at line: [99] in the jsp file: [/business-admin.jsp]
+The method setId(String) in the type deptCard_tag is not applicable for the arguments (int)
+96:             else if (d.getId() == 1003) desc = "Business operations, logistics and process optimization";
+97:             else desc = "Supporting business administration and management activities";
+98:         %>
+99:             <v:deptCard variant="business" id="<%= d.getId() %>" name="<%= d.getName() %>" desc="<%= desc %>" membersCount="<%= cnt %>" viewHref="cst-team-members.jsp?dept=<%= d.getId() %>" />
+100:         <% } %>
+101:     </div>
+102:     <v:pagination currentPage="${page}" totalPages="${totalPages}" basePath="business-admin" size="${size}" query="${searchQuery != null ? searchQuery : ''}" />
+
+
+An error occurred at line: [99] in the jsp file: [/business-admin.jsp]
+The method setMembersCount(String) in the type deptCard_tag is not applicable for the arguments (int)
+96:             else if (d.getId() == 1003) desc = "Business operations, logistics and process optimization";
+97:             else desc = "Supporting business administration and management activities";
+98:         %>
+99:             <v:deptCard variant="business" id="<%= d.getId() %>" name="<%= d.getName() %>" desc="<%= desc %>" membersCount="<%= cnt %>" viewHref="cst-team-members.jsp?dept=<%= d.getId() %>" />
+100:         <% } %>
+101:     </div>
+102:     <v:pagination currentPage="${page}" totalPages="${totalPages}" basePath="business-admin" size="${size}" query="${searchQuery != null ? searchQuery : ''}" />
+
+
+Stacktrace:
+	at org.apache.jasper.compiler.DefaultErrorHandler.javacError(DefaultErrorHandler.java:102)
+	at org.apache.jasper.compiler.ErrorDispatcher.javacError(ErrorDispatcher.java:213)
+	at org.apache.jasper.compiler.JDTCompiler.generateClass(JDTCompiler.java:487)
+	at org.apache.jasper.compiler.Compiler.compile(Compiler.java:397)
+	at org.apache.jasper.compiler.Compiler.compile(Compiler.java:367)
+	at org.apache.jasper.compiler.Compiler.compile(Compiler.java:351)
+	at org.apache.jasper.JspCompilationContext.compile(JspCompilationContext.java:603)
+	at org.apache.jasper.servlet.JspServletWrapper.service(JspServletWrapper.java:399)
+	at org.apache.jasper.servlet.JspServlet.serviceJspFile(JspServlet.java:380)
+	at org.apache.jasper.servlet.JspServlet.service(JspServlet.java:328)
+	at org.eclipse.jetty.jsp.JettyJspServlet.service(JettyJspServlet.java:101)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:587)
+	at org.eclipse.jetty.servlet.ServletHolder$NotAsync.service(ServletHolder.java:1419)
+	at org.eclipse.jetty.servlet.ServletHolder.handle(ServletHolder.java:764)
+	at org.eclipse.jetty.servlet.ServletHandler$ChainEnd.doFilter(ServletHandler.java:1665)
+	at org.eclipse.jetty.servlet.ServletHandler.doHandle(ServletHandler.java:527)
+	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:131)
+	at org.eclipse.jetty.security.SecurityHandler.handle(SecurityHandler.java:596)
+	at org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:122)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:223)
+	at org.eclipse.jetty.server.session.SessionHandler.doHandle(SessionHandler.java:1570)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:221)
+	at org.eclipse.jetty.server.handler.ContextHandler.doHandle(ContextHandler.java:1381)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:176)
+	at org.eclipse.jetty.servlet.ServletHandler.doScope(ServletHandler.java:484)
+	at org.eclipse.jetty.server.session.SessionHandler.doScope(SessionHandler.java:1543)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:174)
+	at org.eclipse.jetty.server.handler.ContextHandler.doScope(ContextHandler.java:1303)
+	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:129)
+	at org.eclipse.jetty.server.Dispatcher.forward(Dispatcher.java:215)
+	at org.eclipse.jetty.server.Dispatcher.forward(Dispatcher.java:135)
+	at com.smartcalendar.servlets.BusinessAdminServlet.doGet(BusinessAdminServlet.java:66)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:500)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:587)
+	at org.eclipse.jetty.servlet.ServletHolder$NotAsync.service(ServletHolder.java:1419)
+	at org.eclipse.jetty.servlet.ServletHolder.handle(ServletHolder.java:764)
+	at org.eclipse.jetty.servlet.ServletHandler$ChainEnd.doFilter(ServletHandler.java:1665)
+	at com.smartcalendar.filters.LanguageFilter.doFilter(LanguageFilter.java:48)
+	at org.eclipse.jetty.servlet.FilterHolder.doFilter(FilterHolder.java:202)
+	at org.eclipse.jetty.servlet.ServletHandler$Chain.doFilter(ServletHandler.java:1635)
+	at com.smartcalendar.filters.CsrfFilter.doFilter(CsrfFilter.java:71)
+	at org.eclipse.jetty.servlet.FilterHolder.doFilter(FilterHolder.java:210)
+	at org.eclipse.jetty.servlet.ServletHandler$Chain.doFilter(ServletHandler.java:1635)
+	at org.eclipse.jetty.websocket.servlet.WebSocketUpgradeFilter.doFilter(WebSocketUpgradeFilter.java:170)
+	at org.eclipse.jetty.servlet.FilterHolder.doFilter(FilterHolder.java:202)
+	at org.eclipse.jetty.servlet.ServletHandler$Chain.doFilter(ServletHandler.java:1635)
+	at org.eclipse.jetty.servlet.ServletHandler.doHandle(ServletHandler.java:527)
+	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:131)
+	at org.eclipse.jetty.security.SecurityHandler.handle(SecurityHandler.java:578)
+	at org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:122)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:223)
+	at org.eclipse.jetty.server.session.SessionHandler.doHandle(SessionHandler.java:1570)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:221)
+	at org.eclipse.jetty.server.handler.ContextHandler.doHandle(ContextHandler.java:1381)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:176)
+	at org.eclipse.jetty.servlet.ServletHandler.doScope(ServletHandler.java:484)
+	at org.eclipse.jetty.server.session.SessionHandler.doScope(SessionHandler.java:1543)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:174)
+	at org.eclipse.jetty.server.handler.ContextHandler.doScope(ContextHandler.java:1303)
+	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:129)
+	at org.eclipse.jetty.server.handler.ContextHandlerCollection.handle(ContextHandlerCollection.java:149)
+	at org.eclipse.jetty.server.handler.HandlerList.handle(HandlerList.java:51)
+	at org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:122)
+	at org.eclipse.jetty.server.Server.handle(Server.java:563)
+	at org.eclipse.jetty.server.HttpChannel.lambda$handle$0(HttpChannel.java:505)
+	at org.eclipse.jetty.server.HttpChannel.dispatch(HttpChannel.java:762)
+	at org.eclipse.jetty.server.HttpChannel.handle(HttpChannel.java:497)
+	at org.eclipse.jetty.server.HttpConnection.onFillable(HttpConnection.java:282)
+	at org.eclipse.jetty.io.AbstractConnection$ReadCallback.succeeded(AbstractConnection.java:314)
+	at org.eclipse.jetty.io.FillInterest.fillable(FillInterest.java:100)
+	at org.eclipse.jetty.io.SelectableChannelEndPoint$1.run(SelectableChannelEndPoint.java:53)
+	at org.eclipse.jetty.util.thread.strategy.AdaptiveExecutionStrategy.runTask(AdaptiveExecutionStrategy.java:416)
+	at org.eclipse.jetty.util.thread.strategy.AdaptiveExecutionStrategy.consumeTask(AdaptiveExecutionStrategy.java:385)
+	at org.eclipse.jetty.util.thread.strategy.AdaptiveExecutionStrategy.tryProduce(AdaptiveExecutionStrategy.java:272)
+	at org.eclipse.jetty.util.thread.strategy.AdaptiveExecutionStrategy.lambda$new$0(AdaptiveExecutionStrategy.java:140)
+	at org.eclipse.jetty.util.thread.ReservedThreadExecutor$ReservedThread.run(ReservedThreadExecutor.java:411)
+	at org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:969)
+	at org.eclipse.jetty.util.thread.QueuedThreadPool$Runner.doRunJob(QueuedThreadPool.java:1194)
+	at org.eclipse.jetty.util.thread.QueuedThreadPool$Runner.run(QueuedThreadPool.java:1149)
+	at java.base/java.lang.Thread.run(Thread.java:1575)
+=== End Exception ===
+
+
+=== Unhandled Exception (LanguageFilter) ===
+Path: /smart-calendar/business-admin
+Lang: en
+Query: (none)
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+Exception Type: org.apache.jasper.JasperException
+Message: Unable to compile class for JSP: 
+
+An error occurred at line: [43] in the jsp file: [/business-admin.jsp]
+The method setCount(String) in the type volunteerLayout_tag is not applicable for the arguments (int)
+40: <%@ taglib prefix="v" tagdir="/WEB-INF/tags" %>
+41: <%@ include file="/WEB-INF/jspf/topnav.jspf" %>
+42: <div class="dashboard-container">
+43:     <v:volunteerLayout
+44:         titleKey="dashboard.businessAdmin"
+45:         descKey="dashboard.businessAdminDesc"
+46:         count="<%= deps != null ? deps.size() : 0 %>"
+
+
+An error occurred at line: [99] in the jsp file: [/business-admin.jsp]
+The method setId(String) in the type deptCard_tag is not applicable for the arguments (int)
+96:             else if (d.getId() == 1003) desc = "Business operations, logistics and process optimization";
+97:             else desc = "Supporting business administration and management activities";
+98:         %>
+99:             <v:deptCard variant="business" id="<%= d.getId() %>" name="<%= d.getName() %>" desc="<%= desc %>" membersCount="<%= cnt %>" viewHref="cst-team-members.jsp?dept=<%= d.getId() %>" />
+100:         <% } %>
+101:     </div>
+102:     <v:pagination currentPage="${page}" totalPages="${totalPages}" basePath="business-admin" size="${size}" query="${searchQuery != null ? searchQuery : ''}" />
+
+
+An error occurred at line: [99] in the jsp file: [/business-admin.jsp]
+The method setMembersCount(String) in the type deptCard_tag is not applicable for the arguments (int)
+96:             else if (d.getId() == 1003) desc = "Business operations, logistics and process optimization";
+97:             else desc = "Supporting business administration and management activities";
+98:         %>
+99:             <v:deptCard variant="business" id="<%= d.getId() %>" name="<%= d.getName() %>" desc="<%= desc %>" membersCount="<%= cnt %>" viewHref="cst-team-members.jsp?dept=<%= d.getId() %>" />
+100:         <% } %>
+101:     </div>
+102:     <v:pagination currentPage="${page}" totalPages="${totalPages}" basePath="business-admin" size="${size}" query="${searchQuery != null ? searchQuery : ''}" />
+
+
+Stacktrace:
+org.apache.jasper.JasperException: Unable to compile class for JSP: 
+
+An error occurred at line: [43] in the jsp file: [/business-admin.jsp]
+The method setCount(String) in the type volunteerLayout_tag is not applicable for the arguments (int)
+40: <%@ taglib prefix="v" tagdir="/WEB-INF/tags" %>
+41: <%@ include file="/WEB-INF/jspf/topnav.jspf" %>
+42: <div class="dashboard-container">
+43:     <v:volunteerLayout
+44:         titleKey="dashboard.businessAdmin"
+45:         descKey="dashboard.businessAdminDesc"
+46:         count="<%= deps != null ? deps.size() : 0 %>"
+
+
+An error occurred at line: [99] in the jsp file: [/business-admin.jsp]
+The method setId(String) in the type deptCard_tag is not applicable for the arguments (int)
+96:             else if (d.getId() == 1003) desc = "Business operations, logistics and process optimization";
+97:             else desc = "Supporting business administration and management activities";
+98:         %>
+99:             <v:deptCard variant="business" id="<%= d.getId() %>" name="<%= d.getName() %>" desc="<%= desc %>" membersCount="<%= cnt %>" viewHref="cst-team-members.jsp?dept=<%= d.getId() %>" />
+100:         <% } %>
+101:     </div>
+102:     <v:pagination currentPage="${page}" totalPages="${totalPages}" basePath="business-admin" size="${size}" query="${searchQuery != null ? searchQuery : ''}" />
+
+
+An error occurred at line: [99] in the jsp file: [/business-admin.jsp]
+The method setMembersCount(String) in the type deptCard_tag is not applicable for the arguments (int)
+96:             else if (d.getId() == 1003) desc = "Business operations, logistics and process optimization";
+97:             else desc = "Supporting business administration and management activities";
+98:         %>
+99:             <v:deptCard variant="business" id="<%= d.getId() %>" name="<%= d.getName() %>" desc="<%= desc %>" membersCount="<%= cnt %>" viewHref="cst-team-members.jsp?dept=<%= d.getId() %>" />
+100:         <% } %>
+101:     </div>
+102:     <v:pagination currentPage="${page}" totalPages="${totalPages}" basePath="business-admin" size="${size}" query="${searchQuery != null ? searchQuery : ''}" />
+
+
+Stacktrace:
+	at org.apache.jasper.compiler.DefaultErrorHandler.javacError(DefaultErrorHandler.java:102)
+	at org.apache.jasper.compiler.ErrorDispatcher.javacError(ErrorDispatcher.java:213)
+	at org.apache.jasper.compiler.JDTCompiler.generateClass(JDTCompiler.java:487)
+	at org.apache.jasper.compiler.Compiler.compile(Compiler.java:397)
+	at org.apache.jasper.compiler.Compiler.compile(Compiler.java:367)
+	at org.apache.jasper.compiler.Compiler.compile(Compiler.java:351)
+	at org.apache.jasper.JspCompilationContext.compile(JspCompilationContext.java:603)
+	at org.apache.jasper.servlet.JspServletWrapper.service(JspServletWrapper.java:399)
+	at org.apache.jasper.servlet.JspServlet.serviceJspFile(JspServlet.java:380)
+	at org.apache.jasper.servlet.JspServlet.service(JspServlet.java:328)
+	at org.eclipse.jetty.jsp.JettyJspServlet.service(JettyJspServlet.java:101)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:587)
+	at org.eclipse.jetty.servlet.ServletHolder$NotAsync.service(ServletHolder.java:1419)
+	at org.eclipse.jetty.servlet.ServletHolder.handle(ServletHolder.java:764)
+	at org.eclipse.jetty.servlet.ServletHandler$ChainEnd.doFilter(ServletHandler.java:1665)
+	at org.eclipse.jetty.servlet.ServletHandler.doHandle(ServletHandler.java:527)
+	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:131)
+	at org.eclipse.jetty.security.SecurityHandler.handle(SecurityHandler.java:596)
+	at org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:122)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:223)
+	at org.eclipse.jetty.server.session.SessionHandler.doHandle(SessionHandler.java:1570)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:221)
+	at org.eclipse.jetty.server.handler.ContextHandler.doHandle(ContextHandler.java:1381)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:176)
+	at org.eclipse.jetty.servlet.ServletHandler.doScope(ServletHandler.java:484)
+	at org.eclipse.jetty.server.session.SessionHandler.doScope(SessionHandler.java:1543)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:174)
+	at org.eclipse.jetty.server.handler.ContextHandler.doScope(ContextHandler.java:1303)
+	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:129)
+	at org.eclipse.jetty.server.Dispatcher.forward(Dispatcher.java:215)
+	at org.eclipse.jetty.server.Dispatcher.forward(Dispatcher.java:135)
+	at com.smartcalendar.servlets.BusinessAdminServlet.doGet(BusinessAdminServlet.java:66)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:500)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:587)
+	at org.eclipse.jetty.servlet.ServletHolder$NotAsync.service(ServletHolder.java:1419)
+	at org.eclipse.jetty.servlet.ServletHolder.handle(ServletHolder.java:764)
+	at org.eclipse.jetty.servlet.ServletHandler$ChainEnd.doFilter(ServletHandler.java:1665)
+	at com.smartcalendar.filters.LanguageFilter.doFilter(LanguageFilter.java:48)
+	at org.eclipse.jetty.servlet.FilterHolder.doFilter(FilterHolder.java:202)
+	at org.eclipse.jetty.servlet.ServletHandler$Chain.doFilter(ServletHandler.java:1635)
+	at com.smartcalendar.filters.CsrfFilter.doFilter(CsrfFilter.java:71)
+	at org.eclipse.jetty.servlet.FilterHolder.doFilter(FilterHolder.java:210)
+	at org.eclipse.jetty.servlet.ServletHandler$Chain.doFilter(ServletHandler.java:1635)
+	at org.eclipse.jetty.websocket.servlet.WebSocketUpgradeFilter.doFilter(WebSocketUpgradeFilter.java:170)
+	at org.eclipse.jetty.servlet.FilterHolder.doFilter(FilterHolder.java:202)
+	at org.eclipse.jetty.servlet.ServletHandler$Chain.doFilter(ServletHandler.java:1635)
+	at org.eclipse.jetty.servlet.ServletHandler.doHandle(ServletHandler.java:527)
+	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:131)
+	at org.eclipse.jetty.security.SecurityHandler.handle(SecurityHandler.java:578)
+	at org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:122)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:223)
+	at org.eclipse.jetty.server.session.SessionHandler.doHandle(SessionHandler.java:1570)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:221)
+	at org.eclipse.jetty.server.handler.ContextHandler.doHandle(ContextHandler.java:1381)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:176)
+	at org.eclipse.jetty.servlet.ServletHandler.doScope(ServletHandler.java:484)
+	at org.eclipse.jetty.server.session.SessionHandler.doScope(SessionHandler.java:1543)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:174)
+	at org.eclipse.jetty.server.handler.ContextHandler.doScope(ContextHandler.java:1303)
+	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:129)
+	at org.eclipse.jetty.server.handler.ContextHandlerCollection.handle(ContextHandlerCollection.java:149)
+	at org.eclipse.jetty.server.handler.HandlerList.handle(HandlerList.java:51)
+	at org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:122)
+	at org.eclipse.jetty.server.Server.handle(Server.java:563)
+	at org.eclipse.jetty.server.HttpChannel.lambda$handle$0(HttpChannel.java:505)
+	at org.eclipse.jetty.server.HttpChannel.dispatch(HttpChannel.java:762)
+	at org.eclipse.jetty.server.HttpChannel.handle(HttpChannel.java:497)
+	at org.eclipse.jetty.server.HttpConnection.onFillable(HttpConnection.java:282)
+	at org.eclipse.jetty.io.AbstractConnection$ReadCallback.succeeded(AbstractConnection.java:314)
+	at org.eclipse.jetty.io.FillInterest.fillable(FillInterest.java:100)
+	at org.eclipse.jetty.io.SelectableChannelEndPoint$1.run(SelectableChannelEndPoint.java:53)
+	at org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:969)
+	at org.eclipse.jetty.util.thread.QueuedThreadPool$Runner.doRunJob(QueuedThreadPool.java:1194)
+	at org.eclipse.jetty.util.thread.QueuedThreadPool$Runner.run(QueuedThreadPool.java:1149)
+	at java.base/java.lang.Thread.run(Thread.java:1575)
+=== End Exception ===
+
+
+=== Unhandled Exception (LanguageFilter) ===
+Path: /smart-calendar/business-admin
+Lang: en
+Query: (none)
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+Exception Type: org.apache.jasper.JasperException
+Message: org.apache.jasper.JasperException: java.lang.ClassNotFoundException: org.apache.jsp.business_002dadmin_jsp
+org.apache.jasper.JasperException: org.apache.jasper.JasperException: java.lang.ClassNotFoundException: org.apache.jsp.business_002dadmin_jsp
+	at org.apache.jasper.servlet.JspServletWrapper.handleJspException(JspServletWrapper.java:589)
+	at org.apache.jasper.servlet.JspServletWrapper.service(JspServletWrapper.java:425)
+	at org.apache.jasper.servlet.JspServlet.serviceJspFile(JspServlet.java:380)
+	at org.apache.jasper.servlet.JspServlet.service(JspServlet.java:328)
+	at org.eclipse.jetty.jsp.JettyJspServlet.service(JettyJspServlet.java:101)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:587)
+	at org.eclipse.jetty.servlet.ServletHolder$NotAsync.service(ServletHolder.java:1419)
+	at org.eclipse.jetty.servlet.ServletHolder.handle(ServletHolder.java:764)
+	at org.eclipse.jetty.servlet.ServletHandler$ChainEnd.doFilter(ServletHandler.java:1665)
+	at org.eclipse.jetty.servlet.ServletHandler.doHandle(ServletHandler.java:527)
+	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:131)
+	at org.eclipse.jetty.security.SecurityHandler.handle(SecurityHandler.java:596)
+	at org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:122)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:223)
+	at org.eclipse.jetty.server.session.SessionHandler.doHandle(SessionHandler.java:1570)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:221)
+	at org.eclipse.jetty.server.handler.ContextHandler.doHandle(ContextHandler.java:1381)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:176)
+	at org.eclipse.jetty.servlet.ServletHandler.doScope(ServletHandler.java:484)
+	at org.eclipse.jetty.server.session.SessionHandler.doScope(SessionHandler.java:1543)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:174)
+	at org.eclipse.jetty.server.handler.ContextHandler.doScope(ContextHandler.java:1303)
+	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:129)
+	at org.eclipse.jetty.server.Dispatcher.forward(Dispatcher.java:215)
+	at org.eclipse.jetty.server.Dispatcher.forward(Dispatcher.java:135)
+	at com.smartcalendar.servlets.BusinessAdminServlet.doGet(BusinessAdminServlet.java:66)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:500)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:587)
+	at org.eclipse.jetty.servlet.ServletHolder$NotAsync.service(ServletHolder.java:1419)
+	at org.eclipse.jetty.servlet.ServletHolder.handle(ServletHolder.java:764)
+	at org.eclipse.jetty.servlet.ServletHandler$ChainEnd.doFilter(ServletHandler.java:1665)
+	at com.smartcalendar.filters.LanguageFilter.doFilter(LanguageFilter.java:48)
+	at org.eclipse.jetty.servlet.FilterHolder.doFilter(FilterHolder.java:202)
+	at org.eclipse.jetty.servlet.ServletHandler$Chain.doFilter(ServletHandler.java:1635)
+	at com.smartcalendar.filters.CsrfFilter.doFilter(CsrfFilter.java:71)
+	at org.eclipse.jetty.servlet.FilterHolder.doFilter(FilterHolder.java:210)
+	at org.eclipse.jetty.servlet.ServletHandler$Chain.doFilter(ServletHandler.java:1635)
+	at org.eclipse.jetty.websocket.servlet.WebSocketUpgradeFilter.doFilter(WebSocketUpgradeFilter.java:170)
+	at org.eclipse.jetty.servlet.FilterHolder.doFilter(FilterHolder.java:202)
+	at org.eclipse.jetty.servlet.ServletHandler$Chain.doFilter(ServletHandler.java:1635)
+	at org.eclipse.jetty.servlet.ServletHandler.doHandle(ServletHandler.java:527)
+	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:131)
+	at org.eclipse.jetty.security.SecurityHandler.handle(SecurityHandler.java:578)
+	at org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:122)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:223)
+	at org.eclipse.jetty.server.session.SessionHandler.doHandle(SessionHandler.java:1570)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:221)
+	at org.eclipse.jetty.server.handler.ContextHandler.doHandle(ContextHandler.java:1381)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:176)
+	at org.eclipse.jetty.servlet.ServletHandler.doScope(ServletHandler.java:484)
+	at org.eclipse.jetty.server.session.SessionHandler.doScope(SessionHandler.java:1543)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:174)
+	at org.eclipse.jetty.server.handler.ContextHandler.doScope(ContextHandler.java:1303)
+	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:129)
+	at org.eclipse.jetty.server.handler.ContextHandlerCollection.handle(ContextHandlerCollection.java:149)
+	at org.eclipse.jetty.server.handler.HandlerList.handle(HandlerList.java:51)
+	at org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:122)
+	at org.eclipse.jetty.server.Server.handle(Server.java:563)
+	at org.eclipse.jetty.server.HttpChannel.lambda$handle$0(HttpChannel.java:505)
+	at org.eclipse.jetty.server.HttpChannel.dispatch(HttpChannel.java:762)
+	at org.eclipse.jetty.server.HttpChannel.handle(HttpChannel.java:497)
+	at org.eclipse.jetty.server.HttpConnection.onFillable(HttpConnection.java:282)
+	at org.eclipse.jetty.io.AbstractConnection$ReadCallback.succeeded(AbstractConnection.java:314)
+	at org.eclipse.jetty.io.FillInterest.fillable(FillInterest.java:100)
+	at org.eclipse.jetty.io.SelectableChannelEndPoint$1.run(SelectableChannelEndPoint.java:53)
+	at org.eclipse.jetty.util.thread.strategy.AdaptiveExecutionStrategy.runTask(AdaptiveExecutionStrategy.java:416)
+	at org.eclipse.jetty.util.thread.strategy.AdaptiveExecutionStrategy.consumeTask(AdaptiveExecutionStrategy.java:385)
+	at org.eclipse.jetty.util.thread.strategy.AdaptiveExecutionStrategy.tryProduce(AdaptiveExecutionStrategy.java:272)
+	at org.eclipse.jetty.util.thread.strategy.AdaptiveExecutionStrategy.lambda$new$0(AdaptiveExecutionStrategy.java:140)
+	at org.eclipse.jetty.util.thread.ReservedThreadExecutor$ReservedThread.run(ReservedThreadExecutor.java:411)
+	at org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:969)
+	at org.eclipse.jetty.util.thread.QueuedThreadPool$Runner.doRunJob(QueuedThreadPool.java:1194)
+	at org.eclipse.jetty.util.thread.QueuedThreadPool$Runner.run(QueuedThreadPool.java:1149)
+	at java.base/java.lang.Thread.run(Thread.java:1575)
+Caused by: org.apache.jasper.JasperException: java.lang.ClassNotFoundException: org.apache.jsp.business_002dadmin_jsp
+	at org.apache.jasper.servlet.JspServletWrapper.getServlet(JspServletWrapper.java:197)
+	at org.apache.jasper.servlet.JspServletWrapper.service(JspServletWrapper.java:413)
+	... 72 more
+Caused by: java.lang.ClassNotFoundException: org.apache.jsp.business_002dadmin_jsp
+	at java.base/java.net.URLClassLoader.findClass(URLClassLoader.java:445)
+	at org.apache.jasper.servlet.JasperLoader.loadClass(JasperLoader.java:129)
+	at org.apache.jasper.servlet.JasperLoader.loadClass(JasperLoader.java:58)
+	at org.apache.tomcat.SimpleInstanceManager.newInstance(SimpleInstanceManager.java:51)
+	at org.apache.jasper.servlet.JspServletWrapper.getServlet(JspServletWrapper.java:192)
+	... 73 more
+=== End Exception ===
+
+
+=== Unhandled Exception (LanguageFilter) ===
+Path: /smart-calendar/business-admin
+Lang: en
+Query: (none)
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+Exception Type: org.apache.jasper.JasperException
+Message: org.apache.jasper.JasperException: java.lang.ClassNotFoundException: org.apache.jsp.business_002dadmin_jsp
+org.apache.jasper.JasperException: org.apache.jasper.JasperException: java.lang.ClassNotFoundException: org.apache.jsp.business_002dadmin_jsp
+	at org.apache.jasper.servlet.JspServletWrapper.handleJspException(JspServletWrapper.java:589)
+	at org.apache.jasper.servlet.JspServletWrapper.service(JspServletWrapper.java:425)
+	at org.apache.jasper.servlet.JspServlet.serviceJspFile(JspServlet.java:380)
+	at org.apache.jasper.servlet.JspServlet.service(JspServlet.java:328)
+	at org.eclipse.jetty.jsp.JettyJspServlet.service(JettyJspServlet.java:101)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:587)
+	at org.eclipse.jetty.servlet.ServletHolder$NotAsync.service(ServletHolder.java:1419)
+	at org.eclipse.jetty.servlet.ServletHolder.handle(ServletHolder.java:764)
+	at org.eclipse.jetty.servlet.ServletHandler$ChainEnd.doFilter(ServletHandler.java:1665)
+	at org.eclipse.jetty.servlet.ServletHandler.doHandle(ServletHandler.java:527)
+	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:131)
+	at org.eclipse.jetty.security.SecurityHandler.handle(SecurityHandler.java:596)
+	at org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:122)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:223)
+	at org.eclipse.jetty.server.session.SessionHandler.doHandle(SessionHandler.java:1570)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:221)
+	at org.eclipse.jetty.server.handler.ContextHandler.doHandle(ContextHandler.java:1381)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:176)
+	at org.eclipse.jetty.servlet.ServletHandler.doScope(ServletHandler.java:484)
+	at org.eclipse.jetty.server.session.SessionHandler.doScope(SessionHandler.java:1543)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:174)
+	at org.eclipse.jetty.server.handler.ContextHandler.doScope(ContextHandler.java:1303)
+	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:129)
+	at org.eclipse.jetty.server.Dispatcher.forward(Dispatcher.java:215)
+	at org.eclipse.jetty.server.Dispatcher.forward(Dispatcher.java:135)
+	at com.smartcalendar.servlets.BusinessAdminServlet.doGet(BusinessAdminServlet.java:66)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:500)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:587)
+	at org.eclipse.jetty.servlet.ServletHolder$NotAsync.service(ServletHolder.java:1419)
+	at org.eclipse.jetty.servlet.ServletHolder.handle(ServletHolder.java:764)
+	at org.eclipse.jetty.servlet.ServletHandler$ChainEnd.doFilter(ServletHandler.java:1665)
+	at com.smartcalendar.filters.LanguageFilter.doFilter(LanguageFilter.java:48)
+	at org.eclipse.jetty.servlet.FilterHolder.doFilter(FilterHolder.java:202)
+	at org.eclipse.jetty.servlet.ServletHandler$Chain.doFilter(ServletHandler.java:1635)
+	at com.smartcalendar.filters.CsrfFilter.doFilter(CsrfFilter.java:71)
+	at org.eclipse.jetty.servlet.FilterHolder.doFilter(FilterHolder.java:210)
+	at org.eclipse.jetty.servlet.ServletHandler$Chain.doFilter(ServletHandler.java:1635)
+	at org.eclipse.jetty.websocket.servlet.WebSocketUpgradeFilter.doFilter(WebSocketUpgradeFilter.java:170)
+	at org.eclipse.jetty.servlet.FilterHolder.doFilter(FilterHolder.java:202)
+	at org.eclipse.jetty.servlet.ServletHandler$Chain.doFilter(ServletHandler.java:1635)
+	at org.eclipse.jetty.servlet.ServletHandler.doHandle(ServletHandler.java:527)
+	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:131)
+	at org.eclipse.jetty.security.SecurityHandler.handle(SecurityHandler.java:578)
+	at org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:122)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:223)
+	at org.eclipse.jetty.server.session.SessionHandler.doHandle(SessionHandler.java:1570)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:221)
+	at org.eclipse.jetty.server.handler.ContextHandler.doHandle(ContextHandler.java:1381)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:176)
+	at org.eclipse.jetty.servlet.ServletHandler.doScope(ServletHandler.java:484)
+	at org.eclipse.jetty.server.session.SessionHandler.doScope(SessionHandler.java:1543)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:174)
+	at org.eclipse.jetty.server.handler.ContextHandler.doScope(ContextHandler.java:1303)
+	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:129)
+	at org.eclipse.jetty.server.handler.ContextHandlerCollection.handle(ContextHandlerCollection.java:149)
+	at org.eclipse.jetty.server.handler.HandlerList.handle(HandlerList.java:51)
+	at org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:122)
+	at org.eclipse.jetty.server.Server.handle(Server.java:563)
+	at org.eclipse.jetty.server.HttpChannel.lambda$handle$0(HttpChannel.java:505)
+	at org.eclipse.jetty.server.HttpChannel.dispatch(HttpChannel.java:762)
+	at org.eclipse.jetty.server.HttpChannel.handle(HttpChannel.java:497)
+	at org.eclipse.jetty.server.HttpConnection.onFillable(HttpConnection.java:282)
+	at org.eclipse.jetty.io.AbstractConnection$ReadCallback.succeeded(AbstractConnection.java:314)
+	at org.eclipse.jetty.io.FillInterest.fillable(FillInterest.java:100)
+	at org.eclipse.jetty.io.SelectableChannelEndPoint$1.run(SelectableChannelEndPoint.java:53)
+	at org.eclipse.jetty.util.thread.strategy.AdaptiveExecutionStrategy.runTask(AdaptiveExecutionStrategy.java:416)
+	at org.eclipse.jetty.util.thread.strategy.AdaptiveExecutionStrategy.consumeTask(AdaptiveExecutionStrategy.java:385)
+	at org.eclipse.jetty.util.thread.strategy.AdaptiveExecutionStrategy.tryProduce(AdaptiveExecutionStrategy.java:272)
+	at org.eclipse.jetty.util.thread.strategy.AdaptiveExecutionStrategy.produce(AdaptiveExecutionStrategy.java:194)
+	at org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:969)
+	at org.eclipse.jetty.util.thread.QueuedThreadPool$Runner.doRunJob(QueuedThreadPool.java:1194)
+	at org.eclipse.jetty.util.thread.QueuedThreadPool$Runner.run(QueuedThreadPool.java:1149)
+	at java.base/java.lang.Thread.run(Thread.java:1575)
+Caused by: org.apache.jasper.JasperException: java.lang.ClassNotFoundException: org.apache.jsp.business_002dadmin_jsp
+	at org.apache.jasper.servlet.JspServletWrapper.getServlet(JspServletWrapper.java:197)
+	at org.apache.jasper.servlet.JspServletWrapper.service(JspServletWrapper.java:413)
+	... 71 more
+Caused by: java.lang.ClassNotFoundException: org.apache.jsp.business_002dadmin_jsp
+	at java.base/java.net.URLClassLoader.findClass(URLClassLoader.java:445)
+	at org.apache.jasper.servlet.JasperLoader.loadClass(JasperLoader.java:129)
+	at org.apache.jasper.servlet.JasperLoader.loadClass(JasperLoader.java:58)
+	at org.apache.tomcat.SimpleInstanceManager.newInstance(SimpleInstanceManager.java:51)
+	at org.apache.jasper.servlet.JspServletWrapper.getServlet(JspServletWrapper.java:192)
+	... 72 more
+=== End Exception ===
+
+
+=== Unhandled Exception (LanguageFilter) ===
+Path: /smart-calendar/business-admin
+Lang: en
+Query: (none)
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+Exception Type: org.apache.jasper.JasperException
+Message: org.apache.jasper.JasperException: java.lang.ClassNotFoundException: org.apache.jsp.business_002dadmin_jsp
+org.apache.jasper.JasperException: org.apache.jasper.JasperException: java.lang.ClassNotFoundException: org.apache.jsp.business_002dadmin_jsp
+	at org.apache.jasper.servlet.JspServletWrapper.handleJspException(JspServletWrapper.java:589)
+	at org.apache.jasper.servlet.JspServletWrapper.service(JspServletWrapper.java:425)
+	at org.apache.jasper.servlet.JspServlet.serviceJspFile(JspServlet.java:380)
+	at org.apache.jasper.servlet.JspServlet.service(JspServlet.java:328)
+	at org.eclipse.jetty.jsp.JettyJspServlet.service(JettyJspServlet.java:101)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:587)
+	at org.eclipse.jetty.servlet.ServletHolder$NotAsync.service(ServletHolder.java:1419)
+	at org.eclipse.jetty.servlet.ServletHolder.handle(ServletHolder.java:764)
+	at org.eclipse.jetty.servlet.ServletHandler$ChainEnd.doFilter(ServletHandler.java:1665)
+	at org.eclipse.jetty.servlet.ServletHandler.doHandle(ServletHandler.java:527)
+	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:131)
+	at org.eclipse.jetty.security.SecurityHandler.handle(SecurityHandler.java:596)
+	at org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:122)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:223)
+	at org.eclipse.jetty.server.session.SessionHandler.doHandle(SessionHandler.java:1570)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:221)
+	at org.eclipse.jetty.server.handler.ContextHandler.doHandle(ContextHandler.java:1381)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:176)
+	at org.eclipse.jetty.servlet.ServletHandler.doScope(ServletHandler.java:484)
+	at org.eclipse.jetty.server.session.SessionHandler.doScope(SessionHandler.java:1543)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:174)
+	at org.eclipse.jetty.server.handler.ContextHandler.doScope(ContextHandler.java:1303)
+	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:129)
+	at org.eclipse.jetty.server.Dispatcher.forward(Dispatcher.java:215)
+	at org.eclipse.jetty.server.Dispatcher.forward(Dispatcher.java:135)
+	at com.smartcalendar.servlets.BusinessAdminServlet.doGet(BusinessAdminServlet.java:66)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:500)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:587)
+	at org.eclipse.jetty.servlet.ServletHolder$NotAsync.service(ServletHolder.java:1419)
+	at org.eclipse.jetty.servlet.ServletHolder.handle(ServletHolder.java:764)
+	at org.eclipse.jetty.servlet.ServletHandler$ChainEnd.doFilter(ServletHandler.java:1665)
+	at com.smartcalendar.filters.LanguageFilter.doFilter(LanguageFilter.java:48)
+	at org.eclipse.jetty.servlet.FilterHolder.doFilter(FilterHolder.java:202)
+	at org.eclipse.jetty.servlet.ServletHandler$Chain.doFilter(ServletHandler.java:1635)
+	at com.smartcalendar.filters.CsrfFilter.doFilter(CsrfFilter.java:71)
+	at org.eclipse.jetty.servlet.FilterHolder.doFilter(FilterHolder.java:210)
+	at org.eclipse.jetty.servlet.ServletHandler$Chain.doFilter(ServletHandler.java:1635)
+	at org.eclipse.jetty.websocket.servlet.WebSocketUpgradeFilter.doFilter(WebSocketUpgradeFilter.java:170)
+	at org.eclipse.jetty.servlet.FilterHolder.doFilter(FilterHolder.java:202)
+	at org.eclipse.jetty.servlet.ServletHandler$Chain.doFilter(ServletHandler.java:1635)
+	at org.eclipse.jetty.servlet.ServletHandler.doHandle(ServletHandler.java:527)
+	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:131)
+	at org.eclipse.jetty.security.SecurityHandler.handle(SecurityHandler.java:578)
+	at org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:122)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:223)
+	at org.eclipse.jetty.server.session.SessionHandler.doHandle(SessionHandler.java:1570)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:221)
+	at org.eclipse.jetty.server.handler.ContextHandler.doHandle(ContextHandler.java:1381)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:176)
+	at org.eclipse.jetty.servlet.ServletHandler.doScope(ServletHandler.java:484)
+	at org.eclipse.jetty.server.session.SessionHandler.doScope(SessionHandler.java:1543)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:174)
+	at org.eclipse.jetty.server.handler.ContextHandler.doScope(ContextHandler.java:1303)
+	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:129)
+	at org.eclipse.jetty.server.handler.ContextHandlerCollection.handle(ContextHandlerCollection.java:149)
+	at org.eclipse.jetty.server.handler.HandlerList.handle(HandlerList.java:51)
+	at org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:122)
+	at org.eclipse.jetty.server.Server.handle(Server.java:563)
+	at org.eclipse.jetty.server.HttpChannel.lambda$handle$0(HttpChannel.java:505)
+	at org.eclipse.jetty.server.HttpChannel.dispatch(HttpChannel.java:762)
+	at org.eclipse.jetty.server.HttpChannel.handle(HttpChannel.java:497)
+	at org.eclipse.jetty.server.HttpConnection.onFillable(HttpConnection.java:282)
+	at org.eclipse.jetty.io.AbstractConnection$ReadCallback.succeeded(AbstractConnection.java:314)
+	at org.eclipse.jetty.io.FillInterest.fillable(FillInterest.java:100)
+	at org.eclipse.jetty.io.SelectableChannelEndPoint$1.run(SelectableChannelEndPoint.java:53)
+	at org.eclipse.jetty.util.thread.strategy.AdaptiveExecutionStrategy.runTask(AdaptiveExecutionStrategy.java:416)
+	at org.eclipse.jetty.util.thread.strategy.AdaptiveExecutionStrategy.consumeTask(AdaptiveExecutionStrategy.java:385)
+	at org.eclipse.jetty.util.thread.strategy.AdaptiveExecutionStrategy.tryProduce(AdaptiveExecutionStrategy.java:272)
+	at org.eclipse.jetty.util.thread.strategy.AdaptiveExecutionStrategy.lambda$new$0(AdaptiveExecutionStrategy.java:140)
+	at org.eclipse.jetty.util.thread.ReservedThreadExecutor$ReservedThread.run(ReservedThreadExecutor.java:411)
+	at org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:969)
+	at org.eclipse.jetty.util.thread.QueuedThreadPool$Runner.doRunJob(QueuedThreadPool.java:1194)
+	at org.eclipse.jetty.util.thread.QueuedThreadPool$Runner.run(QueuedThreadPool.java:1149)
+	at java.base/java.lang.Thread.run(Thread.java:1575)
+Caused by: org.apache.jasper.JasperException: java.lang.ClassNotFoundException: org.apache.jsp.business_002dadmin_jsp
+	at org.apache.jasper.servlet.JspServletWrapper.getServlet(JspServletWrapper.java:197)
+	at org.apache.jasper.servlet.JspServletWrapper.service(JspServletWrapper.java:413)
+	... 72 more
+Caused by: java.lang.ClassNotFoundException: org.apache.jsp.business_002dadmin_jsp
+	at java.base/java.net.URLClassLoader.findClass(URLClassLoader.java:445)
+	at org.apache.jasper.servlet.JasperLoader.loadClass(JasperLoader.java:129)
+	at org.apache.jasper.servlet.JasperLoader.loadClass(JasperLoader.java:58)
+	at org.apache.tomcat.SimpleInstanceManager.newInstance(SimpleInstanceManager.java:51)
+	at org.apache.jasper.servlet.JspServletWrapper.getServlet(JspServletWrapper.java:192)
+	... 73 more
+=== End Exception ===
+
+
+=== Unhandled Exception (LanguageFilter) ===
+Path: /smart-calendar/business-admin
+Lang: en
+Query: (none)
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+Exception Type: org.apache.jasper.JasperException
+Message: Unable to compile class for JSP: 
+
+An error occurred at line: [43] in the jsp file: [/business-admin.jsp]
+The method setCount(String) in the type volunteerLayout_tag is not applicable for the arguments (int)
+40: <%@ taglib prefix="v" tagdir="/WEB-INF/tags" %>
+41: <%@ include file="/WEB-INF/jspf/topnav.jspf" %>
+42: <div class="dashboard-container">
+43:     <v:volunteerLayout
+44:         titleKey="dashboard.businessAdmin"
+45:         descKey="dashboard.businessAdminDesc"
+46:         count="<%= deps != null ? deps.size() : 0 %>"
+
+
+An error occurred at line: [99] in the jsp file: [/business-admin.jsp]
+The method setId(String) in the type deptCard_tag is not applicable for the arguments (int)
+96:             else if (d.getId() == 1003) desc = "Business operations, logistics and process optimization";
+97:             else desc = "Supporting business administration and management activities";
+98:         %>
+99:             <v:deptCard variant="business" id="<%= d.getId() %>" name="<%= d.getName() %>" desc="<%= desc %>" membersCount="<%= cnt %>" viewHref="cst-team-members.jsp?dept=<%= d.getId() %>" />
+100:         <% } %>
+101:     </div>
+102:     <v:pagination currentPage="${page}" totalPages="${totalPages}" basePath="business-admin" size="${size}" query="${searchQuery != null ? searchQuery : ''}" />
+
+
+An error occurred at line: [99] in the jsp file: [/business-admin.jsp]
+The method setMembersCount(String) in the type deptCard_tag is not applicable for the arguments (int)
+96:             else if (d.getId() == 1003) desc = "Business operations, logistics and process optimization";
+97:             else desc = "Supporting business administration and management activities";
+98:         %>
+99:             <v:deptCard variant="business" id="<%= d.getId() %>" name="<%= d.getName() %>" desc="<%= desc %>" membersCount="<%= cnt %>" viewHref="cst-team-members.jsp?dept=<%= d.getId() %>" />
+100:         <% } %>
+101:     </div>
+102:     <v:pagination currentPage="${page}" totalPages="${totalPages}" basePath="business-admin" size="${size}" query="${searchQuery != null ? searchQuery : ''}" />
+
+
+Stacktrace:
+org.apache.jasper.JasperException: Unable to compile class for JSP: 
+
+An error occurred at line: [43] in the jsp file: [/business-admin.jsp]
+The method setCount(String) in the type volunteerLayout_tag is not applicable for the arguments (int)
+40: <%@ taglib prefix="v" tagdir="/WEB-INF/tags" %>
+41: <%@ include file="/WEB-INF/jspf/topnav.jspf" %>
+42: <div class="dashboard-container">
+43:     <v:volunteerLayout
+44:         titleKey="dashboard.businessAdmin"
+45:         descKey="dashboard.businessAdminDesc"
+46:         count="<%= deps != null ? deps.size() : 0 %>"
+
+
+An error occurred at line: [99] in the jsp file: [/business-admin.jsp]
+The method setId(String) in the type deptCard_tag is not applicable for the arguments (int)
+96:             else if (d.getId() == 1003) desc = "Business operations, logistics and process optimization";
+97:             else desc = "Supporting business administration and management activities";
+98:         %>
+99:             <v:deptCard variant="business" id="<%= d.getId() %>" name="<%= d.getName() %>" desc="<%= desc %>" membersCount="<%= cnt %>" viewHref="cst-team-members.jsp?dept=<%= d.getId() %>" />
+100:         <% } %>
+101:     </div>
+102:     <v:pagination currentPage="${page}" totalPages="${totalPages}" basePath="business-admin" size="${size}" query="${searchQuery != null ? searchQuery : ''}" />
+
+
+An error occurred at line: [99] in the jsp file: [/business-admin.jsp]
+The method setMembersCount(String) in the type deptCard_tag is not applicable for the arguments (int)
+96:             else if (d.getId() == 1003) desc = "Business operations, logistics and process optimization";
+97:             else desc = "Supporting business administration and management activities";
+98:         %>
+99:             <v:deptCard variant="business" id="<%= d.getId() %>" name="<%= d.getName() %>" desc="<%= desc %>" membersCount="<%= cnt %>" viewHref="cst-team-members.jsp?dept=<%= d.getId() %>" />
+100:         <% } %>
+101:     </div>
+102:     <v:pagination currentPage="${page}" totalPages="${totalPages}" basePath="business-admin" size="${size}" query="${searchQuery != null ? searchQuery : ''}" />
+
+
+Stacktrace:
+	at org.apache.jasper.compiler.DefaultErrorHandler.javacError(DefaultErrorHandler.java:102)
+	at org.apache.jasper.compiler.ErrorDispatcher.javacError(ErrorDispatcher.java:213)
+	at org.apache.jasper.compiler.JDTCompiler.generateClass(JDTCompiler.java:487)
+	at org.apache.jasper.compiler.Compiler.compile(Compiler.java:397)
+	at org.apache.jasper.compiler.Compiler.compile(Compiler.java:367)
+	at org.apache.jasper.compiler.Compiler.compile(Compiler.java:351)
+	at org.apache.jasper.JspCompilationContext.compile(JspCompilationContext.java:603)
+	at org.apache.jasper.servlet.JspServletWrapper.service(JspServletWrapper.java:399)
+	at org.apache.jasper.servlet.JspServlet.serviceJspFile(JspServlet.java:380)
+	at org.apache.jasper.servlet.JspServlet.service(JspServlet.java:328)
+	at org.eclipse.jetty.jsp.JettyJspServlet.service(JettyJspServlet.java:101)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:587)
+	at org.eclipse.jetty.servlet.ServletHolder$NotAsync.service(ServletHolder.java:1419)
+	at org.eclipse.jetty.servlet.ServletHolder.handle(ServletHolder.java:764)
+	at org.eclipse.jetty.servlet.ServletHandler$ChainEnd.doFilter(ServletHandler.java:1665)
+	at org.eclipse.jetty.servlet.ServletHandler.doHandle(ServletHandler.java:527)
+	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:131)
+	at org.eclipse.jetty.security.SecurityHandler.handle(SecurityHandler.java:596)
+	at org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:122)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:223)
+	at org.eclipse.jetty.server.session.SessionHandler.doHandle(SessionHandler.java:1570)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:221)
+	at org.eclipse.jetty.server.handler.ContextHandler.doHandle(ContextHandler.java:1381)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:176)
+	at org.eclipse.jetty.servlet.ServletHandler.doScope(ServletHandler.java:484)
+	at org.eclipse.jetty.server.session.SessionHandler.doScope(SessionHandler.java:1543)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:174)
+	at org.eclipse.jetty.server.handler.ContextHandler.doScope(ContextHandler.java:1303)
+	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:129)
+	at org.eclipse.jetty.server.Dispatcher.forward(Dispatcher.java:215)
+	at org.eclipse.jetty.server.Dispatcher.forward(Dispatcher.java:135)
+	at com.smartcalendar.servlets.BusinessAdminServlet.doGet(BusinessAdminServlet.java:66)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:500)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:587)
+	at org.eclipse.jetty.servlet.ServletHolder$NotAsync.service(ServletHolder.java:1419)
+	at org.eclipse.jetty.servlet.ServletHolder.handle(ServletHolder.java:764)
+	at org.eclipse.jetty.servlet.ServletHandler$ChainEnd.doFilter(ServletHandler.java:1665)
+	at com.smartcalendar.filters.LanguageFilter.doFilter(LanguageFilter.java:48)
+	at org.eclipse.jetty.servlet.FilterHolder.doFilter(FilterHolder.java:202)
+	at org.eclipse.jetty.servlet.ServletHandler$Chain.doFilter(ServletHandler.java:1635)
+	at com.smartcalendar.filters.CsrfFilter.doFilter(CsrfFilter.java:71)
+	at org.eclipse.jetty.servlet.FilterHolder.doFilter(FilterHolder.java:210)
+	at org.eclipse.jetty.servlet.ServletHandler$Chain.doFilter(ServletHandler.java:1635)
+	at org.eclipse.jetty.websocket.servlet.WebSocketUpgradeFilter.doFilter(WebSocketUpgradeFilter.java:170)
+	at org.eclipse.jetty.servlet.FilterHolder.doFilter(FilterHolder.java:202)
+	at org.eclipse.jetty.servlet.ServletHandler$Chain.doFilter(ServletHandler.java:1635)
+	at org.eclipse.jetty.servlet.ServletHandler.doHandle(ServletHandler.java:527)
+	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:131)
+	at org.eclipse.jetty.security.SecurityHandler.handle(SecurityHandler.java:578)
+	at org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:122)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:223)
+	at org.eclipse.jetty.server.session.SessionHandler.doHandle(SessionHandler.java:1570)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:221)
+	at org.eclipse.jetty.server.handler.ContextHandler.doHandle(ContextHandler.java:1381)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:176)
+	at org.eclipse.jetty.servlet.ServletHandler.doScope(ServletHandler.java:484)
+	at org.eclipse.jetty.server.session.SessionHandler.doScope(SessionHandler.java:1543)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:174)
+	at org.eclipse.jetty.server.handler.ContextHandler.doScope(ContextHandler.java:1303)
+	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:129)
+	at org.eclipse.jetty.server.handler.ContextHandlerCollection.handle(ContextHandlerCollection.java:149)
+	at org.eclipse.jetty.server.handler.HandlerList.handle(HandlerList.java:51)
+	at org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:122)
+	at org.eclipse.jetty.server.Server.handle(Server.java:563)
+	at org.eclipse.jetty.server.HttpChannel.lambda$handle$0(HttpChannel.java:505)
+	at org.eclipse.jetty.server.HttpChannel.dispatch(HttpChannel.java:762)
+	at org.eclipse.jetty.server.HttpChannel.handle(HttpChannel.java:497)
+	at org.eclipse.jetty.server.HttpConnection.onFillable(HttpConnection.java:282)
+	at org.eclipse.jetty.io.AbstractConnection$ReadCallback.succeeded(AbstractConnection.java:314)
+	at org.eclipse.jetty.io.FillInterest.fillable(FillInterest.java:100)
+	at org.eclipse.jetty.io.SelectableChannelEndPoint$1.run(SelectableChannelEndPoint.java:53)
+	at org.eclipse.jetty.util.thread.strategy.AdaptiveExecutionStrategy.runTask(AdaptiveExecutionStrategy.java:416)
+	at org.eclipse.jetty.util.thread.strategy.AdaptiveExecutionStrategy.consumeTask(AdaptiveExecutionStrategy.java:385)
+	at org.eclipse.jetty.util.thread.strategy.AdaptiveExecutionStrategy.tryProduce(AdaptiveExecutionStrategy.java:272)
+	at org.eclipse.jetty.util.thread.strategy.AdaptiveExecutionStrategy.lambda$new$0(AdaptiveExecutionStrategy.java:140)
+	at org.eclipse.jetty.util.thread.ReservedThreadExecutor$ReservedThread.run(ReservedThreadExecutor.java:411)
+	at org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:969)
+	at org.eclipse.jetty.util.thread.QueuedThreadPool$Runner.doRunJob(QueuedThreadPool.java:1194)
+	at org.eclipse.jetty.util.thread.QueuedThreadPool$Runner.run(QueuedThreadPool.java:1149)
+	at java.base/java.lang.Thread.run(Thread.java:1575)
+=== End Exception ===
+
+
+=== Unhandled Exception (LanguageFilter) ===
+Path: /smart-calendar/business-admin
+Lang: en
+Query: (none)
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+Exception Type: org.apache.jasper.JasperException
+Message: Unable to compile class for JSP: 
+
+An error occurred at line: [43] in the jsp file: [/business-admin.jsp]
+The method setCount(String) in the type volunteerLayout_tag is not applicable for the arguments (int)
+40: <%@ taglib prefix="v" tagdir="/WEB-INF/tags" %>
+41: <%@ include file="/WEB-INF/jspf/topnav.jspf" %>
+42: <div class="dashboard-container">
+43:     <v:volunteerLayout
+44:         titleKey="dashboard.businessAdmin"
+45:         descKey="dashboard.businessAdminDesc"
+46:         count="<%= deps != null ? deps.size() : 0 %>"
+
+
+An error occurred at line: [99] in the jsp file: [/business-admin.jsp]
+The method setId(String) in the type deptCard_tag is not applicable for the arguments (int)
+96:             else if (d.getId() == 1003) desc = "Business operations, logistics and process optimization";
+97:             else desc = "Supporting business administration and management activities";
+98:         %>
+99:             <v:deptCard variant="business" id="<%= d.getId() %>" name="<%= d.getName() %>" desc="<%= desc %>" membersCount="<%= cnt %>" viewHref="cst-team-members.jsp?dept=<%= d.getId() %>" />
+100:         <% } %>
+101:     </div>
+102:     <v:pagination currentPage="${page}" totalPages="${totalPages}" basePath="business-admin" size="${size}" query="${searchQuery != null ? searchQuery : ''}" />
+
+
+An error occurred at line: [99] in the jsp file: [/business-admin.jsp]
+The method setMembersCount(String) in the type deptCard_tag is not applicable for the arguments (int)
+96:             else if (d.getId() == 1003) desc = "Business operations, logistics and process optimization";
+97:             else desc = "Supporting business administration and management activities";
+98:         %>
+99:             <v:deptCard variant="business" id="<%= d.getId() %>" name="<%= d.getName() %>" desc="<%= desc %>" membersCount="<%= cnt %>" viewHref="cst-team-members.jsp?dept=<%= d.getId() %>" />
+100:         <% } %>
+101:     </div>
+102:     <v:pagination currentPage="${page}" totalPages="${totalPages}" basePath="business-admin" size="${size}" query="${searchQuery != null ? searchQuery : ''}" />
+
+
+Stacktrace:
+org.apache.jasper.JasperException: Unable to compile class for JSP: 
+
+An error occurred at line: [43] in the jsp file: [/business-admin.jsp]
+The method setCount(String) in the type volunteerLayout_tag is not applicable for the arguments (int)
+40: <%@ taglib prefix="v" tagdir="/WEB-INF/tags" %>
+41: <%@ include file="/WEB-INF/jspf/topnav.jspf" %>
+42: <div class="dashboard-container">
+43:     <v:volunteerLayout
+44:         titleKey="dashboard.businessAdmin"
+45:         descKey="dashboard.businessAdminDesc"
+46:         count="<%= deps != null ? deps.size() : 0 %>"
+
+
+An error occurred at line: [99] in the jsp file: [/business-admin.jsp]
+The method setId(String) in the type deptCard_tag is not applicable for the arguments (int)
+96:             else if (d.getId() == 1003) desc = "Business operations, logistics and process optimization";
+97:             else desc = "Supporting business administration and management activities";
+98:         %>
+99:             <v:deptCard variant="business" id="<%= d.getId() %>" name="<%= d.getName() %>" desc="<%= desc %>" membersCount="<%= cnt %>" viewHref="cst-team-members.jsp?dept=<%= d.getId() %>" />
+100:         <% } %>
+101:     </div>
+102:     <v:pagination currentPage="${page}" totalPages="${totalPages}" basePath="business-admin" size="${size}" query="${searchQuery != null ? searchQuery : ''}" />
+
+
+An error occurred at line: [99] in the jsp file: [/business-admin.jsp]
+The method setMembersCount(String) in the type deptCard_tag is not applicable for the arguments (int)
+96:             else if (d.getId() == 1003) desc = "Business operations, logistics and process optimization";
+97:             else desc = "Supporting business administration and management activities";
+98:         %>
+99:             <v:deptCard variant="business" id="<%= d.getId() %>" name="<%= d.getName() %>" desc="<%= desc %>" membersCount="<%= cnt %>" viewHref="cst-team-members.jsp?dept=<%= d.getId() %>" />
+100:         <% } %>
+101:     </div>
+102:     <v:pagination currentPage="${page}" totalPages="${totalPages}" basePath="business-admin" size="${size}" query="${searchQuery != null ? searchQuery : ''}" />
+
+
+Stacktrace:
+	at org.apache.jasper.compiler.DefaultErrorHandler.javacError(DefaultErrorHandler.java:102)
+	at org.apache.jasper.compiler.ErrorDispatcher.javacError(ErrorDispatcher.java:213)
+	at org.apache.jasper.compiler.JDTCompiler.generateClass(JDTCompiler.java:487)
+	at org.apache.jasper.compiler.Compiler.compile(Compiler.java:397)
+	at org.apache.jasper.compiler.Compiler.compile(Compiler.java:367)
+	at org.apache.jasper.compiler.Compiler.compile(Compiler.java:351)
+	at org.apache.jasper.JspCompilationContext.compile(JspCompilationContext.java:603)
+	at org.apache.jasper.servlet.JspServletWrapper.service(JspServletWrapper.java:399)
+	at org.apache.jasper.servlet.JspServlet.serviceJspFile(JspServlet.java:380)
+	at org.apache.jasper.servlet.JspServlet.service(JspServlet.java:328)
+	at org.eclipse.jetty.jsp.JettyJspServlet.service(JettyJspServlet.java:101)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:587)
+	at org.eclipse.jetty.servlet.ServletHolder$NotAsync.service(ServletHolder.java:1419)
+	at org.eclipse.jetty.servlet.ServletHolder.handle(ServletHolder.java:764)
+	at org.eclipse.jetty.servlet.ServletHandler$ChainEnd.doFilter(ServletHandler.java:1665)
+	at org.eclipse.jetty.servlet.ServletHandler.doHandle(ServletHandler.java:527)
+	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:131)
+	at org.eclipse.jetty.security.SecurityHandler.handle(SecurityHandler.java:596)
+	at org.eclipse.jetty.server.handler.HandlerWrapper.handle(HandlerWrapper.java:122)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:223)
+	at org.eclipse.jetty.server.session.SessionHandler.doHandle(SessionHandler.java:1570)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextHandle(ScopedHandler.java:221)
+	at org.eclipse.jetty.server.handler.ContextHandler.doHandle(ContextHandler.java:1381)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:176)
+	at org.eclipse.jetty.servlet.ServletHandler.doScope(ServletHandler.java:484)
+	at org.eclipse.jetty.server.session.SessionHandler.doScope(SessionHandler.java:1543)
+	at org.eclipse.jetty.server.handler.ScopedHandler.nextScope(ScopedHandler.java:174)
+	at org.eclipse.jetty.server.handler.ContextHandler.doScope(ContextHandler.java:1303)
+	at org.eclipse.jetty.server.handler.ScopedHandler.handle(ScopedHandler.java:129)
+	at org.eclipse.jetty.server.Dispatcher.forward(Dispatcher.java:215)
+	at org.eclipse.jetty.server.Dispatcher.forward(Dispatcher.java:135)
+	at com.smartcalendar.servlets.BusinessAdminServlet.doGet(BusinessAdminServlet.java:66)
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:500)
 	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:587)
 	at org.eclipse.jetty.servlet.ServletHolder$NotAsync.service(ServletHolder.java:1419)
 	at org.eclipse.jetty.servlet.ServletHolder.handle(ServletHolder.java:764)

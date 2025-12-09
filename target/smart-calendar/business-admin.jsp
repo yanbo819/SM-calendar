@@ -39,6 +39,7 @@
 <body>
 <%@ taglib prefix="v" tagdir="/WEB-INF/tags" %>
 <%@ include file="/WEB-INF/jspf/topnav.jspf" %>
+<%@ include file="/WEB-INF/jspf/icons.jspf" %>
 <div class="dashboard-container">
     <v:volunteerLayout
         titleKey="dashboard.businessAdmin"
@@ -82,7 +83,14 @@
     <div class="dept-grid" id="baDeptGrid">
         <% if (emptyBusiness != null && emptyBusiness.booleanValue()) { %>
             <div class="empty-state business" style="grid-column:1/-1;">
-                <h2>💼 <%= com.smartcalendar.utils.LanguageUtil.getText(lang, "businessAdmin.subtitle") %></h2>
+                <h2 style="display:flex;align-items:center;gap:8px">
+                    <span style="color:#667eea">
+                        <svg aria-hidden="true" focusable="false" width="22" height="22" viewBox="0 0 24 24" role="img">
+                            <use href="#icon-business" />
+                        </svg>
+                    </span>
+                    <%= com.smartcalendar.utils.LanguageUtil.getText(lang, "businessAdmin.subtitle") %>
+                </h2>
                 <p><%= com.smartcalendar.utils.LanguageUtil.getText(lang, "businessAdmin.empty") %></p>
                 <a href="college-volunteers.jsp" class="btn-business" style="max-inline-size:260px;">&larr; <%= com.smartcalendar.utils.LanguageUtil.getText(lang, "common.back") %></a>
             </div>
